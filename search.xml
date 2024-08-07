@@ -8012,6 +8012,48 @@ arr1[1] = new Date();
 <p>修改 C:\programData\MySQL\下my.ini文件，在63行左右的<code>[mysql]</code>和76行左右的<code>[mysqld]</code>分别添加后重启：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">（63处添加）</span><br><span class="line">default-character-set = utf8</span><br><span class="line">（76处添加）</span><br><span class="line">character-set-server = utf8</span><br><span class="line">collation-server = utf8-general-ci</span><br></pre></td></tr></table></figure>
 
+
+<p>*<strong>数据库对象</strong></p>
+<table>
+<thead>
+<tr>
+<th>数据对象</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>表(TABLE)</td>
+<td>表是存储数据的逻辑单元，以行和列的形式存在，列就是字段，行就是记录</td>
+</tr>
+<tr>
+<td>数据字典</td>
+<td>就是系统表，存放数据库相关信息的表。系统表的数据通常由数据库系统维护，程序员通常不应该修改，只可查看</td>
+</tr>
+<tr>
+<td>约束(CONSTRAINT)</td>
+<td>执行数据校验的规则，用于保证数据完整性的规则</td>
+</tr>
+<tr>
+<td>视图(VIEW)</td>
+<td>一个或者多个数据表里的数据的逻辑显示，视图并不存储数据</td>
+</tr>
+<tr>
+<td>索引(INDEX)</td>
+<td>用于提高查询性能，相当于书的目录</td>
+</tr>
+<tr>
+<td>存储过程(PROCEDURE)</td>
+<td>用于完成一次完整的业务处理，没有返回值，但可通过传出参数将多个值传给调用环境</td>
+</tr>
+<tr>
+<td>存储函数(FUNCTION)</td>
+<td>用于完成一次特定的计算，具有一个返回值</td>
+</tr>
+<tr>
+<td>触发器(TRIGGER)</td>
+<td>相当于一个事件监听器，当数据库发生特定事件后，触发器被触发，完成相应的处理</td>
+</tr>
+</tbody></table>
 <h4 id="数据库和表的导入导出"><a href="#数据库和表的导入导出" class="headerlink" title="数据库和表的导入导出"></a>数据库和表的导入导出</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">source Source<span class="operator">-</span>address</span><br><span class="line"><span class="comment">-- source d:\workEnglish\testdb.sql</span></span><br><span class="line"><span class="comment">-- 可在主界面执行，导入原数据库</span></span><br><span class="line"><span class="comment">-- 或在某数据库中执行，复制源数据库数据到当前数据库并导入原数据库</span></span><br></pre></td></tr></table></figure>
 
 
@@ -8378,7 +8420,7 @@ arr1[1] = new Date();
 </ol>
 <h4 id="表的创建、修改、删除"><a href="#表的创建、修改、删除" class="headerlink" title="表的创建、修改、删除"></a>表的创建、修改、删除</h4><p>表的创建create和删除drop(慎重)</p>
 <ol>
-<li>常用建表方法(使用数据库的字符集)：<br><code>CREATE TABLE IF NOT EXISTS table_name( column_name INT, column_name1 VARCHAR(2)...);</code><br>同时可以指定表的字符集，只需要在末尾添加<code>character set &#39;utf8&#39;</code><br>也可以指定字段的字符集，只需要在字段类型后添加<code>character set &#39;utf8&#39;</code></li>
+<li>常用建表方法(使用数据库的字符集)：<br><code>CREATE TABLE IF NOT EXISTS table_name( column_name INT, column_name1 VARCHAR(2)...);</code><br>同时可以指定表的字符集，只需要在末尾添加<code>character set &#39;utf8&#39;</code><br>也可以指定字段的字符集，只需要在字段类型后添加<code>character set &#39;utf8&#39;</code><br>同时可以指定表的存储引擎，在character前添加<code>engine=innod</code></li>
 <li>基于现有表创建并导入相应数据：<br><code>CREATE TABLE table_name AS SELECT ... FROM ...;</code></li>
 <li>删除：<code>drop table if exists table_name;</code></li>
 </ol>
@@ -8448,7 +8490,455 @@ arr1[1] = new Date();
 
 
 <h3 id="MySQL中的数据类型"><a href="#MySQL中的数据类型" class="headerlink" title="MySQL中的数据类型"></a>MySQL中的数据类型</h3><p>参见《MySQL数据类型》专项笔记</p>
-<h3 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h3><h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><h3 id="存储过程和函数"><a href="#存储过程和函数" class="headerlink" title="存储过程和函数"></a>存储过程和函数</h3><h3 id="变量、流程控制和游标"><a href="#变量、流程控制和游标" class="headerlink" title="变量、流程控制和游标"></a>变量、流程控制和游标</h3><h3 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h3><h3 id="新特性"><a href="#新特性" class="headerlink" title="新特性"></a>新特性</h3><h3 id="关键字及其含义"><a href="#关键字及其含义" class="headerlink" title="关键字及其含义"></a>关键字及其含义</h3><p><code>SELECT</code> - 用于从数据库表中选取数据。它允许你指定你想从表中检索的列。<br><code>FROM</code> - 指定了SELECT语句中要查询的表名。<br><code>WHERE</code> - 用于指定过滤条件，以限制SELECT语句返回的行。<br><code>INSERT INTO</code> - 用于向数据库表中插入新的行。<br><code>UPDATE</code> - 用于修改表中的数据。它必须配合SET子句来指定要修改的列和新值，以及WHERE子句来指定哪些行需要被更新。<br><code>DELETE</code>- 用于从数据库表中删除行。它可以与WHERE子句结合使用，以限制删除哪些行。<br><code>CREATE TABLE</code> - 用于创建一个新表，并定义其列和每列的数据类型。<br><code>ALTER TABLE</code> - 用于修改已存在的表的结构，如添加、删除或修改列。<br><code>DROP TABLE</code> - 用于删除整个表及其所有数据。<br><code>TRUNCATE TABLE</code> - 用于删除表中的所有行，但不删除表本身。与DELETE相比，它通常更快，因为它不记录个别行删除的日志。<br><code>JOIN</code> - 用于根据两个或多个表中的列之间的关系，结合这些表的数据。常见的JOIN类型有INNER JOIN、LEFT JOIN、RIGHT JOIN和FULL JOIN。<br><code>GROUP BY</code> - 通常与聚合函数（如COUNT、MAX、MIN、SUM、AVG）一起使用，用于将结果集中的行分组。<br><code>HAVING</code> - 用于对GROUP BY的结果进行过滤，类似于WHERE子句，但它是用于聚合后的结果。<br><code>ORDER BY</code> - 用于对结果集进行排序。可以指定一个或多个列进行升序（ASC）或降序（DESC）排序。<br><code>DISTINCT</code> - 用于返回唯一不同的值。<br><code>UNION</code> - 用于合并两个或多个SELECT语句的结果集，并删除重复的行。<br><code>UNION ALL</code> - 类似于UNION，但它不删除重复的行。<br><code>COUNT()、MAX()、MIN()、SUM()、AVG()</code> - 这些是聚合函数，用于在SELECT语句中对一组值执行计算并返回单个值。<br><code>LIKE</code> - 在WHERE子句中用于在模糊匹配中搜索列中的指定模式。<br><code>IN</code> - 在WHERE子句中用于指定多个可能的值，以便从中选择。</p>
+<h3 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h3><p>数据完整性（Data Integrity）是指数据的精确性（Accuracy）和可靠性（Reliability）。它是防止数据库中<br>存在不符合语义规定的数据和防止因错误信息的输入输出造成无效操作或错误信息而提出的。为了保证数据的完整性，SQL规范以约束的方式对表数据进行额外的条件限制。从以下四个方面考虑：</p>
+<ol>
+<li>实体完整性（Entity Integrity）：例如，同一个表中，不能存在两条完全相同无法区分的记录</li>
+<li>域完整性（Domain Integrity）：例如：年龄范围0-120，性别范围“男&#x2F;女”</li>
+<li>引用完整性（Referential Integrity）：例如：员工所在部门，在部门表中要能找到这个部门</li>
+<li>用户自定义完整性（User-defined Integrity）：例如：用户名唯一、密码不能为空等，本部门经理的工资不得高于本部门职工的平均工资的5倍</li>
+</ol>
+<p>约束是表级的强制规定。</p>
+<p><strong>约束的分类</strong></p>
+<ol>
+<li>根据约束数据列的限制，约束可分为：<ul>
+<li>单列约束：每个约束只约束一列</li>
+<li>多列约束：每个约束可约束多列数据</li>
+</ul>
+</li>
+<li>根据约束的作用范围，约束可分为：<ul>
+<li>列级约束：只能作用在一个列上，跟在列的定义后面</li>
+<li>表级约束：可以作用在多个列上，不与列一起，而是单独定义</li>
+</ul>
+</li>
+<li>根据约束起的作用，约束可分为：<ul>
+<li>NOT NULL 非空约束，规定某个字段不能为空</li>
+<li>UNIQUE 唯一约束，规定某个字段在整个表中是唯一的</li>
+<li>PRIMARY KEY 主键(非空且唯一)约束</li>
+<li>FOREIGN KEY 外键约束</li>
+<li>CHECK 检查约束(MySQL8.0前不支持，可以使用但无效果)</li>
+<li>DEFAULT 默认值约束</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建约束</span></span><br><span class="line"><span class="comment">-- 可以在创建表时规定约束（通过 CREATE TABLE 语句），或者在表创建之后通过 ALTER TABLE 语句规定约束</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看表拥有的约束</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> information_schema.table_constraints <span class="keyword">WHERE</span> table_name <span class="operator">=</span> <span class="string">&#x27;表名称&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="非空约束-NOT-NULL"><a href="#非空约束-NOT-NULL" class="headerlink" title="非空约束 NOT NULL"></a>非空约束 NOT NULL</h4><p>默认情况下，所有的类型的值都可以是NULL，包括INT、FLOAT等数据类型，使用<code>NOT NULL</code>限定某个字段&#x2F;某列的值不允许为空.</p>
+<p><strong>特点</strong></p>
+<ol>
+<li>非空约束只能出现在表对象的列上，只能某个列单独限定非空，不能组合非空</li>
+<li>一个表可以有很多列都分别限定了非空</li>
+<li>空字符串’’不等于NULL，0也不等于NULL</li>
+</ol>
+<p><strong>添加非空约束</strong>注意是否存在默认值约束，参见默认值约束章节</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建表时添加</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> test1(id <span class="type">INT</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span> ,last_name <span class="type">varchar</span>(<span class="number">15</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,email <span class="type">varChar</span>(<span class="number">15</span>));</span><br><span class="line"><span class="comment">-- 修改时添加 当字段中含有NULL值时必须先修改值为非NULL,否则失败</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> test1 MODIFY email <span class="type">VARCHAR</span>(<span class="number">15</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="唯一性约束-UNIQUE"><a href="#唯一性约束-UNIQUE" class="headerlink" title="唯一性约束 UNIQUE"></a>唯一性约束 UNIQUE</h4><p>用来限制某个字段&#x2F;某列的值不能重复。</p>
+<p><strong>特点</strong></p>
+<ol>
+<li>同一个表可以有多个唯一约束。</li>
+<li>唯一约束可以是某一个列的值唯一，也可以多个列组合的值唯一。</li>
+<li>唯一性约束<strong>允许列值为空</strong>，且可以有多个为空</li>
+<li>在创建唯一约束的时候，如果不给唯一约束命名，就默认和列名相同，组合列默认和第一列名字相同。</li>
+<li>MySQL会给唯一约束的列上默认创建一个唯一索引。</li>
+</ol>
+<p><strong>添加唯一性约束</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建表时添加</span></span><br><span class="line"><span class="comment">-- 列级约束</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> test1(id <span class="type">INT</span> <span class="keyword">UNIQUE</span>,last_name <span class="type">varchar</span>(<span class="number">15</span>),email <span class="type">varChar</span>(<span class="number">15</span>) <span class="keyword">UNIQUE</span>);</span><br><span class="line"><span class="comment">-- 表级约束 </span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> test2(id <span class="type">INT</span>,email <span class="type">VARCHAR</span>(<span class="number">15</span>), <span class="keyword">CONSTRAINT</span> constraint_name <span class="keyword">UNIQUE</span>(email));</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改时添加 当字段中含有相同值时必须先修改值,否则失败</span></span><br><span class="line"><span class="comment">-- 方法1</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> test1 MODIFY email <span class="type">VARCHAR</span>(<span class="number">15</span>) <span class="keyword">UNIQUE</span>;</span><br><span class="line"><span class="comment">-- 方法2</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> test1 <span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> constraint_name <span class="keyword">UNIQUE</span>(email);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 复合型约束（多列约束）各约束列都一样才不能添加</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> test3(id <span class="type">INT</span>,last_name <span class="type">varchar</span>(<span class="number">15</span>),`password` <span class="type">varChar</span>(<span class="number">25</span>) <span class="keyword">CONSTRAINT</span> constraint_name <span class="keyword">UNIQUE</span>(last_name,`password`));</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除唯一性约束 通过删除唯一性索引（其名称与约束名称相同）</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> test1 <span class="keyword">DROP</span> <span class="keyword">CONSTRAINT</span> constraint_name;</span><br></pre></td></tr></table></figure>
+
+<h4 id="主键约束-PRIMARY-KEY"><a href="#主键约束-PRIMARY-KEY" class="headerlink" title="主键约束 PRIMARY KEY"></a>主键约束 PRIMARY KEY</h4><p>非空且唯一，用来唯一标识表中的一行记录。</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>主键约束相当于唯一约束+非空约束的组合，主键约束列不允许重复，也不允许出现空值。</li>
+<li>一个表最多<strong>只能有一个</strong>主键约束，建立主键约束可以在列级别创建，也可以在表级别上创建。</li>
+<li>主键约束对应着表中的一列或者多列（复合主键）</li>
+<li>如果是多列组合的复合主键约束，那么这些列都不允许为空值，并且组合的值不允许重复。</li>
+<li>MySQL的主键名总是PRIMARY，就算自己命名了主键约束名也没用。</li>
+<li>当创建主键约束时，系统默认会在所在的列或列组合上建立对应的主键索引（能够根据主键查询的，就根据主键查询，效率更高）。如果删除主键约束了，主键约束对应的索引就自动删除了。</li>
+<li>需要注意的一点是，不要修改主键字段的值。因为主键是数据记录的唯一标识，如果修改了主键的值，就有可能会破坏数据的完整性。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建表时添加主键约束</span></span><br><span class="line"><span class="comment">-- 列级约束</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test(id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,`name` <span class="type">VARCHAR</span>(<span class="number">10</span>));</span><br><span class="line"><span class="comment">-- 表级约束-重命名无作用，名字仍是PRIMARY，没必要命名</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test1(id <span class="type">INT</span>,`name` <span class="type">VARCHAR</span>(<span class="number">10</span>),CONSTRAIN constrain_name <span class="keyword">PRIMARY</span> KEY(id));</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改时添加主键约束 被约束列数据必须非空且唯一</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> test <span class="keyword">ADD</span> <span class="keyword">PRIMARY</span> KEY(id);</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> emp5 <span class="keyword">ADD</span> <span class="keyword">PRIMARY</span> KEY(`NAME`,pwd);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 复合主键约束 各约束列都一样或有某一列为空才不能添加</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test1(id <span class="type">INT</span>,`name` <span class="type">VARCHAR</span>(<span class="number">10</span>),CONSTRAIN constrain_name <span class="keyword">PRIMARY</span> KEY(id,`name`));</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除 删除主键约束，不需要指定主键名，因为一个表只有一个主键，删除主键约束后，非空还存</span></span><br><span class="line">在。 </span><br><span class="line"><span class="comment">-- !!实际开发中完全不会进行此操作</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> test <span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY;</span><br></pre></td></tr></table></figure>
+
+<h4 id="自增列-AUTO-INCREMENT"><a href="#自增列-AUTO-INCREMENT" class="headerlink" title="自增列 AUTO_INCREMENT"></a>自增列 AUTO_INCREMENT</h4><p>某个字段的值自增,此字段必须已经是<code>UNIQUE</code> 或 <code>PRIMARY KEY</code><br>开发中一旦向主键作用字段添加自增列声明，在添加数据时就不要添加此列数据了</p>
+<p><strong>特点(重要)</strong></p>
+<ol>
+<li>一个表最多只能有一个自增长列</li>
+<li>自增列声明必须紧跟在字段后，不能使用表级约束</li>
+<li>当需要产生唯一标识符或顺序值时，可设置自增长</li>
+<li>自增长列约束的列必须是键列（主键列，唯一键列）</li>
+<li>自增约束的列的数据类型必须是整数类型</li>
+<li>如果自增列指定了 0 和 null，会在当前最大值的基础上自增；如果自增列手动指定了具体值，直接赋值为具体值。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建表时添加，必须是字段有主键约束或唯一性约束</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test(id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,`name` <span class="type">VARCHAR</span>(<span class="number">10</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改时添加，必须是字段有主键约束或唯一性约束</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> test MODIFY id <span class="type">INT</span> AUTO_INCREMENT;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> test MODIFY id <span class="type">INT</span>;</span><br></pre></td></tr></table></figure>
+
+
+<p>MySQL 8.0新特性—自增变量的持久化<br>在MySQL 8.0之前，自增主键AUTO_INCREMENT的值如果大于max(primary key)+1，在MySQL重启后，会重置AUTO_INCREMENT&#x3D;max(primary key)+1，这种现象在某些情况下会导致业务主键冲突或者其他难以发现的问题。<br>在MySQL 5.7系统中，对于自增主键的分配规则，是由InnoDB数据字典内部一个 计数器 来决定的，而该计数器只在 内存中维护 ，并不会持久化到磁盘中。当数据库重启时，该计数器会被初始化。<br>MySQL 8.0将自增主键的计数器持久化到 重做日志 中。每次计数器发生改变，都会将其写入重做日志中。如果数据库重启，InnoDB会根据重做日志中的信息来初始化计数器的内存值</p>
+<h4 id="外键约束-FOREIGN-KEY"><a href="#外键约束-FOREIGN-KEY" class="headerlink" title="外键约束 FOREIGN KEY"></a>外键约束 FOREIGN KEY</h4><p>阿里规范 –&gt; 不得使用外键与级联</p>
+<p><strong>限定某个表的某个字段的引用完整性.</strong></p>
+<ol>
+<li>主表的修改和删除数据受约束，不能删除和修改被从表引用的数据</li>
+<li>从表的添加和修改数据受约束，不能添加主表引用列没有的数据</li>
+<li>在从表上建立外键，要求主表必须存在</li>
+<li>删除主表时，要求从表从表先删除，或将从表中外键引用该主表的关系先删除</li>
+</ol>
+<p><strong>主表被引用列被参考数据不可进行删改操作，从表不可添加主表中被引用列没有的数据</strong><br>主表（父表）：被引用的表，被参考的表<br>从表（子表）：引用别人的表，参考别人的表</p>
+<p><strong>特点</strong></p>
+<ol>
+<li>从表的外键列，必须引用&#x2F;参考主表的主键或唯一约束的列. 为什么？因为被依赖&#x2F;被参考的值必须是唯一的</li>
+<li>在创建外键约束时，如果不给外键约束命名，<strong>默认名不是列名，而是自动产生一个外键名</strong>（例如student_ibfk_1;），也可以指定外键约束名。</li>
+<li>创建(CREATE)表时就指定外键约束的话，先创建主表，再创建从表</li>
+<li>删表时，先删从表（或先删除外键约束），再删除主表</li>
+<li>当主表的记录被从表参照时，主表的记录将不允许删除，如果要删除数据，需要先删除从表中依赖该记录的数据，然后才可以删除主表的数据</li>
+<li>在“从表”中指定外键约束，并且一个表可以建立多个外键约束</li>
+<li>从表的外键列与主表被参照的列名字可以不相同，但是数据类型必须一样，逻辑意义一致。如果类型不一样，创建子表时，就会出现错误“ERROR 1005 (HY000): Can’t createtable’database.tablename’(errno: 150)”。例如：都是表示部门编号，都是int类型。</li>
+<li>当创建外键约束时，系统默认会在所在的列上建立对应的普通索引。但是索引名是外键的约束名。（根据外键查询效率很高）</li>
+<li>删除外键约束后，必须手动删除对应的索引</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建外键约束必须先创建主表</span></span><br><span class="line"><span class="comment">/*主表*/</span><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> departments(d_id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,d_name <span class="type">VARCHAR</span>(<span class="number">15</span>));</span><br><span class="line"><span class="comment">/*从表*/</span><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees(e_id <span class="keyword">IN</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,e_name <span class="type">VARCHAR</span>(<span class="number">15</span>),e_d_id <span class="type">INT</span></span><br><span class="line"><span class="comment">/*外键约束*/</span><span class="keyword">CONSTRAINT</span> con_emp_dep_d_id <span class="keyword">FOREIGN</span> KEY (e_d_id) <span class="keyword">REFERENCES</span> departments(d_id);</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 也可在修改表时添加，修改从表</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> employees <span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> con_emp_dep_d_id <span class="keyword">FOREIGN</span> KEY (e_d_id) <span class="keyword">REFERENCES</span> departments(d_id);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除</span></span><br><span class="line"><span class="comment">-- 第一步先查看约束名和删除外键约束</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> information_schema.table_constraints <span class="keyword">WHERE</span> table_name <span class="operator">=</span> <span class="string">&#x27;表名称&#x27;</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> 从表名 <span class="keyword">DROP</span> <span class="keyword">FOREIGN</span> KEY 外键约束名;</span><br><span class="line"><span class="comment">-- 第二步查看索引名和删除索引。（注意，只能手动删除）</span></span><br><span class="line"><span class="keyword">SHOW</span> INDEX <span class="keyword">FROM</span> 表名称;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> 从表名 <span class="keyword">DROP</span> INDEX 索引名;</span><br></pre></td></tr></table></figure>
+
+<p><strong>约束等级</strong></p>
+<ol>
+<li><code>Cascade</code>：在父表上update&#x2F;delete记录时，同步update&#x2F;delete掉子表的匹配记录</li>
+<li><code>Set null</code>：在父表上update&#x2F;delete记录时，将子表上匹配记录的列设为null，但是要注意子表的外键列不能为not null</li>
+<li><code>No action</code>：如果子表中有匹配的记录，则不允许对父表对应候选键进行update&#x2F;delete操作</li>
+<li><code>Restrict</code>：同no action， 都是立即检查外键约束</li>
+<li><code>Set default</code>（在可视化工具SQLyog中可能显示空白）：父表有变更时，子表将外键列设置成一个默认的值，但Innodb不能识别<br>如果没有指定等级，就相当于Restrict方式。<br>对于外键约束，最好是采用:<code>ON UPDATE CASCADE ON DELETE RESTRICT</code>的方式。<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> emp(</span><br><span class="line">eid <span class="type">int</span> <span class="keyword">primary</span> key, </span><br><span class="line">ename <span class="type">varchar</span>(<span class="number">5</span>),</span><br><span class="line">deptid <span class="type">int</span>, </span><br><span class="line"><span class="keyword">foreign</span> key (deptid) <span class="keyword">references</span> dept(did) <span class="keyword">on</span> <span class="keyword">update</span> cascade <span class="keyword">on</span> <span class="keyword">delete</span> restrict</span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="开放建议"><a href="#开放建议" class="headerlink" title="开放建议"></a>开放建议</h5><p>问题1：如果两个表之间有关系（一对一、一对多），比如：员工表和部门表（一对多），它们之间是否<br>一定要建外键约束？<br>答：不是的</p>
+<p>问题2：建和不建外键约束有什么区别？<br>答：建外键约束，你的操作（创建表、删除表、添加、修改、删除）会受到限制，从语法层面受到限制。例如：在员工表中不可能添加一个员工信息，它的部门的值在部门表中找不到。不建外键约束，你的操作（创建表、删除表、添加、修改、删除）不受限制，要保证数据的 引用完整性 ，只能依<code>靠程序员的自觉</code>，或者是<code>在Java程序中进行限定</code>。例如：在员工表中，可以添加一个员工的信息，它的部门指定为一个完全不存在的部门。</p>
+<p>问题3：那么建和不建外键约束和查询有没有关系？<br>答：没有</p>
+<p>在<code>MySQL</code>里，外键约束是<code>有成本</code>的，需要<code>消耗系统资源</code>。对于<code>大并发的 SQL 操作</code>，有可能会<code>不适合</code>。比如大型网站的中央数据库，可能会 因为外键约束的系统开销而变得非常慢 。所以， MySQL 允许你不使用系统自带的外键约束，在 应用层面 完成检查数据一致性的逻辑。也就是说，即使你不用外键约束，也要想办法通过应用层面的附加逻辑，来实现外键约束的功能，确保数据的一致性。</p>
+<p><strong>阿里开发规范</strong><br>【强制】<strong>不得使用外键与级联</strong>，一切外键概念必须在应用层解决。</p>
+<blockquote>
+<p>说明：（概念解释）学生表中的 student_id 是主键，那么成绩表中的 student_id 则为外键。如果更新学生表中的 student_id，同时触发成绩表中的 student_id 更新，即为级联更新。外键与级联更新适用于 单机低并发 ，不适合 分布式 、高并发集群；级联更新是强阻塞，存在数据库 更新风暴 的风险；外键影响数据库的 插入速度 。</p>
+</blockquote>
+<h4 id="检查约束-CHECK"><a href="#检查约束-CHECK" class="headerlink" title="检查约束 CHECK"></a>检查约束 CHECK</h4><p>检查某个字段的值是否符号xx要求，一般指的是值的范围（MySQL5.7不支持，MySQL8.0支持）</p>
+<p>示例</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 只能列级约束</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> employee(</span><br><span class="line">eid <span class="type">int</span> <span class="keyword">primary</span> key,</span><br><span class="line">ename <span class="type">varchar</span>(<span class="number">5</span>),</span><br><span class="line">age <span class="type">int</span> <span class="keyword">check</span> (age<span class="operator">&gt;</span><span class="number">18</span>),</span><br><span class="line">gender <span class="type">char</span> <span class="keyword">check</span> (gender <span class="keyword">in</span> (<span class="string">&#x27;男&#x27;</span>,<span class="string">&#x27;女&#x27;</span>))</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h4 id="默认值约束-DEFAULT"><a href="#默认值约束-DEFAULT" class="headerlink" title="默认值约束 DEFAULT"></a>默认值约束 DEFAULT</h4><p>给某个字段&#x2F;某列指定默认值，一旦设置默认值，在插入数据时，如果此字段没有显式赋值，则赋值为默认值。<br>但<strong>默认值约束一般不在唯一键和主键列上加</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 建表时添加默认值约束</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> 表名称(</span><br><span class="line">字段名 数据类型 <span class="keyword">primary</span> key,</span><br><span class="line">字段名 数据类型 <span class="keyword">unique</span> key <span class="keyword">not</span> <span class="keyword">null</span>,</span><br><span class="line">字段名 数据类型 <span class="keyword">unique</span> key,</span><br><span class="line">字段名 数据类型 <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">default</span> 默认值,</span><br><span class="line">);</span><br><span class="line"><span class="comment">-- 修改时添加</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名称 modify 字段名 数据类型 <span class="keyword">default</span> 默认值;</span><br><span class="line"><span class="comment">--如果这个字段原来有非空约束，你还保留非空约束，那么在加默认值约束时，还得保留非空约束，否则非空约束就被删除了</span></span><br><span class="line"><span class="comment">--同理，在给某个字段加非空约束也一样，如果这个字段原来有默认值约束，你想保留，也要在modify语句中保留默认值约束，否则就删除了</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名称 modify 字段名 数据类型 <span class="keyword">default</span> 默认值 <span class="keyword">not</span> <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名称 modify 字段名 数据类型 ;#删除默认值约束，也不保留非空约束</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名称 modify 字段名 数据类型 <span class="keyword">not</span> <span class="keyword">null</span>; #删除默认值约束，保留非空约束</span><br></pre></td></tr></table></figure>
+
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><ol>
+<li>为什么建表时，加 not null default ‘’ 或 default 0<br>答：不想让表中出现null值。</li>
+<li>为什么不想要 null 的值<ol>
+<li>不好比较。null是一种特殊值，比较时只能用专门的is null 和 is not null来比较。碰到运算符，通常返回null。</li>
+<li>效率不高。影响提高索引效果。因此，我们往往在建表时 not null default ‘’ 或 default 0</li>
+</ol>
+</li>
+<li>带AUTO_INCREMENT约束的字段值是从1开始的吗？<br>在MySQL中，默认AUTO_INCREMENT的初始值是1，每新增一条记录，字段值自动加1。设置自增属性（AUTO_INCREMENT）的时候，还可以指定第一条插入记录的自增字段的值，这样新插入的记录的自增字段值从初始值开始递增，如在表中插入第一条记录，同时指定id值为5，则以后插入的记录的id值就会从6开始往上增加。添加主键约束时，往往需要设置字段自动增加属性。</li>
+<li>并不是每个表都可以任意选择存储引擎？<br>外键约束（FOREIGN KEY）不能跨引擎使用。<br>MySQL支持多种存储引擎，每一个表都可以指定一个不同的存储引擎，需要注意的是：外键约束是用来保证数据的参照完整性的，如果表之间需要关联外键，却指定了不同的存储引擎，那么这些表之间是不能创建外键约束的。所以说，存储引擎的选择也不完全是随意的</li>
+</ol>
+<h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><p><strong>视图</strong></p>
+<ul>
+<li>视图是一种<code>虚拟表</code>，本身是<code>不具有数据</code>的，占用很少的内存空间，它是<code>SQL</code>中的一个重要概念。实际每次都查看视图都会执行视图创建语句</li>
+<li>视图建立在已有表的基础上,视图赖以建立的这些表称为基表。</li>
+<li>视图的创建和删除只影响视图本身，不影响对应的基表。但是当对视图中的数据进行增加、删除和修改操作时，数据表中的数据会相应地发生变化，反之亦然。</li>
+<li>向视图提供数据内容的语句为<code>SELECT</code>语句, 可以将视图理解为存储起来的<code>SELECT</code>语句</li>
+<li>在数据库中，视图不会保存数据，数据真正保存在数据表中。</li>
+<li>视图，是向用户提供基表数据的另一种表现形式。通常情况下，小型项目的数据库可以不使用视图，但是在大型项目中，以及数据表比较复杂的情况下，视图的价值就凸显出来了，它可以帮助我们把经常查询的结果集放到虚拟表中，提升使用效率。理解和使用起来都非常方便。</li>
+</ul>
+<p><strong>优点</strong><br>视图操作简单，可以减少数据冗余，从而简化查询；控制数据的访问，提高数据安全；适应灵活多变的需求；能够分解复杂的查询逻辑。<br><strong>不足</strong><br>如果我们在实际数据表的基础上创建了视图，那么，如果实际数据表的结构变更了，我们就需要及时对相关的视图进行相应的维护。特别是嵌套的视图（就是在视图的基础上创建视图），维护会变得比较复杂， 可读性不好 ，容易变成系统的潜在隐患。因为创建视图的 SQL 查询可能会对字段重命名，也可能包含复杂的逻辑，这些都会增加维护的成本</p>
+<h4 id="视图的创建、查看、修改和删除"><a href="#视图的创建、查看、修改和删除" class="headerlink" title="视图的创建、查看、修改和删除"></a>视图的创建、查看、修改和删除</h4><p><strong>视图的创建</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建视图-</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> view_name <span class="keyword">AS</span> <span class="keyword">select</span>查询语句</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建单表视图 </span></span><br><span class="line"><span class="comment">-- 方式一 视图字段名和基表字段名一致</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> view_name <span class="keyword">AS</span> <span class="keyword">SELECT</span> COLUMNS <span class="keyword">FROM</span> table_name (<span class="keyword">WHERE</span> ...);</span><br><span class="line"><span class="comment">-- 方式二 自定义的字段名,个数必须与select中字段数相同</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> view_name(column_names) <span class="keyword">AS</span> <span class="keyword">SELECT</span> columns <span class="keyword">FROM</span> table_name (<span class="keyword">WHERE</span> ...);</span><br><span class="line"><span class="comment">-- 方式三 聚合函数等操作的结果转为视图字段，实际每次都查看视图都会执行视图创建语句，示例</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> view_name(id,avg_sal) <span class="keyword">AS</span> <span class="keyword">SELECT</span> id <span class="built_in">avg</span>(salary) <span class="keyword">FROM</span> table_name (<span class="keyword">WHERE</span> ...);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 针对多表时即将select语句改为多表查询的语句</span></span><br><span class="line"><span class="comment">-- 同时还可以针对视图创建视图，将视图作为表代入select语句查询即可</span></span><br><span class="line"></span><br><span class="line">```   </span><br><span class="line"></span><br><span class="line"><span class="operator">*</span><span class="operator">*</span>查看视图<span class="operator">*</span><span class="operator">*</span>和查看表一样</span><br><span class="line">```<span class="keyword">SQL</span></span><br><span class="line"><span class="comment">-- 查看视图对象</span></span><br><span class="line"><span class="keyword">SHOW</span> TABLES;</span><br><span class="line"><span class="comment">-- 查看视图结构</span></span><br><span class="line"><span class="keyword">DESC</span> view_name;</span><br><span class="line"><span class="comment">-- 查看视图的属性信息</span></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">TABLE</span> STATUS <span class="keyword">LIKE</span> <span class="string">&#x27;view_name&#x27;</span></span><br><span class="line"><span class="comment">-- 查看视图的详细定义信息</span></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> <span class="keyword">VIEW</span> view_name;</span><br></pre></td></tr></table></figure>
+
+<p><strong>修改视图</strong>类似表的修改</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 方法1 create or replace view</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">VIEW</span> view_name(column_names`可省`)<span class="keyword">AS</span> `新`<span class="keyword">SELECT</span> ...</span><br><span class="line"><span class="comment">-- 方法2 alter view</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">VIEW</span> view_name <span class="keyword">AS</span> <span class="keyword">SELECT</span> ...</span><br></pre></td></tr></table></figure>
+
+<p><strong>删除视图</strong> 只是删除视图的定义，并不会删除基表的数据。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 删除视图必须先删除其子视图</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">VIEW</span> IF <span class="keyword">EXISTS</span> view_names;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="视图数据的更新"><a href="#视图数据的更新" class="headerlink" title="视图数据的更新"></a>视图数据的更新</h4><p><strong>增删改视图数据都会影响基表，不建议在视图上进行此操作</strong><br>要使视图可更新，视图中的行和底层基本表中的行之间必须存在 一对一 的关系。更新方法同表的数据的更新</p>
+<p><strong>不可更新视图</strong></p>
+<ol>
+<li>在定义视图的时候<code>指定了“ALGORITHM = TEMPTABLE”</code>，视图将<code>不支持INSERT和DELETE</code>操作；</li>
+<li>视图中不包含基表中所有被定义为非空又未指定默认值的列，视图<code>将不支持INSERT</code>操作；</li>
+<li>在定义视图的SELECT语句中<code>使用了JOIN联合查询</code> ，视图将<code>不支持INSERT和DELETE</code>操作；</li>
+<li>在定义视图的SELECT语句后的字段列表中<code>使用了数学表达式</code>或<code>子查询</code> ，视图将<code>不支持INSERT</code>，也<code>不支持UPDATE</code>使用了数学表达式、子查询的字段值；</li>
+<li>在定义视图的SELECT语句后的字段列表中<code>使用DISTINCT、聚合函数、GROUP BY、HAVING、UNION等</code>，视图将<code>不支持INSERT、UPDATE、DELETE</code>；</li>
+<li>在定义视图的SELECT语句中<code>包含了子查询</code>，而子查询中引用了FROM后面的表，视图将<code>不支持INSERT、UPDATE、DELETE；</code></li>
+<li>视图定义基于一个<code>不可更新视图</code> ；</li>
+<li>常量视图。</li>
+</ol>
+<h3 id="存储过程和存储函数"><a href="#存储过程和存储函数" class="headerlink" title="存储过程和存储函数"></a>存储过程和存储函数</h3><p>存储函数和存储过程对比：</p>
+<p>|名称|关键字|调用语法|返回值|应用场景<br>|—|————-|————–|—–|<br>|存储过程|PROCEDURE|CALL 存储过程()|理解为有0个或多个|一般用于更新|<br>|存储函数|FUNCTION|SELECT 函数()|只能是一个|一般用于查询结果为一个值并返回时|</p>
+<p>此外，存储函数可以放在查询语句中使用，存储过程不行。反之，存储过程的功能更加强大，包括能够<br>执行对表的操作（比如创建表，删除表等）和事务操作，这些功能是存储函数不具备的</p>
+<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>含义：存储过程的英文是<code>Stored Procedure</code>。它的思想很简单，就是一组经过<code>预先编译</code>的SQL语句的封装。</p>
+<p>执行过程：存储过程预先存储在MySQL服务器上，需要执行的时候，客户端只需要向服务器端发出调用存储过程的命令，服务器端就可以把预先存储好的这一系列 SQL 语句全部执行。</p>
+<p><strong>好处：</strong></p>
+<ol>
+<li>简化操作，提高了sql语句的重用性，减少了开发程序员的压力 </li>
+<li>减少操作过程中的失误，提高效率</li>
+<li>减少网络传输量（客户端不需要把所有的 SQL 语句通过网络发给服务器） </li>
+<li>减少了 SQL 语句暴露在网上的风险，也提高了数据查询的安全性</li>
+</ol>
+<p><strong>和视图、函数的对比：</strong><br>它和视图有着同样的优点，清晰、安全，还可以减少网络传输量。不过它和视图不同，视图是 虚拟表 ，通常不对底层数据表直接操作，而存储过程是程序化的 SQL，可以 直接操作底层数据表 ，相比于面向集合的操作方式，能够实现一些更复杂的数据处理。一旦存储过程被创建出来，使用它就像使用函数一样简单，我们直接通过调用存储过程名即可。相较于函数，存储过程是 没有返回值 的。</p>
+<p><strong>分类</strong><br>存储过程的参数类型可以是IN、OUT和INOUT。根据这点分类如下：<br>1、没有参数（无参数无返回）<br>2、仅仅带 IN 类型（有参数无返回）<br>3、仅仅带 OUT 类型（无参数有返回）<br>4、既带 IN 又带 OUT（有参数有返回）<br>5、带 INOUT（有参数有返回）<br>注意：IN、OUT、INOUT 都可以在一个存储过程中带多个</p>
+<h4 id="存储过程的创建"><a href="#存储过程的创建" class="headerlink" title="存储过程的创建"></a>存储过程的创建</h4><p><strong>语法</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> 存储过程名(<span class="keyword">IN</span><span class="operator">|</span><span class="keyword">OUT</span><span class="operator">|</span><span class="keyword">INOUT</span> 参数名 参数类型,...)</span><br><span class="line">[characteristics ...]</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">存储过程体</span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：<br>说明：</p>
+<ol>
+<li>参数前面的符号的意思</li>
+</ol>
+<ul>
+<li>IN：当前参数为输入参数，也就是表示入参；存储过程只是读取这个参数的值。如果没有定义参数种类，默认就是IN，表示输入参数。</li>
+<li>OUT：当前参数为输出参数，也就是表示出参；执行完成之后，调用这个存储过程的客户端或者应用程序就可以读取这个参数返回的值了。</li>
+<li>INOUT：当前参数既可以为输入参数，也可以为输出参数</li>
+</ul>
+<ol start="2">
+<li>形参类型可以是 MySQL数据库中的任意类型。</li>
+<li>characteristics 表示创建存储过程时指定的对存储过程的约束条件，其取值信息如下，含义使用时查询<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">LANGUAGE</span> <span class="keyword">SQL</span></span><br><span class="line"><span class="operator">|</span> [<span class="keyword">NOT</span>] <span class="keyword">DETERMINISTIC</span></span><br><span class="line"><span class="operator">|</span> &#123; <span class="keyword">CONTAINS</span> <span class="keyword">SQL</span> <span class="operator">|</span> <span class="keyword">NO</span> <span class="keyword">SQL</span> <span class="operator">|</span> <span class="keyword">READS</span> <span class="keyword">SQL</span> DATA <span class="operator">|</span> <span class="keyword">MODIFIES</span> <span class="keyword">SQL</span> DATA &#125;</span><br><span class="line"><span class="operator">|</span> <span class="keyword">SQL</span> SECURITY &#123; DEFINER <span class="operator">|</span> INVOKER &#125;</span><br><span class="line"><span class="operator">|</span> COMMENT <span class="string">&#x27;string&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li>存储过程体中可以有多条 SQL 语句，如果仅仅一条SQL 语句，则可以省略 BEGIN 和 END</li>
+<li>需要设置新的结束标记<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">DELIMITER 新的结束标记</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建过程查看employee表的所有数据</span></span><br><span class="line">DELIMITER $ <span class="comment">--使用$作为存储过程的结束符</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> select_data_emp()</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employee;</span><br><span class="line"><span class="keyword">END</span> $</span><br><span class="line">DELIMITER ; <span class="comment">--恢复;作为结束符</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建过程查看employee表某个人工资</span></span><br><span class="line">DELIMITER $ <span class="comment">--使用$作为存储过程的结束符</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> select_salary_emp(<span class="keyword">IN</span> i_name <span class="type">varchar</span>(<span class="number">20</span>),<span class="keyword">OUT</span> o_salary <span class="type">DECIMAL</span>(<span class="number">10</span>,<span class="number">2</span>)) </span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">SELECT</span> salary <span class="keyword">INTO</span> o_salary <span class="keyword">FROM</span> employee <span class="keyword">where</span> last_name <span class="operator">=</span> i_name;</span><br><span class="line"><span class="keyword">END</span>$</span><br><span class="line">DELIMITER ; <span class="comment">--恢复;作为结束符</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--使用</span></span><br><span class="line"><span class="keyword">SET</span> <span class="variable">@i_name</span> <span class="operator">=</span> <span class="string">&#x27;abel&#x27;</span>;</span><br><span class="line"><span class="keyword">CALL</span> select_salary_emp(<span class="variable">@i_name</span>,<span class="variable">@o_salary</span>);</span><br><span class="line"><span class="keyword">SELECT</span> <span class="variable">@o_salary</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询领导姓名</span></span><br><span class="line">DELIMITER $ <span class="comment">--使用$作为存储过程的结束符</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> select_manager_emp(<span class="keyword">INOUT</span> m_name <span class="type">VARCHAR</span>(<span class="number">25</span>))</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">SELECT</span> last_name <span class="keyword">INTO</span> m_name <span class="keyword">FROM</span> employee <span class="keyword">where</span> employee_id <span class="operator">=</span> (</span><br><span class="line">      <span class="keyword">SELECT</span> manager_id <span class="keyword">From</span> employee <span class="keyword">WHERE</span> last_name <span class="operator">=</span> m_name;</span><br><span class="line">   );</span><br><span class="line"><span class="keyword">END</span>$</span><br><span class="line">DELIMITER ; <span class="comment">--恢复;作为结束符</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="存储函数的使用"><a href="#存储函数的使用" class="headerlink" title="存储函数的使用"></a>存储函数的使用</h4><p><strong>语法格式</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> 函数名(参数名 参数类型,...)</span><br><span class="line"><span class="keyword">RETURNS</span> 返回值类型</span><br><span class="line">[characteristics ...]</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">函数体 #函数体中肯定有 <span class="keyword">RETURN</span> 语句</span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong></p>
+<ol>
+<li>参数列表：指定参数为IN、OUT或INOUT只对PROCEDURE是合法的，FUNCTION中总是默认为IN参数。</li>
+<li>RETURNS type 语句表示函数返回数据的类型；RETURNS子句只能对FUNCTION做指定，对函数而言这是<code>强制</code>的。它用来指定函数的返回类型，而且函数体必须包含一个 RETURN value 语句。</li>
+<li>characteristic 创建函数时指定的对函数的约束。取值与创建存储过程时相同，这里不再赘述。</li>
+<li>函数体也可以用BEGIN…END来表示SQL代码的开始和结束。如果函数体只有一条语句，也可以省略BEGIN…END</li>
+</ol>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 查询id对应email</span></span><br><span class="line">DELIMITER $ <span class="comment">--使用$作为存储过程的结束符</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> email_by_id(emp_id <span class="type">INT</span>) <span class="keyword">RETURNS</span> <span class="type">VARCHAR</span>(<span class="number">25</span>)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">RETURN</span> (<span class="keyword">SELECT</span> email <span class="keyword">FROM</span> employee <span class="keyword">WHERE</span> employee_id <span class="operator">=</span> emp_id);</span><br><span class="line"><span class="keyword">END</span>$</span><br><span class="line">DELIMITER ; <span class="comment">--恢复;作为结束符</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--调用</span></span><br><span class="line"><span class="keyword">select</span> email_by_id(<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><br>若在创建存储函数中报错“ you might want to use the less safelog_bin_trust_function_creators variable ”，有两种处理方法：</p>
+<ul>
+<li>方式1：<code>RETURNS 类型</code>后加上必要的函数特性<code>[NOT] DETERMINISTIC</code>和<code>&#123;CONTAINS SQL | NO SQL | READS SQL DATA |MODIFIES SQL DATA&#125;</code></li>
+<li>方式2： <code>SET GLOBAL log_bin_trust_function_creators = 1</code>;</li>
+</ul>
+<h4 id="存储过程和存储函数的查看修改删除"><a href="#存储过程和存储函数的查看修改删除" class="headerlink" title="存储过程和存储函数的查看修改删除"></a>存储过程和存储函数的查看修改删除</h4><p><strong>查看</strong></p>
+<ol>
+<li>使用SHOW CREATE语句查看存储过程和函数的创建信息<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> &#123;<span class="keyword">PROCEDURE</span> <span class="operator">|</span> <span class="keyword">FUNCTION</span>&#125; 存储过程名或函数名</span><br></pre></td></tr></table></figure></li>
+<li>使用SHOW STATUS语句查看存储过程和函数的状态信息<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> &#123;<span class="keyword">PROCEDURE</span> <span class="operator">|</span> <span class="keyword">FUNCTION</span>&#125; STATUS [<span class="keyword">LIKE</span> <span class="string">&#x27;pattern&#x27;</span>]</span><br><span class="line"><span class="comment">-- [LIKE &#x27;pattern&#x27;]：匹配存储过程或函数的名称，可以省略。当省略不写时，会列出MySQL数据库中存在的所有存储过程或函数的信息。</span></span><br></pre></td></tr></table></figure>
+这个语句返回子程序的特征，如数据库、名字、类型、创建者及创建和修改日期。</li>
+<li>从information_schema.Routines表中查看存储过程和函数的信息<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> information_schema.Routines <span class="keyword">WHERE</span> ROUTINE_NAME<span class="operator">=</span><span class="string">&#x27;存储过程或函数的名&#x27;</span> [<span class="keyword">AND</span> ROUTINE_TYPE <span class="operator">=</span> &#123;<span class="string">&#x27;PROCEDURE|FUNCTION&#x27;</span>&#125;]</span><br><span class="line"><span class="comment">-- PROCEDURE|FUNCTION必须使用大写，存储过程和存储函数重名时必须有此</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>修改</strong><br>修改存储过程或函数，不影响存储过程或函数功能，只是修改相关特性。使用ALTER语句实现。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> &#123;<span class="keyword">PROCEDURE</span> <span class="operator">|</span> <span class="keyword">FUNCTION</span>&#125; 存储过程或函数的名 [characteristic ...]</span><br><span class="line"><span class="comment">-- characteristic指定存储过程或函数的特性，其取值信息与创建存储过程、函数时的取值信息略有不同。</span></span><br><span class="line">&#123; <span class="keyword">CONTAINS</span> <span class="keyword">SQL</span> <span class="operator">|</span> <span class="keyword">NO</span> <span class="keyword">SQL</span> <span class="operator">|</span> <span class="keyword">READS</span> <span class="keyword">SQL</span> DATA <span class="operator">|</span> <span class="keyword">MODIFIES</span> <span class="keyword">SQL</span> DATA &#125;</span><br><span class="line"><span class="operator">|</span> <span class="keyword">SQL</span> SECURITY &#123; DEFINER <span class="operator">|</span> INVOKER &#125;</span><br><span class="line"><span class="operator">|</span> COMMENT <span class="string">&#x27;string&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>删除</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> &#123;<span class="keyword">PROCEDURE</span> <span class="operator">|</span> <span class="keyword">FUNCTION</span>&#125; [IF <span class="keyword">EXISTS</span>] 存储过程或函数的名</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h4><p>对于存储过程和存储函数的使用，一直都存在着很多争议，比如有些公司对于大型项目要求使用存储过程和函数，而有些公司在手册中明确禁止使用存储过程和函数。</p>
+<p><strong>阿里开发规范</strong></p>
+<ul>
+<li>【强制】禁止使用存储过程和函数，存储过程和函数难以调试和扩展，更没有移植性。</li>
+</ul>
+<p><strong>优点</strong></p>
+<ol>
+<li>存储过程和函数可以一次编译多次使用。存储过程和函数只在创建时进行编译，之后的使用都不需要重新编译，这就提升了 SQL 的执行效率。</li>
+<li>可以减少开发工作量。将代码 封装 成模块，实际上是编程的核心思想之一，这样可以把复杂的问题拆解成不同的模块，然后模块之间可以 重复使用 ，在减少开发工作量的同时，还能保证代码的结构清晰。</li>
+<li>存储过程和函数的安全性强。我们在设定存储过程和函数的时候可以 设置对用户的使用权限 ，这样就和视图一样具有较强的安全性。</li>
+<li>可以减少网络传输量。因为代码封装到存储过程和函数中，每次使用只需要调用存储过程和函数即可，这样就减少了网络传输量。</li>
+<li>良好的封装性。在进行相对复杂的数据库操作时，原本需要使用一条一条的 SQL 语句，可能要连接多次数据库才能完成的操作，现在变成了一次存储过程和函数，只需要 连接一次即可 。</li>
+</ol>
+<p><strong>缺点</strong></p>
+<ol>
+<li><code>可移植性差</code>。存储过程和函数不能跨数据库移植，比如在 MySQL、Oracle 和 SQL Server 里编写的存储过程，在换成其他数据库时都需要重新编写。</li>
+<li><code>调试困难</code>。只有少数 DBMS 支持存储过程和函数的调试。对于复杂的存储过程和函数来说，开发和维护都不容易。虽然也有一些第三方工具可以对存储过程和函数进行调试，但要收费。</li>
+<li>存储过程和函数的<code>版本管理很困难</code>。比如数据表索引发生变化了，可能会导致存储过程和函数失效。我们在开发软件的时候往往需要进行版本管理，但是存储过程和函数本身没有版本控制，版本迭代更新的时候很麻烦。</li>
+<li>它<code>不适合高并发</code>的场景。高并发的场景需要减少数据库的压力，有时数据库会采用分库分表的方式，而且对可扩展性要求很高，在这种情况下，存储过程和函数会变得难以维护， 增加数据库的压力 ，显然就不适用了。。</li>
+</ol>
+<h3 id="变量、流程控制和游标"><a href="#变量、流程控制和游标" class="headerlink" title="变量、流程控制和游标"></a>变量、流程控制和游标</h3><h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><h5 id="系统变量"><a href="#系统变量" class="headerlink" title="系统变量"></a>系统变量</h5><p>系统变量由系统定义，不是用户定义，属于<code>服务器</code>层面。启动MySQL服务，生成MySQL服务实例期间，MySQL将为MySQL服务器内存中的系统变量赋值，这些系统变量定义了当前MySQL服务实例的属性、特征。这些系统变量的值要么是<code>编译MySQL时参数</code>的默认值，要么是<code>配置文件</code>（例如my.ini等）中的参数值。大家可以通过网址<a href="https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html">MySQL文档的系统变量</a>查看。<br>系统变量分为全局系统变量（需要添加<code>global</code>关键字）以及会话系统变量（需要添加<code>session</code>关键字），有时也把全局系统变量简称为全局变量，有时也把会话系统变量称为local变量。如果不写，默认会话级别。静态变量（在<code>MySQL</code>服务实例运行期间它们的值不能使用<code>set</code>动态修改）属于特殊的全局系统变量。<br>每一个MySQL客户机成功连接MySQL服务器后，都会产生与之对应的会话。会话期间，MySQL服务实例会在MySQL服务器内存中生成与该会话对应的会话系统变量，这些会话系统变量的初始值是全局系统变量值的复制。如下图：<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240807155020.png" alt="系统变量"></p>
+<ul>
+<li>全局系统变量针对于所有会话（连接）有效，但<code>不能跨重启</code></li>
+<li>会话系统变量仅针对于当前会话（连接）有效。会话期间，当前会话对某个会话系统变量值的修改，不会影响其他会话同一个会话系统变量的值。</li>
+<li>会话1对某个全局系统变量值的修改会导致会话2中同一个全局系统变量值的修改。</li>
+</ul>
+<p><strong>查看系统变量</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 查看系统变量</span></span><br><span class="line"><span class="comment">-- 查看所有全局变量</span></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">GLOBAL</span> VARIABLES;</span><br><span class="line"><span class="comment">-- 查看所有会话变量</span></span><br><span class="line"><span class="keyword">SHOW</span> SESSION VARIABLES;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES;</span><br><span class="line"><span class="comment">-- 查看满足条件的部分系统变量。</span></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">GLOBAL</span> VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;%标识符%&#x27;</span>;</span><br><span class="line"><span class="comment">-- 查看满足条件的部分会话变量</span></span><br><span class="line"><span class="keyword">SHOW</span> SESSION VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;%标识符%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看指定系统变量 </span></span><br><span class="line"><span class="comment">/*MySQL 中的系统变量以 两个“@” 开头，其中“@@global”仅用于标记全局系统变量，“@@session”仅用于标记会话系统变量。“@@”首先标记会话系统变量，如果会话系统变量不存在，则标记全局系统变量。*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看指定的系统变量的值</span></span><br><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@global</span>.变量名;</span><br><span class="line"><span class="comment">-- 查看指定的会话变量的值</span></span><br><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@session</span>.变量名;</span><br><span class="line"><span class="comment">-- 或者</span></span><br><span class="line"><span class="keyword">SELECT</span> @@变量名</span><br></pre></td></tr></table></figure>
+
+<p><strong>修改系统变量</strong></p>
+<p>方式1：修改MySQL 配置文件 ，继而修改MySQL系统变量的值（该方法需要重启MySQL服务）<br>方式2：在MySQL服务运行期间，使用“set”命令重新设置系统变量的值</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 为某个系统变量赋值 两种方法 只针对当前数据库实例有效，一旦重启服务将会失效</span></span><br><span class="line"><span class="keyword">SET</span> @<span class="variable">@global</span>.变量名<span class="operator">=</span>变量值;</span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> 变量名<span class="operator">=</span>变量值;</span><br><span class="line"><span class="comment">-- MySQL8.0 下可以持久更改全局变量</span></span><br><span class="line"><span class="keyword">SET</span> PERSIST <span class="keyword">global</span> 变量名 <span class="operator">=</span> 变量值</span><br><span class="line"><span class="comment">-- 配置保存到数据目录下的 mysqld-auto.cnf 文件中，下次启动时会读取该文件，用其中的配置来覆盖默认的配置文件。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 为某个会话变量赋值 两种方法 只针对当前会话有效，重新建立的会话还是默认值</span></span><br><span class="line"><span class="keyword">SET</span> @<span class="variable">@session</span>.变量名<span class="operator">=</span>变量值;</span><br><span class="line"><span class="keyword">SET</span> SESSION 变量名<span class="operator">=</span>变量值;</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="用户变量"><a href="#用户变量" class="headerlink" title="用户变量"></a>用户变量</h5><p>用户变量是用户自己定义的，根据作用范围不同，又分为<code>会话用户变量</code>和<code>局部变量</code>。作为<code>MySQL</code>编码规范，MySQL中的会话用户变量以一个<code>@</code>开头。</p>
+<ul>
+<li>会话用户变量：作用域和会话变量一样，只对<code>当前连接</code>会话有效。</li>
+<li>局部变量：只在 BEGIN 和 END 语句块中有效。局部变量只能在<code>存储过程和函数</code>中使用。</li>
+</ul>
+<p><strong>会话用户变量的定义和使用</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="comment">-- 方式1：“=”或“:=”</span></span><br><span class="line"><span class="keyword">SET</span> @用户变量 <span class="operator">=</span> 值;</span><br><span class="line"><span class="keyword">SET</span> @用户变量 :<span class="operator">=</span> 值;</span><br><span class="line"><span class="comment">-- 方式2：“:=” 或 INTO关键字</span></span><br><span class="line"><span class="keyword">SELECT</span> @用户变量 :<span class="operator">=</span> 表达式 [<span class="keyword">FROM</span> 等子句]; <span class="comment">-- SELECT @count:= COUNT(*) FROM employees;</span></span><br><span class="line"><span class="keyword">SELECT</span> 表达式 <span class="keyword">INTO</span> @用户变量 [<span class="keyword">FROM</span> 等子句] <span class="comment">-- SELECT COUNT(*) into @count FROM employees;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看</span></span><br><span class="line"><span class="keyword">SELECT</span> @用户变量</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>局部变量的定义和使用</strong></p>
+<p>定义：可以使用<code>DECLARE</code>语句定义一个局部变量<br>作用域：仅仅在定义它的<code>BEGIN...END</code>中有效，<code>只能在存储过程或存储函数中使用</code><br>位置：只能放在<code>BEGIN...END</code>中，而且只能放在第一句</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="comment">-- 声明局部变量</span></span><br><span class="line"><span class="keyword">DECLARE</span> 变量名<span class="number">1</span> 变量数据类型 [<span class="keyword">DEFAULT</span> 变量默认值];</span><br><span class="line"><span class="keyword">DECLARE</span> 变量名<span class="number">2</span>,变量名<span class="number">3</span>,... 变量数据类型 [<span class="keyword">DEFAULT</span> 变量默认值];</span><br><span class="line"><span class="comment">-- 为局部变量赋值</span></span><br><span class="line"><span class="keyword">SET</span> 变量名<span class="number">1</span> <span class="operator">=</span> 值;</span><br><span class="line"><span class="keyword">SET</span> 变量名<span class="number">2</span>:<span class="operator">=</span>值;</span><br><span class="line"><span class="keyword">SELECT</span> 值 <span class="keyword">INTO</span> 变量名<span class="number">3</span> [<span class="keyword">FROM</span> 子句];</span><br><span class="line"><span class="comment">-- 查看局部变量的值</span></span><br><span class="line"><span class="keyword">SELECT</span> 变量<span class="number">1</span>,变量<span class="number">2</span>,变量<span class="number">3</span>;</span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>局部变量和会话用户变量</strong></p>
+<table>
+<thead>
+<tr>
+<th>作用域</th>
+<th>定义位置</th>
+<th>语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>会话用户变量</td>
+<td>当前会话</td>
+<td>会话的任何地方，加@符号，不用指定类型</td>
+</tr>
+<tr>
+<td>局部变量</td>
+<td>定义它的BEGIN END中</td>
+<td>BEGIN END的第一句话，一般不用加@，需要指定类型</td>
+</tr>
+</tbody></table>
+<h4 id="定义条件与处理程序"><a href="#定义条件与处理程序" class="headerlink" title="定义条件与处理程序"></a>定义条件与处理程序</h4><p>(类似于异常处理，定义条件即异常，处理程序即异常的处理)</p>
+<p><code>定义条件</code>是事先定义程序执行过程中可能遇到的问题，<code>处理程序</code>定义了在遇到问题时应当采取的处理方式，并且保证存储过程或函数在遇到警告或错误时能继续执行。这样可以增强存储程序处理问题的能力，避免程序异常停止运行。<br>说明：定义条件和处理程序在存储过程、存储函数中都是支持的。</p>
+<h5 id="定义条件"><a href="#定义条件" class="headerlink" title="定义条件"></a>定义条件</h5><p>定义条件就是给MySQL中的错误码命名，这有助于存储的程序代码更清晰。它将一个<code>错误名字</code>和<code>指定的错误条件</code>关联起来。这个名字可以随后被用在定义处理程序的<code>DECLARE HANDLER</code>语句中</p>
+<p>错误码的说明：<br><code>MySQL_error_code</code>和<code>sqlstate_value</code>都可以表示MySQL的错误。</p>
+<ul>
+<li><code>MySQL_error_code</code>是数值类型错误代码。</li>
+<li><code>sqlstate_value</code>是长度为5的字符串类型错误代码。<br>例如，在ERROR 1418 (HY000)中，1418是MySQL_error_code，’HY000’是sqlstate_value。</li>
+</ul>
+<p><strong>定义条件示例</strong>，使用<code>declare</code></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 使用MySQL_error_code</span></span><br><span class="line"><span class="keyword">DECLARE</span> Field_Not_Be_NULL <span class="keyword">CONDITION</span> <span class="keyword">FOR</span> <span class="number">1048</span>;</span><br><span class="line"><span class="comment">-- 使用sqlstate_value</span></span><br><span class="line"><span class="keyword">DECLARE</span> Field_Not_Be_NULL <span class="keyword">CONDITION</span> <span class="keyword">FOR</span> <span class="keyword">SQLSTATE</span> <span class="string">&#x27;23000&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="定义处理程序"><a href="#定义处理程序" class="headerlink" title="定义处理程序"></a>定义处理程序</h5><p><code>DECLARE 处理方式 HANDLER FOR 错误类型 处理语句</code></p>
+<ul>
+<li>处理方式：处理方式有3个取值：<code>CONTINUE、EXIT、UNDO</code>。<ul>
+<li><code>CONTINUE</code>：表示遇到错误不处理，继续执行。主要在函数和过程中使用</li>
+<li><code>EXIT</code>：表示遇到错误马上退出。</li>
+<li><code>UNDO</code>：表示遇到错误后撤回之前的操作。MySQL中暂时不支持这样的操作。</li>
+</ul>
+</li>
+<li>错误类型（即条件）可以有如下六种取值：<ul>
+<li>针对单个错误<ul>
+<li><code>SQLSTATE</code>‘字符串错误码’：表示长度为5的<code>sqlstate_value</code>类型的错误代码；</li>
+<li><code>MySQL_error_code</code>：匹配数值类型错误代码；</li>
+<li>错误名称：表示<code>DECLARE ... CONDITION</code>定义的错误条件名称。</li>
+</ul>
+</li>
+<li>针对一类错误<ul>
+<li><code>SQLWARNING</code>：匹配所有以01开头的<code>SQLSTATE</code>错误代码；</li>
+<li><code>NOT FOUND</code>：匹配所有以02开头的<code>SQLSTATE</code>错误代码；</li>
+<li><code>SQLEXCEPTION</code>：匹配所有没有被<code>SQLWARNING</code>或<code>NOT FOUND</code>捕获的SQLSTATE错误代码；</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>处理语句：如果出现上述条件之一，则采用对应的处理方式，并执行指定的处理语句。语句可以是像<code>SET 变量 = 值</code>这样的简单语句，也可以是使用<code>BEGIN ... END</code>编写的复合语句。</li>
+</ul>
+<p><strong>定义处理程序</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 法1：捕获sqlstate_value</span></span><br><span class="line"><span class="keyword">DECLARE</span> CONTINUE HANDLER <span class="keyword">FOR</span> <span class="keyword">SQLSTATE</span> <span class="string">&#x27;42S02&#x27;</span> <span class="keyword">SET</span> <span class="variable">@info</span> <span class="operator">=</span> <span class="string">&#x27;NO_SUCH_TABLE&#x27;</span>;</span><br><span class="line"><span class="comment">-- 法2：捕获mysql_error_value</span></span><br><span class="line"><span class="keyword">DECLARE</span> CONTINUE HANDLER <span class="keyword">FOR</span> <span class="number">1146</span> <span class="keyword">SET</span> <span class="variable">@info</span> <span class="operator">=</span> <span class="string">&#x27;NO_SUCH_TABLE&#x27;</span>;</span><br><span class="line"><span class="comment">-- 法3：先定义条件，再调用</span></span><br><span class="line"><span class="keyword">DECLARE</span> no_such_table <span class="keyword">CONDITION</span> <span class="keyword">FOR</span> <span class="number">1146</span>;</span><br><span class="line"><span class="keyword">DECLARE</span> CONTINUE HANDLER <span class="keyword">FOR</span> NO_SUCH_TABLE <span class="keyword">SET</span> <span class="variable">@info</span> <span class="operator">=</span> <span class="string">&#x27;NO_SUCH_TABLE&#x27;</span>;</span><br><span class="line"><span class="comment">-- 法4：使用SQLWARNING</span></span><br><span class="line"><span class="keyword">DECLARE</span> EXIT HANDLER <span class="keyword">FOR</span> <span class="keyword">SQLWARNING</span> <span class="keyword">SET</span> <span class="variable">@info</span> <span class="operator">=</span> <span class="string">&#x27;ERROR&#x27;</span>;</span><br><span class="line"><span class="comment">-- 法5：使用NOT FOUND</span></span><br><span class="line"><span class="keyword">DECLARE</span> EXIT HANDLER <span class="keyword">FOR</span> <span class="keyword">NOT</span> FOUND <span class="keyword">SET</span> <span class="variable">@info</span> <span class="operator">=</span> <span class="string">&#x27;NO_SUCH_TABLE&#x27;</span>;</span><br><span class="line"><span class="comment">-- 法6：使用SQLEXCEPTION</span></span><br><span class="line"><span class="keyword">DECLARE</span> EXIT HANDLER <span class="keyword">FOR</span> <span class="keyword">SQLEXCEPTION</span> <span class="keyword">SET</span> <span class="variable">@info</span> <span class="operator">=</span> <span class="string">&#x27;ERROR&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>示例-针对存储过程使用</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">DELIMITER <span class="operator">/</span><span class="operator">/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> UpdateDataNoCondition()</span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">      <span class="comment">-- 定义处理程序</span></span><br><span class="line">      <span class="keyword">DECLARE</span> CONTINUE HANDLER <span class="keyword">FOR</span> <span class="number">1048</span> <span class="keyword">SET</span> <span class="variable">@proc_value</span> <span class="operator">=</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">SET</span> <span class="variable">@x</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">UPDATE</span> employees <span class="keyword">SET</span> email <span class="operator">=</span> <span class="keyword">NULL</span> <span class="keyword">WHERE</span> last_name <span class="operator">=</span> <span class="string">&#x27;Abel&#x27;</span>;</span><br><span class="line">      <span class="keyword">SET</span> <span class="variable">@x</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line">      <span class="keyword">UPDATE</span> employees <span class="keyword">SET</span> email <span class="operator">=</span> <span class="string">&#x27;aabbel&#x27;</span> <span class="keyword">WHERE</span> last_name <span class="operator">=</span> <span class="string">&#x27;Abel&#x27;</span>;</span><br><span class="line">      <span class="keyword">SET</span> <span class="variable">@x</span> <span class="operator">=</span> <span class="number">3</span>;</span><br><span class="line">   <span class="keyword">END</span> <span class="operator">/</span><span class="operator">/</span></span><br><span class="line">DELIMITER ;</span><br></pre></td></tr></table></figure>
+
+<h4 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h4><p>针对于MySQL的流程控制语句主要有 3 类。注意：只能用于存储程序。<br>存储程序：包括但不限于存储过程（Stored Procedures）、函数（Functions）、触发器（Triggers）和事件（Events）</p>
+<ul>
+<li>条件判断语句 ：IF 语句和 CASE 语句</li>
+<li>循环语句 ：LOOP、WHILE 和 REPEAT 语句</li>
+<li>跳转语句 ：ITERATE 和 LEAVE 语句</li>
+</ul>
+<h5 id="分支结构之-IF"><a href="#分支结构之-IF" class="headerlink" title="分支结构之 IF"></a>分支结构之 IF</h5><p>语法：<code>IF 表达式1 THEN 操作1 [ELSEIF 表达式2 THEN 操作2]…… [ELSE 操作N] END IF</code></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">DELIMITER <span class="operator">/</span><span class="operator">/</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> update_salary_by_eid3(<span class="keyword">IN</span> emp_id <span class="type">INT</span>)</span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">      <span class="keyword">DECLARE</span> emp_salary <span class="keyword">DOUBLE</span>;</span><br><span class="line">      <span class="keyword">DECLARE</span> bonus <span class="type">DECIMAL</span>(<span class="number">3</span>,<span class="number">2</span>);</span><br><span class="line">      <span class="keyword">SELECT</span> salary <span class="keyword">INTO</span> emp_salary <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> employee_id <span class="operator">=</span> emp_id;</span><br><span class="line">      <span class="keyword">SELECT</span> commission_pct <span class="keyword">INTO</span> bonus <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> employee_id <span class="operator">=</span> emp_id;</span><br><span class="line"></span><br><span class="line">      IF emp_salary <span class="operator">&lt;</span> <span class="number">9000</span></span><br><span class="line">         <span class="keyword">THEN</span> <span class="keyword">UPDATE</span> employees <span class="keyword">SET</span> salary <span class="operator">=</span> <span class="number">9000</span> <span class="keyword">WHERE</span> employee_id <span class="operator">=</span> emp_id;</span><br><span class="line">      ELSEIF emp_salary <span class="operator">&lt;</span> <span class="number">10000</span> <span class="keyword">AND</span> bonus <span class="keyword">IS</span> <span class="keyword">NULL</span></span><br><span class="line">         <span class="keyword">THEN</span> <span class="keyword">UPDATE</span> employees <span class="keyword">SET</span> commission_pct <span class="operator">=</span> <span class="number">0.01</span> <span class="keyword">WHERE</span> employee_id <span class="operator">=</span>emp_id;</span><br><span class="line">      <span class="keyword">ELSE</span></span><br><span class="line">         <span class="keyword">UPDATE</span> employees <span class="keyword">SET</span> salary <span class="operator">=</span> salary <span class="operator">+</span> <span class="number">100</span> <span class="keyword">WHERE</span> employee_id <span class="operator">=</span> emp_id;</span><br><span class="line">      <span class="keyword">END</span> IF;</span><br><span class="line">   <span class="keyword">END</span> <span class="operator">/</span><span class="operator">/</span></span><br><span class="line">DELIMITER ;</span><br></pre></td></tr></table></figure>
+
+<h5 id="分支结构之-CASE"><a href="#分支结构之-CASE" class="headerlink" title="分支结构之 CASE"></a>分支结构之 CASE</h5><p>语法：<br>情况一：类似于switch，针对值</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CASE</span> 表达式</span><br><span class="line"><span class="keyword">WHEN</span> 值<span class="number">1</span> <span class="keyword">THEN</span> 结果<span class="number">1</span>或语句<span class="number">1</span>(如果是语句，需要加分号)</span><br><span class="line"><span class="keyword">WHEN</span> 值<span class="number">2</span> <span class="keyword">THEN</span> 结果<span class="number">2</span>或语句<span class="number">2</span>(如果是语句，需要加分号)</span><br><span class="line">...</span><br><span class="line"><span class="keyword">ELSE</span> 结果n或语句n(如果是语句，需要加分号)</span><br><span class="line"><span class="keyword">END</span> [<span class="keyword">case</span>]（如果是放在<span class="keyword">begin</span> <span class="keyword">end</span>中需要加上<span class="keyword">case</span>，如果放在<span class="keyword">select</span>后面不需要）</span><br></pre></td></tr></table></figure>
+<p>情况二：类似于多重if，针对范围</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CASE</span></span><br><span class="line"><span class="keyword">WHEN</span> 条件<span class="number">1</span> <span class="keyword">THEN</span> 结果<span class="number">1</span>或语句<span class="number">1</span>(如果是语句，需要加分号)</span><br><span class="line"><span class="keyword">WHEN</span> 条件<span class="number">2</span> <span class="keyword">THEN</span> 结果<span class="number">2</span>或语句<span class="number">2</span>(如果是语句，需要加分号)</span><br><span class="line">...</span><br><span class="line"><span class="keyword">ELSE</span> 结果n或语句n(如果是语句，需要加分号)</span><br><span class="line"><span class="keyword">END</span> [<span class="keyword">case</span>]（如果是放在<span class="keyword">begin</span> <span class="keyword">end</span>中需要加上<span class="keyword">case</span>，如果放在<span class="keyword">select</span>后面不需要`</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">DELIMITER $</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> update_salary_by_eid3(<span class="keyword">IN</span> emp_id <span class="type">INT</span>)</span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">      <span class="comment">-- 演示1</span></span><br><span class="line">      <span class="keyword">DECLARE</span> var <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="number">2</span>;</span><br><span class="line">      <span class="keyword">CASE</span> var</span><br><span class="line">         <span class="keyword">WHEN</span> <span class="number">1</span> <span class="keyword">THEN</span> <span class="keyword">SELECT</span> <span class="string">&#x27;var = 1&#x27;</span>;</span><br><span class="line">         <span class="keyword">WHEN</span> <span class="number">2</span> <span class="keyword">THEN</span> <span class="keyword">SELECT</span> <span class="string">&#x27;var = 2&#x27;</span>;</span><br><span class="line">         <span class="keyword">ELSE</span> <span class="keyword">SELECT</span> <span class="string">&#x27;var &gt; 2 &#x27;</span>;</span><br><span class="line">      <span class="keyword">END</span> <span class="keyword">CASE</span>;   </span><br><span class="line"><span class="keyword">END</span> $</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> update_salary_by_eid4(<span class="keyword">IN</span> emp_id <span class="type">INT</span>)</span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">   <span class="comment">-- 演示2</span></span><br><span class="line">      <span class="keyword">DECLARE</span> var1 <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="number">20</span>;</span><br><span class="line">      <span class="keyword">CASE</span> </span><br><span class="line">         <span class="keyword">WHEN</span> var1 <span class="operator">&gt;=</span> <span class="number">100</span> <span class="keyword">THEN</span> <span class="keyword">SELECT</span> <span class="string">&#x27;三位数&#x27;</span>;</span><br><span class="line">         <span class="keyword">WHEN</span> var1 <span class="operator">&gt;=</span> <span class="number">10</span> <span class="keyword">THEN</span> <span class="keyword">SELECT</span> <span class="string">&#x27;两位数&#x27;</span>;</span><br><span class="line">         <span class="keyword">ELSE</span> <span class="keyword">SELECT</span> <span class="string">&#x27;个位数&#x27;</span>;</span><br><span class="line">      <span class="keyword">END</span> <span class="keyword">CASE</span>;</span><br><span class="line"><span class="keyword">END</span> $</span><br><span class="line">DELIMITER ;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h5 id="循环结构之-LOOP"><a href="#循环结构之-LOOP" class="headerlink" title="循环结构之 LOOP"></a>循环结构之 LOOP</h5><p>LOOP内的语句一直重复执行直到循环被退出（使用LEAVE子句），跳出循环过程。<br>语法：其中，loop_label表示LOOP语句的标注名称，该参数可以省略。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">[loop_label:] LOOP</span><br><span class="line">循环执行的语句</span><br><span class="line"><span class="keyword">END</span> LOOP [loop_label]</span><br></pre></td></tr></table></figure>
+
+<p>示例代码：循环给大家涨薪，薪资涨为原来的1.1倍。直到全公司的平均薪资达到12000结束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> update_salary_loop(<span class="keyword">OUT</span> num <span class="type">INT</span>)</span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">      <span class="keyword">DECLARE</span> avg_salary <span class="keyword">DOUBLE</span>;</span><br><span class="line">      <span class="keyword">DECLARE</span> loop_count <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">SELECT</span> <span class="built_in">AVG</span>(salary) <span class="keyword">INTO</span> avg_salary <span class="keyword">FROM</span> employees;</span><br><span class="line">      label_loop:LOOP</span><br><span class="line">         IF avg_salary <span class="operator">&gt;=</span> <span class="number">12000</span> <span class="keyword">THEN</span> LEAVE label_loop;</span><br><span class="line">         <span class="keyword">END</span> IF;</span><br><span class="line">         <span class="keyword">UPDATE</span> employees <span class="keyword">SET</span> salary <span class="operator">=</span> salary <span class="operator">*</span> <span class="number">1.1</span>;</span><br><span class="line">         <span class="keyword">SET</span> loop_count <span class="operator">=</span> loop_count <span class="operator">+</span> <span class="number">1</span>;</span><br><span class="line">         <span class="keyword">SELECT</span> <span class="built_in">AVG</span>(salary) <span class="keyword">INTO</span> avg_salary <span class="keyword">FROM</span> employees;</span><br><span class="line">      <span class="keyword">END</span> LOOP label_loop;</span><br><span class="line">      <span class="keyword">SET</span> num <span class="operator">=</span> loop_count;</span><br><span class="line">   <span class="keyword">END</span> $</span><br></pre></td></tr></table></figure>
+
+<h5 id="循环结构之-WHILE"><a href="#循环结构之-WHILE" class="headerlink" title="循环结构之 WHILE"></a>循环结构之 WHILE</h5><p>WHILE在执行语句执行时，先对指定的表达式进行判断，如果为真，就执行循环内的语句，否则退出循环。<br>语法:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">[while_label:] WHILE 循环条件 DO</span><br><span class="line">循环体</span><br><span class="line"><span class="keyword">END</span> WHILE [while_label];</span><br></pre></td></tr></table></figure>
+
+<p>示例：循环给大家降薪，薪资降为原来的90%。直到全公司的平均薪资达到5000结束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> update_salary_while(<span class="keyword">OUT</span> num <span class="type">INT</span>)</span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">      <span class="keyword">DECLARE</span> avg_sal <span class="keyword">DOUBLE</span> ;</span><br><span class="line">      <span class="keyword">DECLARE</span> while_count <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">SELECT</span> <span class="built_in">AVG</span>(salary) <span class="keyword">INTO</span> avg_sal <span class="keyword">FROM</span> employees;</span><br><span class="line">      WHILE avg_sal <span class="operator">&gt;</span> <span class="number">5000</span> DO</span><br><span class="line">         <span class="keyword">UPDATE</span> employees <span class="keyword">SET</span> salary <span class="operator">=</span> salary <span class="operator">*</span> <span class="number">0.9</span>;</span><br><span class="line">         <span class="keyword">SET</span> while_count <span class="operator">=</span> while_count <span class="operator">+</span> <span class="number">1</span>;</span><br><span class="line">         <span class="keyword">SELECT</span> <span class="built_in">AVG</span>(salary) <span class="keyword">INTO</span> avg_sal <span class="keyword">FROM</span> employees;</span><br><span class="line">      <span class="keyword">END</span> WHILE;</span><br><span class="line">      <span class="keyword">SET</span> num <span class="operator">=</span> while_count;</span><br><span class="line">   <span class="keyword">END</span> $</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="循环结构之-REPEAT"><a href="#循环结构之-REPEAT" class="headerlink" title="循环结构之 REPEAT"></a>循环结构之 REPEAT</h5><p>类似do-while<br>REPEAT 循环首先会执行一次循环，然后在 UNTIL 中进行表达式的判断，如果满足条件就退出，即 END REPEAT；如果条件不满足，则会就继续执行循环，直到满足退出条件为止。<br>语法</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">[repeat_label:] REPEAT</span><br><span class="line">循环体的语句</span><br><span class="line">UNTIL 结束循环的条件表达式</span><br><span class="line"><span class="keyword">END</span> REPEAT [repeat_label]</span><br></pre></td></tr></table></figure>
+
+<p>示例：循环给大家涨薪，薪资涨为原来的1.15倍。直到全公司的平均薪资达到13000结束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> update_salary_repeat(<span class="keyword">OUT</span> num <span class="type">INT</span>)</span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">      <span class="keyword">DECLARE</span> avg_sal <span class="keyword">DOUBLE</span> ;</span><br><span class="line">      <span class="keyword">DECLARE</span> repeat_count <span class="type">INT</span> DEFAULT1;</span><br><span class="line">      <span class="keyword">SELECT</span> <span class="built_in">AVG</span>(salary) <span class="keyword">INTO</span> avg_sal <span class="keyword">FROM</span> employees;</span><br><span class="line">      repeat_sal: REPEAT</span><br><span class="line">         <span class="keyword">UPDATE</span> employees <span class="keyword">SET</span> salary <span class="operator">=</span> salary <span class="operator">*</span> <span class="number">1.15</span>;</span><br><span class="line">         <span class="keyword">SET</span> repeat_count <span class="operator">=</span> repeat_count <span class="operator">+</span> <span class="number">1</span>;</span><br><span class="line">         <span class="keyword">SELECT</span> <span class="built_in">AVG</span>(salary) <span class="keyword">INTO</span> avg_sal <span class="keyword">FROM</span> employees;</span><br><span class="line">         UNTIL avg_sal <span class="operator">&gt;=</span> <span class="number">13000</span>;</span><br><span class="line">      <span class="keyword">END</span> REPEAT repeat_sal;</span><br><span class="line">      <span class="keyword">SET</span> num <span class="operator">=</span> repeat_count;</span><br><span class="line">   <span class="keyword">END</span> $</span><br></pre></td></tr></table></figure>
+
+<p><strong>三种循环结构对比</strong>：<br>1、这三种循环都可以省略名称，但如果循环中添加了循环控制语句（LEAVE或ITERATE）则必须添加名称。<br>2、 LOOP：一般用于实现简单的”死”循环 WHILE：先判断后执行 REPEAT：先执行后判断，无条件至少执行一次</p>
+<h5 id="跳转语句之-LEAVE"><a href="#跳转语句之-LEAVE" class="headerlink" title="跳转语句之 LEAVE"></a>跳转语句之 LEAVE</h5><p>可以用在循环语句内，或者以 BEGIN 和 END 包裹起来的程序体内，表示跳出循环或者跳出程序体的操作,可以理解为 break。</p>
+<p>语法</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">LEAVE 标记名</span><br></pre></td></tr></table></figure>
+<p>使用方法见上文LOOP部分</p>
+<h5 id="跳转语句之-ITERATE"><a href="#跳转语句之-ITERATE" class="headerlink" title="跳转语句之 ITERATE"></a>跳转语句之 ITERATE</h5><p>只能用在循环语句（LOOP、REPEAT和WHILE语句）内，表示重新开始循环，将执行顺序转到语句段开头处，可以理解为 continue，意<br>思为“再次循环”。<br>语法</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">ITERATE label</span><br></pre></td></tr></table></figure>
+
+<h4 id="游标的使用"><a href="#游标的使用" class="headerlink" title="游标的使用"></a>游标的使用</h4><p>虽然我们也可以通过筛选条件 WHERE 和 HAVING，或者是限定返回记录的关键字 LIMIT 返回一条记录，但是，却无法在结果集中像指针一样，向前定位一条记录、向后定位一条记录，或者是 随意定位到某一条记录 ，并对记录的数据进行处理。这个时候，就可以用到游标。<br>游标提供了一种灵活的操作方式，让我们能够对结果集中的每一条记录进行定位，并对指向的记录中的数据进行操作的数据结构。游标让 SQL 这种面向集合的语言有了面向过程开发的能力。<br>在 SQL 中，游标是一种临时的数据库对象，可以指向存储在数据库表中的数据行指针。这里游标 充当了指针的作用 ，我们可以通过操作游标来对数据行进行操作。<br>MySQL中游标<code>可以在存储过程和函数中</code>使用。</p>
+<p><strong>游标的使用步骤</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 1.游标的声明 </span></span><br><span class="line"><span class="comment">/*select_statement 代表的是 SELECT 语句，返回一个用于创建游标的结果集。*/</span></span><br><span class="line"><span class="comment">-- 在 MySQL，SQL Server，DB2 和 MariaDB</span></span><br><span class="line"><span class="keyword">DECLARE</span> cursor_name <span class="keyword">CURSOR</span> <span class="keyword">FOR</span> select_statement;</span><br><span class="line"><span class="comment">-- 在 Oracle 或者 PostgreSQL</span></span><br><span class="line"><span class="keyword">DECLARE</span> cursor_name <span class="keyword">CURSOR</span> <span class="keyword">IS</span> select_statement;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2.打开游标：定义后想要使用必须打开游标</span></span><br><span class="line"><span class="comment">/*打开游标的时候 SELECT 语句的查询结果集就会送到游标工作区，为后面游标的 逐条读取 结果集中的记录做准备。*/</span></span><br><span class="line"><span class="keyword">OPEN</span> cursor_name</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 3. 使用游标（从游标中取得数据）</span></span><br><span class="line"><span class="comment">/*如果游标读取的数据行有多个列名，则在 INTO 关键字后面赋值给多个变量名即可；游标的查询结果集中的字段数，必须跟 INTO 后面的变量数一致；var_name必须在声明游标之前就定义好*/</span></span><br><span class="line"><span class="keyword">FETCH</span> cursor_name <span class="keyword">INTO</span> var_name [, var_name] ...</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 4.关闭游标，避免资源浪费</span></span><br><span class="line"><span class="comment">/*使用完游标后需要关闭掉该游标。因为游标会占用系统资源 ，如果不及时关闭，游标会一直保持到存储过程结束，影响系统运行的效率。*/</span></span><br><span class="line"><span class="keyword">CLOSE</span> cursor_name</span><br></pre></td></tr></table></figure>
+
+<p>使用实例：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> get_count_by_limit_total_salary(<span class="keyword">IN</span> l_t_salary <span class="type">DECIMAL</span>,<span class="keyword">OUT</span> t_count <span class="type">INT</span>)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">DECLARE</span> sum_sal <span class="keyword">DOUBLE</span> <span class="keyword">DEFAULT</span> <span class="number">0.0</span>; <span class="comment">-- 先声明局部变量</span></span><br><span class="line">   <span class="keyword">DECLARE</span> emp_sal <span class="keyword">DOUBLE</span>;</span><br><span class="line">   <span class="keyword">DECLARE</span> emp_count <span class="type">INT</span> <span class="keyword">DEFAULT</span> <span class="number">0</span>;</span><br><span class="line">   <span class="comment">-- 声明</span></span><br><span class="line">   <span class="keyword">DECLARE</span> emp_cu <span class="keyword">CURSOR</span> <span class="keyword">FOR</span> <span class="keyword">SELECT</span> salary <span class="keyword">FROM</span> employee <span class="keyword">ORDER</span> <span class="keyword">BY</span> salary <span class="keyword">DESC</span>;</span><br><span class="line">   <span class="comment">-- 打开</span></span><br><span class="line">   <span class="keyword">OPEN</span> emp_cu;</span><br><span class="line">   REPEAT</span><br><span class="line">      <span class="comment">--使用</span></span><br><span class="line">      <span class="keyword">FETCH</span> emp_cu <span class="keyword">INTO</span> emp_sal;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">SET</span> sum_sal <span class="operator">=</span> sum_sal <span class="operator">+</span> emp_sal;</span><br><span class="line">      <span class="keyword">SET</span> emp_count <span class="operator">=</span> emp_count <span class="operator">+</span> <span class="number">1</span>;</span><br><span class="line">      UNTIL sum_sal <span class="operator">&gt;=</span> l_t_salary;</span><br><span class="line">   <span class="keyword">END</span> REPEAT;</span><br><span class="line">   <span class="keyword">SET</span> t_count <span class="operator">=</span> emp_count;</span><br><span class="line">   <span class="comment">--关闭</span></span><br><span class="line">   <span class="keyword">CLOSE</span> emp_cu;</span><br><span class="line"><span class="keyword">END</span> $</span><br></pre></td></tr></table></figure>
+
+
+<p>游标的优点和不足</p>
+<ol>
+<li>为 逐条读取 结果集中的数据，提供了完美的解决方案。</li>
+<li>在使用游标的过程中，会对数据行进行 加锁 ，这样在业务并发量大的时候，不仅会影响业务之间的效率，还会 消耗系统资源 ，造成内存不足</li>
+</ol>
+<h3 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h3><p>触发器是由<code>事件来触发</code>某个操作，这些事件包括<code>INSERT</code>、<code>UPDATE</code>、<code>DELETE</code>事件。所谓事件就是指用户的动作或者触发某项行为。如果定义了触发程序，当数据库执行这些语句时候，就相当于事件发生了，就会<code>自动</code>激发触发器执行相应的操作。<br>当对数据表中的数据执行插入、更新和删除操作，需要自动执行一些数据库逻辑时，可以使用触发器来实现。<br><strong>触发器是针对某一特定的表的特定操作的</strong></p>
+<h4 id="触发器的创建"><a href="#触发器的创建" class="headerlink" title="触发器的创建"></a>触发器的创建</h4><p>语法：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> 触发器名称</span><br><span class="line">&#123;BEFORE<span class="operator">|</span>AFTER&#125; &#123;<span class="keyword">INSERT</span><span class="operator">|</span><span class="keyword">UPDATE</span><span class="operator">|</span><span class="keyword">DELETE</span>&#125; <span class="keyword">ON</span> 表名</span><br><span class="line"><span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line">触发器执行的语句块;</span><br></pre></td></tr></table></figure>
+
+<p><strong>格式说明：</strong></p>
+<ol>
+<li>表名：表示触发器监控的对象。</li>
+<li>BEFORE|AFTER：表示触发的时间。<code>BEFORE</code>表示在事件之前触发；<code>AFTER</code>表示在事件之后触发。</li>
+<li>INSERT|UPDATE|DELETE ：表示触发的事件。<ul>
+<li>INSERT 表示插入记录时触发；</li>
+<li>UPDATE 表示更新记录时触发；</li>
+<li>DELETE 表示删除记录时触发。</li>
+</ul>
+</li>
+<li>触发器执行的语句块：可以是单条SQL语句，也可以是由BEGIN…END结构组成的复合语句块</li>
+</ol>
+<p>示例：创建名称为before_insert的触发器，向test_trigger数据表插入数据之前，向test_trigger_log数据表中插入before_insert的日志信息。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> before_insert</span><br><span class="line">BEFORE <span class="keyword">INSERT</span> <span class="keyword">ON</span> test_trigger</span><br><span class="line"><span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> test_trigger_log(t_log) <span class="keyword">values</span>(<span class="string">&#x27;before_insert&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>同一表同一操作可以绑定多个触发器，均会执行。</p>
+<h4 id="查看和删除触发器"><a href="#查看和删除触发器" class="headerlink" title="查看和删除触发器"></a>查看和删除触发器</h4><p>查看触发器是查看数据库中已经存在的触发器的定义、状态和语法信息等。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 方式1：查看当前数据库的所有触发器的定义</span></span><br><span class="line"><span class="keyword">SHOW</span> TRIGGERS\G</span><br><span class="line"><span class="comment">-- 方式2：查看当前数据库中某个触发器的定义</span></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> 触发器</span><br><span class="line"><span class="comment">-- 方式3：从系统库information_schema的TRIGGERS表中查询“salary_check_trigger”触发器的信息。</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> information_schema.TRIGGERS;</span><br></pre></td></tr></table></figure>
+
+<p><strong>删除触发器</strong><br>触发器也是数据库对象，删除触发器也用DROP语句，语法格式如下：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TRIGGER</span> IF <span class="keyword">EXISTS</span> 触发器名称;</span><br></pre></td></tr></table></figure>
+
+<h4 id="触发器的优缺点"><a href="#触发器的优缺点" class="headerlink" title="触发器的优缺点"></a>触发器的优缺点</h4><p><strong>优点</strong></p>
+<ol>
+<li>触发器可以确保数据的完整性。</li>
+<li>触发器可以帮助我们记录操作日志</li>
+<li>触发器还可以用在操作数据前，对数据进行合法性检查。</li>
+</ol>
+<p><strong>缺点</strong></p>
+<ol>
+<li>触发器最大的一个问题就是可读性差</li>
+<li>相关数据的变更，可能会导致触发器出错，如数据表结构的变化等。由于触发器本身的隐蔽性，影响到应用中错误原因排查的效率。</li>
+</ol>
+<p><strong>注意点</strong><br>如果在子表中定义了外键约束，并且外键指定了<code>ON UPDATE/DELETE CASCADE/SET NULL</code>子句，此时修改父表被引用的键值或删除父表被引用的记录行时，也会引起子表的修改和删除操作，此时基于子表的UPDATE和DELETE语句定义的触发器并不会被激活。</p>
+<p>例如：基于子表员工表（t_employee）的DELETE语句定义了触发器t1，而子表的部门编号（did）字段定义了外键约束引用了父表部门表（t_department）的主键列部门编号（did），并且该外键加了“ONDELETE SET NULL”子句，那么如果此时删除父表部门表（t_department）在子表员工表（t_employee）有匹配记录的部门记录时，会引起子表员工表（t_employee）匹配记录的部门编号（did）修改为NULL但是此时不会激活触发器t1。只有直接对子表员工表（t_employee）执行DELETE语句时才会激活触发器<br>t1。</p>
+<h3 id="新特性"><a href="#新特性" class="headerlink" title="新特性"></a>新特性</h3><h3 id="关键字及其含义"><a href="#关键字及其含义" class="headerlink" title="关键字及其含义"></a>关键字及其含义</h3><p><code>SELECT</code> - 用于从数据库表中选取数据。它允许你指定你想从表中检索的列。<br><code>FROM</code> - 指定了SELECT语句中要查询的表名。<br><code>WHERE</code> - 用于指定过滤条件，以限制SELECT语句返回的行。<br><code>INSERT INTO</code> - 用于向数据库表中插入新的行。<br><code>UPDATE</code> - 用于修改表中的数据。它必须配合SET子句来指定要修改的列和新值，以及WHERE子句来指定哪些行需要被更新。<br><code>DELETE</code>- 用于从数据库表中删除行。它可以与WHERE子句结合使用，以限制删除哪些行。<br><code>CREATE TABLE</code> - 用于创建一个新表，并定义其列和每列的数据类型。<br><code>ALTER TABLE</code> - 用于修改已存在的表的结构，如添加、删除或修改列。<br><code>DROP TABLE</code> - 用于删除整个表及其所有数据。<br><code>TRUNCATE TABLE</code> - 用于删除表中的所有行，但不删除表本身。与DELETE相比，它通常更快，因为它不记录个别行删除的日志。<br><code>JOIN</code> - 用于根据两个或多个表中的列之间的关系，结合这些表的数据。常见的JOIN类型有INNER JOIN、LEFT JOIN、RIGHT JOIN和FULL JOIN。<br><code>GROUP BY</code> - 通常与聚合函数（如COUNT、MAX、MIN、SUM、AVG）一起使用，用于将结果集中的行分组。<br><code>HAVING</code> - 用于对GROUP BY的结果进行过滤，类似于WHERE子句，但它是用于聚合后的结果。<br><code>ORDER BY</code> - 用于对结果集进行排序。可以指定一个或多个列进行升序（ASC）或降序（DESC）排序。<br><code>DISTINCT</code> - 用于返回唯一不同的值。<br><code>UNION</code> - 用于合并两个或多个SELECT语句的结果集，并删除重复的行。<br><code>UNION ALL</code> - 类似于UNION，但它不删除重复的行。<br><code>COUNT()、MAX()、MIN()、SUM()、AVG()</code> - 这些是聚合函数，用于在SELECT语句中对一组值执行计算并返回单个值。<br><code>LIKE</code> - 在WHERE子句中用于在模糊匹配中搜索列中的指定模式。<br><code>IN</code> - 在WHERE子句中用于指定多个可能的值，以便从中选择。</p>
+<h3 id="杂谈"><a href="#杂谈" class="headerlink" title="杂谈"></a>杂谈</h3><h4 id="抛出错误"><a href="#抛出错误" class="headerlink" title="抛出错误"></a>抛出错误</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 用于存储过程和函数、触发器 45000可换为其他错误码</span></span><br><span class="line">SIGNAL <span class="keyword">SQLSTATE</span> <span class="string">&#x27;45000&#x27;</span> <span class="keyword">SET</span> MESSAGE_TEXT <span class="operator">=</span> <span class="string">&#x27;自定义错误消息&#x27;</span>;  </span><br></pre></td></tr></table></figure>
+
+
 <h3 id="错题集"><a href="#错题集" class="headerlink" title="错题集"></a>错题集</h3><p>1、查询所有部门的名字，location_id，员工数量和平均工资，并按平均工资降序</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 正确</span></span><br><span class="line"><span class="keyword">SELECT</span> department_name, location_id, <span class="built_in">COUNT</span>(employee_id), <span class="built_in">AVG</span>(salary) avg_sal</span><br><span class="line"><span class="keyword">FROM</span> employees e <span class="keyword">RIGHT</span> <span class="keyword">JOIN</span> departments d</span><br><span class="line"><span class="keyword">ON</span> e.`department_id` <span class="operator">=</span> d.`department_id`</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> department_name, location_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> avg_sal <span class="keyword">DESC</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 错误:这样的count结果中没有员工的部门的结果会是1</span></span><br><span class="line"><span class="keyword">select</span> department_name,location_id,<span class="built_in">count</span>(<span class="operator">*</span>),<span class="built_in">avg</span>(salary) avg_sal</span><br><span class="line"><span class="keyword">from</span> departments t2 <span class="keyword">left</span> <span class="keyword">join</span> employees t1 </span><br><span class="line"><span class="keyword">on</span> t2.department_id <span class="operator">=</span> t1.department_id </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> department_name,location_id </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> avg_sal <span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure>
 
