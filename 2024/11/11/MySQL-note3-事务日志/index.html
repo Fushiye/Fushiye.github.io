@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_apple-touch-icon-human">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_human_32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_human_16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fushiye.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="MySQL事务日志学习笔记，欢迎指正~">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL-note3-事务日志">
+<meta property="og:url" content="https://fushiye.github.io/2024/11/11/MySQL-note3-%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/index.html">
+<meta property="og:site_name" content="星海拾贝">
+<meta property="og:description" content="MySQL事务日志学习笔记，欢迎指正~">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="d:\workinenglish\typora_image\image-20241031225456531-1731302687478-1.png">
+<meta property="og:image" content="d:\workinenglish\typora_image\image-20241101163200726-1731302687479-2.png">
+<meta property="article:published_time" content="2024-11-11T05:24:26.000Z">
+<meta property="article:modified_time" content="2024-11-11T05:25:56.844Z">
+<meta property="article:author" content="s&#39;efforcer">
+<meta property="article:tag" content="Note">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="Database">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:\workinenglish\typora_image\image-20241031225456531-1731302687478-1.png">
+
+<link rel="canonical" href="https://fushiye.github.io/2024/11/11/MySQL-note3-%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MySQL-note3-事务日志 | 星海拾贝</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">星海拾贝</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">探索永无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fushiye.github.io/2024/11/11/MySQL-note3-%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="s'efforcer">
+      <meta itemprop="description" content="诗酒趁年华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="星海拾贝">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL-note3-事务日志
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-11-11 13:24:26 / 修改时间：13:25:56" itemprop="dateCreated datePublished" datetime="2024-11-11T13:24:26+08:00">2024-11-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index"><span itemprop="name">Note</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">Database</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/development/" itemprop="url" rel="index"><span itemprop="name">development</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">MySQL事务日志学习笔记，欢迎指正~</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>参考资料： <a target="_blank" rel="noopener" href="https://mysql.net.cn/doc/refman/8.0/en/">MySQL中文文档</a> <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1iq4y1u7vj?p=96">MySQL高级篇-尚硅谷</a></p>
+<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><h2 id="事务的基础知识"><a href="#事务的基础知识" class="headerlink" title="事务的基础知识"></a>事务的基础知识</h2><h2 id="MySQL事务日志"><a href="#MySQL事务日志" class="headerlink" title="MySQL事务日志"></a>MySQL事务日志</h2><h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><h2 id="多版本并发控制"><a href="#多版本并发控制" class="headerlink" title="多版本并发控制"></a>多版本并发控制</h2><h1 id="日志和备份"><a href="#日志和备份" class="headerlink" title="日志和备份"></a>日志和备份</h1><h2 id="其他数据库日志"><a href="#其他数据库日志" class="headerlink" title="其他数据库日志"></a>其他数据库日志</h2><h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><h2 id="数据库备份和恢复"><a href="#数据库备份和恢复" class="headerlink" title="数据库备份和恢复"></a>数据库备份和恢复</h2><h2 id="DCL数据控制"><a href="#DCL数据控制" class="headerlink" title="DCL数据控制"></a>DCL数据控制</h2><table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">描述</th>
+<th align="left">作用</th>
+<th align="left">注意事项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">COMMIT</td>
+<td align="left">提交事务，将修改永久保存到数据库</td>
+<td align="left">确保事务的完整性</td>
+<td align="left">必须在事务结束前执行，执行后不可回滚</td>
+</tr>
+<tr>
+<td align="left">ROLLBACK</td>
+<td align="left">回滚事务，撤销所有修改操作</td>
+<td align="left">保护数据的完整性</td>
+<td align="left">只能在已开启的事务中使用，已提交的事务无法回滚</td>
+</tr>
+</tbody></table>
+<h1 id="存疑"><a href="#存疑" class="headerlink" title="存疑"></a>存疑</h1><p><img src="D:\workinenglish\typora_image\image-20241031225456531-1731302687478-1.png" alt="image-20241031225456531"></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1iq4y1u7vj?spm_id_from=333.788.player.switch&vd_source=20530c92c1be8bd70e37346e3a5c037a&p=126">行溢出-varchar到底能存几个字节</a></p>
+<p>7-8分钟讲解部分。</p>
+<p><img src="D:\workinenglish\typora_image\image-20241101163200726-1731302687479-2.png" alt="image-20241101163200726"></p>
+<h1 id="面试记录"><a href="#面试记录" class="headerlink" title="面试记录"></a>面试记录</h1><h2 id="常用的SQL性能优化方法"><a href="#常用的SQL性能优化方法" class="headerlink" title="常用的SQL性能优化方法"></a>常用的SQL性能优化方法</h2><h3 id="一、索引优化"><a href="#一、索引优化" class="headerlink" title="一、索引优化"></a>一、索引优化</h3><ol>
+<li><strong>创建适当的索引</strong>：在经常用于查询、排序和连接的列上创建索引，可以显著提高查询性能。</li>
+<li><strong>删除不必要的索引</strong>：过多的索引会增加插入、更新和删除操作的开销，因此应定期审查并删除不再需要的索引。</li>
+<li><strong>使用覆盖索引</strong>：尽量使用覆盖索引，即查询的列完全包含在索引中，从而避免回表操作。</li>
+</ol>
+<h3 id="二、查询优化"><a href="#二、查询优化" class="headerlink" title="二、查询优化"></a>二、查询优化</h3><ol>
+<li><strong>避免全表扫描</strong>：通过创建索引、优化查询条件等方式，尽量避免全表扫描。</li>
+<li><strong>选择合适的查询类型</strong>：根据实际需求选择合适的查询类型，如SELECT、INSERT、UPDATE等。</li>
+<li><strong>优化JOIN操作</strong>：使用适当的JOIN条件，避免不必要的多表连接。在可能的情况下，使用子查询代替多表连接，但要注意子查询的性能开销。</li>
+<li><strong>使用合适的字段类型</strong>：选择适当的字段类型，如使用数值类型代替字符串类型，以提高查询性能。</li>
+<li><strong>避免使用NULL值</strong>：在创建表时，尽量避免使用NULL值，可以使用NOT NULL约束，并用特殊值（如0、-1）代替NULL。</li>
+<li><strong>优化WHERE子句</strong>：避免在WHERE子句中使用OR、!&#x3D;或&lt;&gt;操作符，这些操作符可能导致索引失效。尽量使用IN、BETWEEN等操作符，并优化IN子句中的值列表顺序。</li>
+</ol>
+<h3 id="三、表结构优化"><a href="#三、表结构优化" class="headerlink" title="三、表结构优化"></a>三、表结构优化</h3><ol>
+<li><strong>选择合适的表结构</strong>：根据实际需求选择合适的表结构，如规范化或非规范化。规范化可以减少数据冗余，但可能增加查询复杂度；非规范化则可以提高查询性能，但可能增加数据冗余。</li>
+<li><strong>使用合适的存储引擎</strong>：如MySQL的InnoDB存储引擎，它支持事务、行级锁和更好的恢复性，在高并发下性能更好。</li>
+<li><strong>定期维护索引</strong>：定期运行索引维护任务，如重建索引、更新统计信息等，以保持索引的有效性。</li>
+</ol>
+<h3 id="四、数据库配置和硬件优化"><a href="#四、数据库配置和硬件优化" class="headerlink" title="四、数据库配置和硬件优化"></a>四、数据库配置和硬件优化</h3><ol>
+<li><strong>启用查询缓存</strong>：如果数据库支持查询缓存，可以启用它以存储经常执行的查询结果，从而提高查询性能。</li>
+<li><strong>优化缓存设置</strong>：根据实际需求调整数据库缓存的大小和策略，以提高缓存命中率。</li>
+<li><strong>使用连接池</strong>：复用数据库连接可以减少连接开销，提高性能。调整连接池大小以平衡性能和资源利用。</li>
+<li><strong>升级硬件</strong>：如增加CPU、内存和使用SSD或NVMe存储等，可以显著提高数据库性能。</li>
+</ol>
+<h3 id="五、使用优化工具和分析方法"><a href="#五、使用优化工具和分析方法" class="headerlink" title="五、使用优化工具和分析方法"></a>五、使用优化工具和分析方法</h3><ol>
+<li><strong>使用查询分析工具</strong>：如MySQL的EXPLAIN、Oracle的SQL Trace和TKPROF等，可以分析查询的执行计划并找出性能瓶颈。</li>
+<li><strong>使用数据库自带的性能监控工具</strong>：如MySQL Enterprise Monitor、Oracle Enterprise Manager等，可以实时监控数据库性能并找出优化点。</li>
+<li><strong>第三方优化工具</strong>：如Toad for Oracle、SQL Server Management Studio (SSMS)等，提供了丰富的SQL优化功能和分析建议。</li>
+</ol>
+<h2 id="MySQL事务机制介绍"><a href="#MySQL事务机制介绍" class="headerlink" title="MySQL事务机制介绍"></a>MySQL事务机制介绍</h2><p>MySQL的事务机制是确保数据一致性和完整性的关键所在，它主要通过以下几种特性来实现：</p>
+<h3 id="一、事务的四大特性（ACID）"><a href="#一、事务的四大特性（ACID）" class="headerlink" title="一、事务的四大特性（ACID）"></a>一、事务的四大特性（ACID）</h3><ol>
+<li><strong>原子性（Atomicity）</strong><ul>
+<li>事务是一个不可分割的工作单位，其中的操作要么全部执行，要么全部不执行。</li>
+<li>如果事务中的某个操作失败，则已执行的操作必须回滚，数据库退回到事务前的状态。</li>
+</ul>
+</li>
+<li><strong>一致性（Consistency）</strong><ul>
+<li>事务必须使数据库从一个一致性状态变换到另一个一致性状态。</li>
+<li>一致性是事务追求的最终目标，原子性、隔离性、持久性都是为了保证数据库的一致性。</li>
+</ul>
+</li>
+<li><strong>隔离性（Isolation）</strong><ul>
+<li>事务之间不会相互影响，并发执行的各个事务之间不能相互干扰。</li>
+<li>隔离性由锁机制和MVCC（多版本并发控制）机制共同实现。</li>
+<li>MySQL支持四种事务隔离级别：读未提交（READ UNCOMMITTED）、读已提交（READ COMMITTED）、可重复读（REPEATABLE READ，MySQL的默认隔离级别）、可串行化（SERIALIZABLE）。</li>
+</ul>
+</li>
+<li><strong>持久性（Durability）</strong><ul>
+<li>事务一旦提交，其所做的修改都会永久保存到数据库中，即使系统崩溃也不会丢失。</li>
+<li>持久性通过InnoDB的redo log、undo log和Force Log at Commit机制来实现。</li>
+</ul>
+</li>
+</ol>
+<h3 id="二、InnoDB存储引擎的事务实现"><a href="#二、InnoDB存储引擎的事务实现" class="headerlink" title="二、InnoDB存储引擎的事务实现"></a>二、InnoDB存储引擎的事务实现</h3><ol>
+<li><strong>redo log（重做日志）</strong><ul>
+<li>记录事务提交的更改，用于在系统崩溃时恢复数据。</li>
+<li>采用WAL（Write Ahead Log，预写日志）策略，即先写重做日志，再挑选时间将脏页写入磁盘。</li>
+</ul>
+</li>
+<li><strong>undo log（回滚日志）</strong><ul>
+<li>记录事务未提交的更改，用于事务回滚。</li>
+<li>也用于多版本并发控制（MVCC），提供数据的快照读。</li>
+</ul>
+</li>
+<li><strong>锁机制</strong><ul>
+<li>InnoDB通过行级锁和表级锁来控制并发访问，确保数据的一致性和完整性。</li>
+<li>锁机制包括共享锁（S锁）和排他锁（X锁），以及意向锁等。</li>
+</ul>
+</li>
+<li><strong>MVCC（多版本并发控制）</strong><ul>
+<li>在事务开始时生成一个一致性快照，事务在执行过程中会使用这个快照读取数据。</li>
+<li>即使其他事务插入了新记录，当前事务仍会基于它启动时的快照来读取数据，从而避免脏读、不可重复读和幻读。</li>
+<li>InnoDB通过undo log来实现MVCC。</li>
+</ul>
+</li>
+</ol>
+<h3 id="三、事务的使用和管理"><a href="#三、事务的使用和管理" class="headerlink" title="三、事务的使用和管理"></a>三、事务的使用和管理</h3><ol>
+<li><strong>事务的开始和结束</strong><ul>
+<li>在MySQL中，通常使用START TRANSACTION或BEGIN来开始一个事务。</li>
+<li>使用COMMIT来提交事务，使所有更改永久生效。</li>
+<li>使用ROLLBACK来回滚事务，撤销所有更改。</li>
+</ul>
+</li>
+<li><strong>异常处理</strong><ul>
+<li>在事务执行过程中，要妥善处理可能出现的异常。</li>
+<li>当出现异常时，需要确保事务能够回滚到开始之前的状态，以避免数据不一致。</li>
+</ul>
+</li>
+<li><strong>性能优化</strong><ul>
+<li>虽然事务提供了数据完整性和一致性的保障，但它们也可能对性能产生影响。</li>
+<li>因此，在设计数据库和编写代码时，要考虑到事务的开销，并尽可能减少不必要的事务和长时间运行的事务。</li>
+</ul>
+</li>
+</ol>
+<p>综上所述，MySQL的事务机制通过ACID特性、InnoDB存储引擎的redo log、undo log、锁机制和MVCC等机制共同实现，确保了数据的一致性和完整性。在开发过程中，开发者需要正确使用和管理事务，以充分发挥MySQL事务机制的优势。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Note/" rel="tag"><i class="fa fa-tag"> Note</i></a>
+              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"> MySQL</i></a>
+              <a href="/tags/Database/" rel="tag"><i class="fa fa-tag"> Database</i></a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/09/26/MySQL-Challenges/" rel="prev" title="MySQL-Challenges">
+      <i class="fa fa-chevron-left"></i> MySQL-Challenges
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.1.</span> <span class="nav-text">事务的基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97"><span class="nav-number">1.2.</span> <span class="nav-text">MySQL事务日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%81"><span class="nav-number">1.3.</span> <span class="nav-text">锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="nav-number">1.4.</span> <span class="nav-text">多版本并发控制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E5%92%8C%E5%A4%87%E4%BB%BD"><span class="nav-number">2.</span> <span class="nav-text">日志和备份</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%95%B0%E6%8D%AE%E5%BA%93%E6%97%A5%E5%BF%97"><span class="nav-number">2.1.</span> <span class="nav-text">其他数据库日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-number">2.2.</span> <span class="nav-text">主从复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D"><span class="nav-number">2.3.</span> <span class="nav-text">数据库备份和恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DCL%E6%95%B0%E6%8D%AE%E6%8E%A7%E5%88%B6"><span class="nav-number">2.4.</span> <span class="nav-text">DCL数据控制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%98%E7%96%91"><span class="nav-number">3.</span> <span class="nav-text">存疑</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95"><span class="nav-number">4.</span> <span class="nav-text">面试记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84SQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">常用的SQL性能优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96"><span class="nav-number">4.1.1.</span> <span class="nav-text">一、索引优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">4.1.2.</span> <span class="nav-text">二、查询优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%A1%A8%E7%BB%93%E6%9E%84%E4%BC%98%E5%8C%96"><span class="nav-number">4.1.3.</span> <span class="nav-text">三、表结构优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE%E5%92%8C%E7%A1%AC%E4%BB%B6%E4%BC%98%E5%8C%96"><span class="nav-number">4.1.4.</span> <span class="nav-text">四、数据库配置和硬件优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96%E5%B7%A5%E5%85%B7%E5%92%8C%E5%88%86%E6%9E%90%E6%96%B9%E6%B3%95"><span class="nav-number">4.1.5.</span> <span class="nav-text">五、使用优化工具和分析方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E4%BA%8B%E5%8A%A1%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D"><span class="nav-number">4.2.</span> <span class="nav-text">MySQL事务机制介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7%EF%BC%88ACID%EF%BC%89"><span class="nav-number">4.2.1.</span> <span class="nav-text">一、事务的四大特性（ACID）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E7%9A%84%E4%BA%8B%E5%8A%A1%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.2.2.</span> <span class="nav-text">二、InnoDB存储引擎的事务实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E4%BA%8B%E5%8A%A1%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E7%AE%A1%E7%90%86"><span class="nav-number">4.2.3.</span> <span class="nav-text">三、事务的使用和管理</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="s'efforcer"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">s'efforcer</p>
+  <div class="site-description" itemprop="description">诗酒趁年华</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fushiye/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fushiye&#x2F;" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shearington@foxmail.com" title="E-Mail → mailto:shearington@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">s'efforcer</span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
