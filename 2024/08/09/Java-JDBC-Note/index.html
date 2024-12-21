@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"fushiye.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="JDBC学习笔记，欢迎指正~">
+  <meta name="description" content="JDBC学习过程中记录的笔记，仅供参考，如有错漏，敬请指正!">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java-JDBC-Note">
 <meta property="og:url" content="https://fushiye.github.io/2024/08/09/Java-JDBC-Note/index.html">
 <meta property="og:site_name" content="星海拾贝">
-<meta property="og:description" content="JDBC学习笔记，欢迎指正~">
+<meta property="og:description" content="JDBC学习过程中记录的笔记，仅供参考，如有错漏，敬请指正!">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240810170632.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240810221326.png">
 <meta property="article:published_time" content="2024-08-09T00:18:13.000Z">
-<meta property="article:modified_time" content="2024-12-14T12:08:25.113Z">
+<meta property="article:modified_time" content="2024-12-21T18:19:26.280Z">
 <meta property="article:author" content="s&#39;efforcer">
 <meta property="article:tag" content="Note">
 <meta property="article:tag" content="Java">
@@ -230,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-14 20:08:25" itemprop="dateModified" datetime="2024-12-14T20:08:25+08:00">2024-12-14</time>
+                <time title="修改时间：2024-12-22 02:19:26" itemprop="dateModified" datetime="2024-12-22T02:19:26+08:00">2024-12-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -242,11 +242,11 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Frame/JDBC/" itemprop="url" rel="index"><span itemprop="name">JDBC</span></a>
+                  <a href="/categories/Note/" itemprop="url" rel="index"><span itemprop="name">Note</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Note/" itemprop="url" rel="index"><span itemprop="name">Note</span></a>
+                  <a href="/categories/Frame/JDBC/" itemprop="url" rel="index"><span itemprop="name">JDBC</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -255,7 +255,7 @@
             </span>
 
           
-            <div class="post-description">JDBC学习笔记，欢迎指正~</div>
+            <div class="post-description">JDBC学习过程中记录的笔记，仅供参考，如有错漏，敬请指正!</div>
 
         </div>
       </header>
@@ -433,7 +433,7 @@
 <li>使用连接：执行数据库操作。</li>
 <li>回收连接：使用完毕后，关闭连接以释放资源，实际上是将连接放回连接池中。</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testHardDruid</span><span class="params">()</span><span class="keyword">throws</span> Exception&#123;</span><br><span class="line">    <span class="comment">//1.</span></span><br><span class="line">    <span class="type">DruidDataSource</span> <span class="variable">druidDataSource</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DruidDataSource</span>();</span><br><span class="line">    <span class="comment">//2.</span></span><br><span class="line">    <span class="comment">//2.1 必须的配置：驱动类名、URL、用户名、密码</span></span><br><span class="line">    druidDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">    druidDataSource.setUrl(<span class="string">&quot;jdbc:mysql:///atguigudb&quot;</span>);</span><br><span class="line">    druidDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">    druidDataSource.setPassword(<span class="string">&quot;fsy030603.&quot;</span>);</span><br><span class="line">    <span class="comment">//2.2 可选配置项：连接池初始连接量、最大连接量（不设就为8）等</span></span><br><span class="line">    druidDataSource.setInitialSize(<span class="number">10</span>);</span><br><span class="line">    druidDataSource.setMaxActive(<span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//3. 通过连接池获取连接对象 getConnection();各类连接池均可使用，非druid专用</span></span><br><span class="line">    <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> druidDataSource.getConnection();</span><br><span class="line"></span><br><span class="line">    ... <span class="comment">//基于connect的CRUD</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//4. 回收连接</span></span><br><span class="line">    connection.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testHardDruid</span><span class="params">()</span><span class="keyword">throws</span> Exception&#123;</span><br><span class="line">    <span class="comment">//1.</span></span><br><span class="line">    <span class="type">DruidDataSource</span> <span class="variable">druidDataSource</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DruidDataSource</span>();</span><br><span class="line">    <span class="comment">//2.</span></span><br><span class="line">    <span class="comment">//2.1 必须的配置：驱动类名、URL、用户名、密码</span></span><br><span class="line">    druidDataSource.setDriverClassName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">    druidDataSource.setUrl(<span class="string">&quot;jdbc:mysql:///yourDataBaseName&quot;</span>);</span><br><span class="line">    druidDataSource.setUsername(<span class="string">&quot;root&quot;</span>);</span><br><span class="line">    druidDataSource.setPassword(<span class="string">&quot;fsy030603.&quot;</span>);</span><br><span class="line">    <span class="comment">//2.2 可选配置项：连接池初始连接量、最大连接量（不设就为8）等</span></span><br><span class="line">    druidDataSource.setInitialSize(<span class="number">10</span>);</span><br><span class="line">    druidDataSource.setMaxActive(<span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//3. 通过连接池获取连接对象 getConnection();各类连接池均可使用，非druid专用</span></span><br><span class="line">    <span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> druidDataSource.getConnection();</span><br><span class="line"></span><br><span class="line">    ... <span class="comment">//基于connect的CRUD</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//4. 回收连接</span></span><br><span class="line">    connection.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果设置最小连接数就要设置最大连接数</p>
 <h3 id="Druid的软编码实现"><a href="#Druid的软编码实现" class="headerlink" title="Druid的软编码实现"></a>Druid的软编码实现</h3><p><strong>步骤</strong></p>
 <ol>
@@ -567,7 +567,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -580,7 +580,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
