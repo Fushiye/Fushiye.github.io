@@ -22,8 +22,8 @@
 
   <meta name="description" content="MySQL事务日志学习笔记，欢迎指正~">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL-note3-事务日志">
-<meta property="og:url" content="https://fushiye.github.io/2024/11/11/MySQL-note3-%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/index.html">
+<meta property="og:title" content="MySQL-Note3-事务日志">
+<meta property="og:url" content="https://fushiye.github.io/2024/11/11/MySQL-Note3-%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/index.html">
 <meta property="og:site_name" content="星海拾贝">
 <meta property="og:description" content="MySQL事务日志学习笔记，欢迎指正~">
 <meta property="og:locale" content="zh_CN">
@@ -53,15 +53,13 @@
 <meta property="og:image" content="d:\workinenglish\typora_image\image-20241031225456531-1731302687478-1.png">
 <meta property="og:image" content="d:\workinenglish\typora_image\image-20241101163200726-1731302687479-2.png">
 <meta property="article:published_time" content="2024-11-11T05:24:26.000Z">
-<meta property="article:modified_time" content="2024-12-14T12:27:56.025Z">
+<meta property="article:modified_time" content="2025-02-07T14:42:54.370Z">
 <meta property="article:author" content="s&#39;efforcer">
-<meta property="article:tag" content="Note">
 <meta property="article:tag" content="MySQL">
-<meta property="article:tag" content="Database">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20241126233918.png">
 
-<link rel="canonical" href="https://fushiye.github.io/2024/11/11/MySQL-note3-%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/">
+<link rel="canonical" href="https://fushiye.github.io/2024/11/11/MySQL-Note3-%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/">
 
 
 <script id="page-configurations">
@@ -74,7 +72,7 @@
   };
 </script>
 
-  <title>MySQL-note3-事务日志 | 星海拾贝</title>
+  <title>MySQL-Note3-事务日志 | 星海拾贝</title>
   
 
 
@@ -223,7 +221,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://fushiye.github.io/2024/11/11/MySQL-note3-%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/">
+    <link itemprop="mainEntityOfPage" href="https://fushiye.github.io/2024/11/11/MySQL-Note3-%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head.jpg">
@@ -236,7 +234,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          MySQL-note3-事务日志
+          MySQL-Note3-事务日志
         </h1>
 
         <div class="post-meta">
@@ -253,7 +251,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-14 20:27:56" itemprop="dateModified" datetime="2024-12-14T20:27:56+08:00">2024-12-14</time>
+                <time title="修改时间：2025-02-07 22:42:54" itemprop="dateModified" datetime="2025-02-07T22:42:54+08:00">2025-02-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -261,19 +259,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Note/" itemprop="url" rel="index"><span itemprop="name">Note</span></a>
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/development/" itemprop="url" rel="index"><span itemprop="name">development</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">Database</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Database/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
                 </span>
             </span>
 
@@ -1457,9 +1447,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Note/" rel="tag"><i class="fa fa-tag"> Note</i></a>
               <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"> MySQL</i></a>
-              <a href="/tags/Database/" rel="tag"><i class="fa fa-tag"> Database</i></a>
           </div>
 
         
@@ -1549,20 +1537,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
