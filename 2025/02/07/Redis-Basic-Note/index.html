@@ -2,10 +2,11 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 7.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_apple-touch-icon-human">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_apple-touch-icon-human.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_human_32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_human_16x16.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
@@ -13,14 +14,13 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"fushiye.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-  <meta name="description" content="本文是Redis7基础学习过程中记录的笔记。Redis 7是一个高性能的开源键值存储系统，适用于数据库、缓存和消息中间件。它支持多种数据结构（如字符串、哈希、列表等），并提供高速读写性能及数据持久化功能。Redis 7增强了内存管理、数据处理能力和模块系统，使其在分布式系统中作为缓存或主数据库时，能够显著提升系统的响应速度和可靠性。由于其高效性、灵活性以及对多种编程语言的支持，Redis成为了快速">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fushiye.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism-darcula","dark":"prism-darcula"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"giscus":{"enable":true,"repo":"Fushiye/Fushiye.github.io","repo_id":"R_kgDOLyiTvA","category":"Announcements","category_id":"DIC_kwDOLyiTvM4CteAo","mapping":"title","reactions_enabled":1,"emit_metadata":0,"input_position":"top","lang":"zh-CN","loading":"lazy","crossorigin":"anonymous"}},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":3,"unescape":false,"preload":true}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文是Redis7基础学习过程中记录的笔记。Redis 7是一个高性能的开源键值存储系统，适用于数据库、缓存和消息中间件。它支持多种数据结构（如字符串、哈希、列表等），并提供高速读写性能及数据持久化功能。Redis 7增强了内存管理、数据处理能力和模块系统，使其在分布式系统中作为缓存或主数据库时，能够显著提升系统的响应速度和可靠性。由于其高效性、灵活性以及对多种编程语言的支持，Redis成为了快速">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis-Basic-Note">
 <meta property="og:url" content="https://fushiye.github.io/2025/02/07/Redis-Basic-Note/index.html">
@@ -45,20 +45,14 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20250208215421.png">
 
+
 <link rel="canonical" href="https://fushiye.github.io/2025/02/07/Redis-Basic-Note/">
 
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fushiye.github.io/2025/02/07/Redis-Basic-Note/","path":"2025/02/07/Redis-Basic-Note/","title":"Redis-Basic-Note"}</script>
 
-  <title>Redis-Basic-Note | 星海拾贝</title>
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Redis-Basic-Note | 星海拾贝</title>
   
 
 
@@ -66,57 +60,58 @@
 
 
 
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
   <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">星海拾贝</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
+      <p class="site-title">星海拾贝</p>
+      <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">探索永无止境</p>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
         <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
@@ -124,34 +119,8 @@
 
 
 
-
 <nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -163,109 +132,184 @@
 
   <div class="search-pop-overlay">
     <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
-
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
     </div>
   </div>
 
-</div>
-    </header>
+</header>
+        
+  
+  <aside class="sidebar">
 
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">一、概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="nav-number">1.1.1.</span> <span class="nav-text">安装步骤：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD"><span class="nav-number">1.1.3.</span> <span class="nav-text">卸载</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%94%E8%AE%B0%E5%B9%B3%E5%8F%B0"><span class="nav-number">1.2.</span> <span class="nav-text">笔记平台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.3.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">1.4.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%8D%81%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">二、十大数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.</span> <span class="nav-text">基础命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.1.</span> <span class="nav-text">数据库相关命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#KEY%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.2.</span> <span class="nav-text">KEY相关命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99%E8%AF%B4%E6%98%8E%E5%92%8C%E5%B8%AE%E5%8A%A9%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.3.</span> <span class="nav-text">大小写说明和帮助命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">String类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%87%8D%E8%A6%81%E3%80%91SET"><span class="nav-number">2.2.1.</span> <span class="nav-text">【重要】SET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GET"><span class="nav-number">2.2.2.</span> <span class="nav-text">GET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MSET"><span class="nav-number">2.2.3.</span> <span class="nav-text">MSET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MGET"><span class="nav-number">2.2.4.</span> <span class="nav-text">MGET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GETRANGE"><span class="nav-number">2.2.5.</span> <span class="nav-text">GETRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SETRANGE"><span class="nav-number">2.2.6.</span> <span class="nav-text">SETRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#APPEND"><span class="nav-number">2.2.7.</span> <span class="nav-text">APPEND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#STRLEN"><span class="nav-number">2.2.8.</span> <span class="nav-text">STRLEN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#INCR"><span class="nav-number">2.2.9.</span> <span class="nav-text">INCR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#INCRBY"><span class="nav-number">2.2.10.</span> <span class="nav-text">INCRBY</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DECR"><span class="nav-number">2.2.11.</span> <span class="nav-text">DECR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DECRBY"><span class="nav-number">2.2.12.</span> <span class="nav-text">DECRBY</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GETSET"><span class="nav-number">2.2.13.</span> <span class="nav-text">GETSET</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#List%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">List类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LPUSH"><span class="nav-number">2.3.1.</span> <span class="nav-text">LPUSH</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RPUSH"><span class="nav-number">2.3.2.</span> <span class="nav-text">RPUSH</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LPOP"><span class="nav-number">2.3.3.</span> <span class="nav-text">LPOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RPOP"><span class="nav-number">2.3.4.</span> <span class="nav-text">RPOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LRANGE"><span class="nav-number">2.3.5.</span> <span class="nav-text">LRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LINDEX"><span class="nav-number">2.3.6.</span> <span class="nav-text">LINDEX</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LLEN"><span class="nav-number">2.3.7.</span> <span class="nav-text">LLEN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LTRIM"><span class="nav-number">2.3.8.</span> <span class="nav-text">LTRIM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LREM"><span class="nav-number">2.3.9.</span> <span class="nav-text">LREM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RPOPLPUSH"><span class="nav-number">2.3.10.</span> <span class="nav-text">RPOPLPUSH</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LSET"><span class="nav-number">2.3.11.</span> <span class="nav-text">LSET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LINSERT"><span class="nav-number">2.3.12.</span> <span class="nav-text">LINSERT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BLPOP"><span class="nav-number">2.3.13.</span> <span class="nav-text">BLPOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BRPOP"><span class="nav-number">2.3.14.</span> <span class="nav-text">BRPOP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.4.</span> <span class="nav-text">Hash类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HSET"><span class="nav-number">2.4.1.</span> <span class="nav-text">HSET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HGET"><span class="nav-number">2.4.2.</span> <span class="nav-text">HGET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HMGET"><span class="nav-number">2.4.3.</span> <span class="nav-text">HMGET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HLEN"><span class="nav-number">2.4.4.</span> <span class="nav-text">HLEN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HGETALL"><span class="nav-number">2.4.5.</span> <span class="nav-text">HGETALL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HDEL"><span class="nav-number">2.4.6.</span> <span class="nav-text">HDEL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HEXISTS"><span class="nav-number">2.4.7.</span> <span class="nav-text">HEXISTS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HINCRBY"><span class="nav-number">2.4.8.</span> <span class="nav-text">HINCRBY</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HKEYS"><span class="nav-number">2.4.9.</span> <span class="nav-text">HKEYS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HVALS"><span class="nav-number">2.4.10.</span> <span class="nav-text">HVALS</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Set%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.5.</span> <span class="nav-text">Set类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SADD"><span class="nav-number">2.5.1.</span> <span class="nav-text">SADD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SMEMBERS"><span class="nav-number">2.5.2.</span> <span class="nav-text">SMEMBERS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SISMEMBER"><span class="nav-number">2.5.3.</span> <span class="nav-text">SISMEMBER</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SREM"><span class="nav-number">2.5.4.</span> <span class="nav-text">SREM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SCARD"><span class="nav-number">2.5.5.</span> <span class="nav-text">SCARD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SRANDMEMBER"><span class="nav-number">2.5.6.</span> <span class="nav-text">SRANDMEMBER</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SPOP"><span class="nav-number">2.5.7.</span> <span class="nav-text">SPOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SMOVE"><span class="nav-number">2.5.8.</span> <span class="nav-text">SMOVE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%87%8D%E8%A6%81%E3%80%91%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97"><span class="nav-number">2.5.9.</span> <span class="nav-text">【重要】集合运算</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B7%AE%E9%9B%86%E8%BF%90%E7%AE%97SDIFF"><span class="nav-number">2.5.9.1.</span> <span class="nav-text">差集运算SDIFF</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B6%E9%9B%86%E8%BF%90%E7%AE%97SUNION"><span class="nav-number">2.5.9.2.</span> <span class="nav-text">并集运算SUNION</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%A4%E9%9B%86%E8%BF%90%E7%AE%97SINTER"><span class="nav-number">2.5.9.3.</span> <span class="nav-text">交集运算SINTER</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zset%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.6.</span> <span class="nav-text">Zset类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ZADD"><span class="nav-number">2.6.1.</span> <span class="nav-text">ZADD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZRANGE"><span class="nav-number">2.6.2.</span> <span class="nav-text">ZRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZREVRANGE"><span class="nav-number">2.6.3.</span> <span class="nav-text">ZREVRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZREM"><span class="nav-number">2.6.4.</span> <span class="nav-text">ZREM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZSCORE"><span class="nav-number">2.6.5.</span> <span class="nav-text">ZSCORE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZCARD"><span class="nav-number">2.6.6.</span> <span class="nav-text">ZCARD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZINCRBY"><span class="nav-number">2.6.7.</span> <span class="nav-text">ZINCRBY</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZMPOP"><span class="nav-number">2.6.8.</span> <span class="nav-text">ZMPOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZRANK"><span class="nav-number">2.6.9.</span> <span class="nav-text">ZRANK</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmap%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.7.</span> <span class="nav-text">Bitmap类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SETBIT"><span class="nav-number">2.7.1.</span> <span class="nav-text">SETBIT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GETBIT"><span class="nav-number">2.7.2.</span> <span class="nav-text">GETBIT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BITCOUNT"><span class="nav-number">2.7.3.</span> <span class="nav-text">BITCOUNT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BITPOS"><span class="nav-number">2.7.4.</span> <span class="nav-text">BITPOS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BITOP"><span class="nav-number">2.7.5.</span> <span class="nav-text">BITOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#STRLEN-1"><span class="nav-number">2.7.6.</span> <span class="nav-text">STRLEN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BITSCAN"><span class="nav-number">2.7.7.</span> <span class="nav-text">BITSCAN</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HyperLogLog%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.8.</span> <span class="nav-text">HyperLogLog类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PFADD"><span class="nav-number">2.8.1.</span> <span class="nav-text">PFADD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PFCOUNT"><span class="nav-number">2.8.2.</span> <span class="nav-text">PFCOUNT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PFMERGE"><span class="nav-number">2.8.3.</span> <span class="nav-text">PFMERGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PFCLEAR"><span class="nav-number">2.8.4.</span> <span class="nav-text">PFCLEAR</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GEO-Geospatial-indexes-%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.9.</span> <span class="nav-text">GEO(Geospatial indexes)类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GEOADD"><span class="nav-number">2.9.1.</span> <span class="nav-text">GEOADD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GEODIST"><span class="nav-number">2.9.2.</span> <span class="nav-text">GEODIST</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GEOPOS"><span class="nav-number">2.9.3.</span> <span class="nav-text">GEOPOS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GEORADIUS"><span class="nav-number">2.9.4.</span> <span class="nav-text">GEORADIUS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GEORADIUSBYMEMBER"><span class="nav-number">2.9.5.</span> <span class="nav-text">GEORADIUSBYMEMBER</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GEOHASH"><span class="nav-number">2.9.6.</span> <span class="nav-text">GEOHASH</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stream%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.10.</span> <span class="nav-text">Stream类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#XADD"><span class="nav-number">2.10.1.</span> <span class="nav-text">XADD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XRANGE"><span class="nav-number">2.10.2.</span> <span class="nav-text">XRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XREVRANGE"><span class="nav-number">2.10.3.</span> <span class="nav-text">XREVRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XDEL"><span class="nav-number">2.10.4.</span> <span class="nav-text">XDEL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XLEN"><span class="nav-number">2.10.5.</span> <span class="nav-text">XLEN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XTRIM"><span class="nav-number">2.10.6.</span> <span class="nav-text">XTRIM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XREAD"><span class="nav-number">2.10.7.</span> <span class="nav-text">XREAD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XGROUP-CREATE"><span class="nav-number">2.10.8.</span> <span class="nav-text">XGROUP CREATE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XREADGROUP"><span class="nav-number">2.10.9.</span> <span class="nav-text">XREADGROUP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XINFO-STREAM"><span class="nav-number">2.10.10.</span> <span class="nav-text">XINFO STREAM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XPENDING"><span class="nav-number">2.10.11.</span> <span class="nav-text">XPENDING</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XACK"><span class="nav-number">2.10.12.</span> <span class="nav-text">XACK</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitfield%E7%B1%BB%E5%9E%8B%E3%80%90%E4%BA%86%E8%A7%A3%E3%80%91"><span class="nav-number">2.11.</span> <span class="nav-text">Bitfield类型【了解】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BITFIELD"><span class="nav-number">2.11.1.</span> <span class="nav-text">BITFIELD</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">三、持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RDB-Redis-Database"><span class="nav-number">3.1.</span> <span class="nav-text">RDB(Redis Database)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">3.1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="nav-number">3.1.2.</span> <span class="nav-text">备份与恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E9%97%B4%E9%9A%94"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">备份间隔</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rdb%E6%96%87%E4%BB%B6%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">rdb文件保存位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rdb%E6%96%87%E4%BB%B6%E5%90%8D"><span class="nav-number">3.1.2.3.</span> <span class="nav-text">rdb文件名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD"><span class="nav-number">3.1.2.4.</span> <span class="nav-text">自动备份</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%A4%87%E4%BB%BD"><span class="nav-number">3.1.2.5.</span> <span class="nav-text">手动备份</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%9C%89%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.2.6.</span> <span class="nav-text">其他有关命令</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RDB%E7%9A%84%E4%BC%98%E5%8A%A3"><span class="nav-number">3.1.3.</span> <span class="nav-text">RDB的优劣</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8A%A3%E5%8A%BF"><span class="nav-number">3.1.3.2.</span> <span class="nav-text">劣势</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RDB%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E4%BF%AE%E5%A4%8D"><span class="nav-number">3.1.4.</span> <span class="nav-text">RDB文件损坏修复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A6%81%E7%94%A8RDB%E5%8A%9F%E8%83%BD"><span class="nav-number">3.1.5.</span> <span class="nav-text">禁用RDB功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RDB%E4%BC%98%E5%8C%96%E9%85%8D%E7%BD%AE%E9%A1%B9"><span class="nav-number">3.1.6.</span> <span class="nav-text">RDB优化配置项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF-Append-Only-File"><span class="nav-number">3.2.</span> <span class="nav-text">AOF(Append Only File)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">备份与恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BC%80%E5%90%AFaof%E6%94%AF%E6%8C%81%EF%BC%9A"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">开启aof支持：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%86%99%E5%9B%9E%E7%AD%96%E7%95%A5"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">写回策略</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE"><span class="nav-number">3.2.2.3.</span> <span class="nav-text">备份文件位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6%E5%90%8D"><span class="nav-number">3.2.2.4.</span> <span class="nav-text">备份文件名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF%E6%96%87%E4%BB%B6%E9%94%99%E8%AF%AF%E5%92%8C%E4%BF%AE%E5%A4%8D"><span class="nav-number">3.2.2.5.</span> <span class="nav-text">AOF文件错误和修复</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%A3"><span class="nav-number">3.2.3.</span> <span class="nav-text">优劣</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF%EF%BC%9A"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">优势：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8A%A3%E5%8A%BF%EF%BC%9A"><span class="nav-number">3.2.3.2.</span> <span class="nav-text">劣势：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AOF%E9%87%8D%E5%86%99%E6%9C%BA%E5%88%B6"><span class="nav-number">3.2.4.</span> <span class="nav-text">AOF重写机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%87%8D%E5%86%99"><span class="nav-number">3.2.4.1.</span> <span class="nav-text">自动重写</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E9%87%8D%E5%86%99"><span class="nav-number">3.2.4.2.</span> <span class="nav-text">手动重写</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AOF%E9%85%8D%E7%BD%AE%E6%80%BB%E7%BB%93"><span class="nav-number">3.2.5.</span> <span class="nav-text">AOF配置总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ROB-AOF%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">3.3.</span> <span class="nav-text">ROB+AOF持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E6%96%B9%E5%BC%8F"><span class="nav-number">3.3.1.</span> <span class="nav-text">开启方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">3.3.2.</span> <span class="nav-text">工作原理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%AF%E7%BC%93%E5%AD%98%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.4.</span> <span class="nav-text">纯缓存模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E4%BA%8B%E5%8A%A1"><span class="nav-number">4.</span> <span class="nav-text">四、事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D"><span class="nav-number">4.1.</span> <span class="nav-text">基础介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-%E4%BA%8B%E5%8A%A1%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%BC%82%E5%90%8C"><span class="nav-number">4.1.1.</span> <span class="nav-text">Redis 事务与数据库事务的异同</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">4.2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="nav-number">4.2.1.</span> <span class="nav-text">基本流程：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-%E4%BA%8B%E5%8A%A1%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4%E7%AE%80%E8%BF%B0"><span class="nav-number">4.2.2.</span> <span class="nav-text">Redis 事务相关命令简述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#watch%E7%9B%91%E6%8E%A7"><span class="nav-number">4.2.3.</span> <span class="nav-text">watch监控</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E7%AE%A1%E9%81%93"><span class="nav-number">5.</span> <span class="nav-text">五、管道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D-1"><span class="nav-number">5.1.</span> <span class="nav-text">基础介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E6%8A%80%E6%9C%AF%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="nav-number">5.1.1.</span> <span class="nav-text">管道技术的核心原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E4%B8%8E%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">5.1.2.</span> <span class="nav-text">管道与事务的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E6%8A%80%E6%9C%AF%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="nav-number">5.1.3.</span> <span class="nav-text">管道技术的局限性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-1"><span class="nav-number">5.2.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E3%80%90%E4%BA%86%E8%A7%A3%E3%80%91"><span class="nav-number">6.</span> <span class="nav-text">六、发布订阅【了解】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%9C%BA%E5%88%B6"><span class="nav-number">6.1.</span> <span class="nav-text">发布订阅机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">6.2.</span> <span class="nav-text">常用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E5%A4%8D%E5%88%B6"><span class="nav-number">7.</span> <span class="nav-text">七、复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E3%80%81%E6%B5%81%E7%A8%8B%E5%92%8C%E7%BC%BA%E7%82%B9"><span class="nav-number">7.1.</span> <span class="nav-text">原理、流程和缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E5%92%8C%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">7.1.1.</span> <span class="nav-text">基本原理和工作流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">7.1.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B"><span class="nav-number">7.2.</span> <span class="nav-text">主从关系建立</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-1"><span class="nav-number">7.2.1.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="nav-number">7.2.2.</span> <span class="nav-text">配置文件配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E9%85%8D%E7%BD%AE"><span class="nav-number">7.2.3.</span> <span class="nav-text">命令配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5"><span class="nav-number">7.2.4.</span> <span class="nav-text">连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%85%B3%E7%B3%BB%E6%80%BB%E7%BB%93"><span class="nav-number">7.2.5.</span> <span class="nav-text">主从关系总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%B1%82%E4%B8%BB%E4%BB%8E"><span class="nav-number">7.3.</span> <span class="nav-text">多层主从</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%B1%E7%A6%BB%E4%B8%BB%E6%9C%BA"><span class="nav-number">7.4.</span> <span class="nav-text">脱离主机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E5%93%A8%E5%85%B5"><span class="nav-number">8.</span> <span class="nav-text">八、哨兵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-1"><span class="nav-number">8.1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8"><span class="nav-number">8.2.</span> <span class="nav-text">启动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.2.1.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%A8%E5%85%B5%E7%9A%84%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B%E5%92%8C%E9%80%89%E4%B8%BE%E5%8E%9F%E7%90%86"><span class="nav-number">8.3.</span> <span class="nav-text">哨兵的运行流程和选举原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-%E5%93%A8%E5%85%B5%E7%9A%84%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">8.3.1.</span> <span class="nav-text">Redis 哨兵的运行流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%B6%E6%AE%B5"><span class="nav-number">8.3.1.1.</span> <span class="nav-text">（1）初始化阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E7%9B%91%E6%8E%A7%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="nav-number">8.3.1.2.</span> <span class="nav-text">（2）监控主从节点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%AE%A2%E8%A7%82%E4%B8%8B%E7%BA%BF%E5%88%A4%E6%96%AD"><span class="nav-number">8.3.1.3.</span> <span class="nav-text">（3）客观下线判断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E9%A2%86%E5%AF%BC%E8%80%85%E9%80%89%E4%B8%BE"><span class="nav-number">8.3.1.4.</span> <span class="nav-text">（4）领导者选举</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB"><span class="nav-number">8.3.1.5.</span> <span class="nav-text">（5）故障转移</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%886%EF%BC%89%E6%81%A2%E5%A4%8D%E4%B8%8E%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE"><span class="nav-number">8.3.1.6.</span> <span class="nav-text">（6）恢复与重新配置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Raft%E5%8D%8F%E8%AE%AE"><span class="nav-number">8.3.2.</span> <span class="nav-text">Raft协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Master%E9%80%89%E4%B8%BE%E6%B5%81%E7%A8%8B"><span class="nav-number">8.3.3.</span> <span class="nav-text">Master选举流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%A8%E5%85%B5%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE"><span class="nav-number">8.4.</span> <span class="nav-text">哨兵使用建议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%9D%E3%80%81%E9%9B%86%E7%BE%A4"><span class="nav-number">9.</span> <span class="nav-text">九、集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">9.1.</span> <span class="nav-text">集群的算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A7%BD%E4%BD%8D%E5%92%8C%E5%88%86%E7%89%87"><span class="nav-number">9.1.1.</span> <span class="nav-text">槽位和分片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E6%98%A0%E5%B0%84%E7%AE%97%E6%B3%95"><span class="nav-number">9.1.2.</span> <span class="nav-text">哈希映射算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E5%88%86%E5%8C%BA"><span class="nav-number">9.1.2.1.</span> <span class="nav-text">哈希取余分区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E5%88%86%E5%8C%BA"><span class="nav-number">9.1.2.2.</span> <span class="nav-text">一致性哈希算法分区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E6%A7%BD%E5%88%86%E5%8C%BA"><span class="nav-number">9.1.2.3.</span> <span class="nav-text">哈希槽分区</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E6%90%AD%E5%BB%BA%E7%A4%BA%E4%BE%8B"><span class="nav-number">9.2.</span> <span class="nav-text">集群的搭建示例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E4%B8%BB%E4%B8%89%E4%BB%8E%E6%90%AD%E5%BB%BA"><span class="nav-number">9.2.1.</span> <span class="nav-text">三主三从搭建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E8%AF%BB%E5%86%99"><span class="nav-number">9.2.2.</span> <span class="nav-text">集群的读写</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%90%86%E8%AE%BA%EF%BC%9A"><span class="nav-number">9.2.2.1.</span> <span class="nav-text">理论：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C"><span class="nav-number">9.2.2.2.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB-%E8%8A%82%E7%82%B9%E4%BB%8E%E5%B1%9E%E8%B0%83%E6%95%B4"><span class="nav-number">9.2.3.</span> <span class="nav-text">手动故障转移&amp;节点从属调整</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E6%89%A9%E5%AE%B9"><span class="nav-number">9.3.</span> <span class="nav-text">集群扩容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E8%8A%82%E7%82%B9%E5%8A%A0%E5%85%A5%E5%8E%9F%E6%9C%89%E9%9B%86%E7%BE%A4"><span class="nav-number">9.3.1.</span> <span class="nav-text">新节点加入原有集群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E5%88%86%E9%85%8D%E6%A7%BD%E4%BD%8D"><span class="nav-number">9.3.2.</span> <span class="nav-text">重新分配槽位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%96%B0%E8%8A%82%E7%82%B9%E7%9A%84%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="nav-number">9.3.3.</span> <span class="nav-text">添加新节点的从节点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E7%BC%A9%E5%AE%B9"><span class="nav-number">9.4.</span> <span class="nav-text">集群缩容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E%E9%9B%86%E7%BE%A4%E4%B8%AD%E6%B8%85%E9%99%A4%E4%BB%8E%E6%9C%BA"><span class="nav-number">9.4.1.</span> <span class="nav-text">从集群中清除从机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E5%BA%9F%E5%BC%83%E8%8A%82%E7%82%B9%E6%A7%BD%E4%BD%8D%E5%88%86%E7%BB%99%E5%85%B6%E4%BB%96%E8%8A%82%E7%82%B9"><span class="nav-number">9.4.2.</span> <span class="nav-text">将废弃节点槽位分给其他节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E6%88%90%E4%B8%BA%E4%BB%8E%E8%8A%82%E7%82%B9%E7%9A%84%E5%BA%9F%E5%BC%83%E8%8A%82%E7%82%B9%E6%B8%85%E9%99%A4"><span class="nav-number">9.4.3.</span> <span class="nav-text">将成为从节点的废弃节点清除</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86"><span class="nav-number">9.5.</span> <span class="nav-text">集群其他知识</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BC%BA%E9%99%B7%E4%B8%8E%E8%A7%A3%E5%86%B3%EF%BC%9A%E4%B8%8D%E5%9C%A8%E5%90%8C%E4%B8%80%E8%8A%82%E7%82%B9%E7%9A%84key%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E5%A4%9A%E9%94%AE%E6%93%8D%E4%BD%9C"><span class="nav-number">9.5.0.1.</span> <span class="nav-text">缺陷与解决：不在同一节点的key无法使用多键操作</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CRC16%E6%BA%90%E7%A0%81"><span class="nav-number">9.5.1.</span> <span class="nav-text">CRC16源码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-%E9%85%8D%E7%BD%AE"><span class="nav-number">9.5.2.</span> <span class="nav-text">其他常用命令|配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E3%80%81SpringBoot%E9%9B%86%E6%88%90"><span class="nav-number">10.</span> <span class="nav-text">十、SpringBoot集成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Jedis%E9%A9%B1%E5%8A%A8%E5%8C%85"><span class="nav-number">10.1.</span> <span class="nav-text">Jedis驱动包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">10.1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-2"><span class="nav-number">10.1.2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96"><span class="nav-number">10.1.2.1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">10.1.2.2.</span> <span class="nav-text">使用示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lettuce%E9%A9%B1%E5%8A%A8%E5%8C%85"><span class="nav-number">10.2.</span> <span class="nav-text">Lettuce驱动包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">10.2.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-3"><span class="nav-number">10.2.2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96-1"><span class="nav-number">10.2.2.1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-4"><span class="nav-number">10.2.2.2.</span> <span class="nav-text">使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RedisTemplate%E9%A9%B1%E5%8A%A8%E5%8C%85"><span class="nav-number">10.3.</span> <span class="nav-text">RedisTemplate驱动包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="nav-number">10.3.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96-2"><span class="nav-number">10.3.2.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E6%9C%BARedis%E8%BF%9E%E6%8E%A5%E9%85%8D%E7%BD%AE"><span class="nav-number">10.3.3.</span> <span class="nav-text">单机Redis连接配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4Redis%E8%BF%9E%E6%8E%A5%E9%85%8D%E7%BD%AE"><span class="nav-number">10.3.4.</span> <span class="nav-text">集群Redis连接配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%A4%BA%E4%BE%8B"><span class="nav-number">10.3.5.</span> <span class="nav-text">操作示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-number">11.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">11.1.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="nav-number">11.2.</span> <span class="nav-text">问题排查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-number">11.2.1.</span> <span class="nav-text">基础</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9Aredis%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87"><span class="nav-number">11.2.1.1.</span> <span class="nav-text">问题1：redis客户端无法显示中文</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4"><span class="nav-number">11.2.2.</span> <span class="nav-text">集群</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9A%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E7%9A%84%E4%B8%80%E8%88%AC%E5%8E%9F%E5%9B%A0%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">11.2.2.1.</span> <span class="nav-text">问题1：连接失败的一般原因及解决方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%982%EF%BC%9A%E9%9B%86%E7%BE%A4%E5%BB%BA%E7%AB%8B%E5%8D%A1%E5%9C%A8Waiting-for-the-cluster-to-join"><span class="nav-number">11.2.2.2.</span> <span class="nav-text">问题2：集群建立卡在Waiting for the cluster to join</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%983%EF%BC%9A%E8%8A%82%E7%82%B9%E6%A7%BD%E4%BD%8D%E5%88%86%E9%85%8D%E5%A4%B1%E8%B4%A5%EF%BC%9A"><span class="nav-number">11.2.2.3.</span> <span class="nav-text">问题3：节点槽位分配失败：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%984%EF%BC%9ANode-IP-Port-has-slots-in-importing-state-5461"><span class="nav-number">11.2.2.4.</span> <span class="nav-text">问题4：Node  IP:Port has slots in importing state 5461.</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B4%E5%90%88"><span class="nav-number">11.2.3.</span> <span class="nav-text">整合</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9ASpringboot%E4%BD%BF%E7%94%A8RedisTemplate%E6%8F%92%E5%85%A5%E9%94%AE%E5%80%BC%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B8%8D%E6%98%8E%E5%89%8D%E7%BC%80"><span class="nav-number">11.2.3.1.</span> <span class="nav-text">问题1：Springboot使用RedisTemplate插入键值时出现不明前缀</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%982%EF%BC%9A%E4%B8%BB%E6%9C%BA%E5%AE%95%E6%9C%BA%E4%BB%8E%E6%9C%BA%E7%BB%A7%E4%BD%8D%E5%90%8ESpringboot2-x%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5Redis"><span class="nav-number">11.2.3.2.</span> <span class="nav-text">问题2：主机宕机从机继位后Springboot2.x程序无法连接Redis</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96-1"><span class="nav-number">11.3.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-%E7%AB%AF%E5%8F%A3-6379%E3%80%8116379-%E5%92%8C-26379-%E7%9A%84%E7%94%A8%E9%80%94"><span class="nav-number">11.3.1.</span> <span class="nav-text">Redis 端口 6379、16379 和 26379 的用途</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shearington"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Shearington</p>
+  <div class="site-description" itemprop="description">诗酒趁年华</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fushiye/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fushiye&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shearington@foxmail.com" title="E-Mail → mailto:shearington@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
   </div>
 
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
+        </div>
+      </div>
+    </div>
 
     
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://fushiye.github.io/2025/02/07/Redis-Basic-Note/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head.jpg">
       <meta itemprop="name" content="Shearington">
-      <meta itemprop="description" content="诗酒趁年华">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="星海拾贝">
+      <meta itemprop="description" content="诗酒趁年华">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Redis-Basic-Note | 星海拾贝">
+      <meta itemprop="description" content="本文是Redis7基础学习过程中记录的笔记。Redis 7是一个高性能的开源键值存储系统，适用于数据库、缓存和消息中间件。它支持多种数据结构（如字符串、哈希、列表等），并提供高速读写性能及数据持久化功能。Redis 7增强了内存管理、数据处理能力和模块系统，使其在分布式系统中作为缓存或主数据库时，能够显著提升系统的响应速度和可靠性。由于其高效性、灵活性以及对多种编程语言的支持，Redis成为了快速数据访问的理想选择。">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           Redis-Basic-Note
         </h1>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2025-02-07 21:44:28" itemprop="dateCreated datePublished" datetime="2025-02-07T21:44:28+08:00">2025-02-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-12 17:12:36" itemprop="dateModified" datetime="2025-03-12T17:12:36+08:00">2025-03-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">缓存与数据库</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
-                </span>
-            </span>
+      <time title="创建时间：2025-02-07 21:44:28" itemprop="dateCreated datePublished" datetime="2025-02-07T21:44:28+08:00">2025-02-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-12 17:12:36" itemprop="dateModified" datetime="2025-03-12T17:12:36+08:00">2025-03-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">缓存与数据库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
 
-          
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>25k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1:23</span>
+    </span>
+</div>
+
             <div class="post-description">本文是Redis7基础学习过程中记录的笔记。Redis 7是一个高性能的开源键值存储系统，适用于数据库、缓存和消息中间件。它支持多种数据结构（如字符串、哈希、列表等），并提供高速读写性能及数据持久化功能。Redis 7增强了内存管理、数据处理能力和模块系统，使其在分布式系统中作为缓存或主数据库时，能够显著提升系统的响应速度和可靠性。由于其高效性、灵活性以及对多种编程语言的支持，Redis成为了快速数据访问的理想选择。</div>
-
         </div>
       </header>
 
     
     
     
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <p>这是Redis7入门学习笔记</p>
+    <div class="post-body" itemprop="articleBody"><p>这是Redis7入门学习笔记</p>
 <h2 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h2><p>Redis 是一种<strong>开源的、基于内存的</strong>数据结构存储系统（NOSQL），通常用作数据库、缓存和消息中间件。它通过键值对的方式存储数据，并支持多种数据结构，包括字符串(Strings)、哈希(Hashes)、列表(Lists)、集合(Sets)以及有序集(Sorted Sets)等。<strong>K-V类型的缓存数据库</strong></p>
 <p>以下是 Redis 的一些主要特点：</p>
 <ul>
@@ -2125,211 +2169,87 @@
     
     
 
-      <footer class="post-footer">
+    <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"> Redis</i></a>
+              <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i> Redis</a>
           </div>
 
         
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2025/02/06/Java-Project-Boot3MicroHeadline/" rel="prev" title="Java-Project-Boot3MicroHeadline">
-      <i class="fa fa-chevron-left"></i> Java-Project-Boot3MicroHeadline
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2025/02/16/Tip-Java-OpenAPI/" rel="next" title="Tip-Java-OpenAPI">
-      Tip-Java-OpenAPI <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/02/06/Java-Project-Boot3MicroHeadline/" rel="prev" title="Java-Project-Boot3MicroHeadline">
+                  <i class="fa fa-angle-left"></i> Java-Project-Boot3MicroHeadline
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/02/16/Tip-Java-OpenAPI/" rel="next" title="Tip-Java-OpenAPI">
+                  Tip-Java-OpenAPI <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
   </article>
-  
-  
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">一、概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="nav-number">1.1.1.</span> <span class="nav-text">安装步骤：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD"><span class="nav-number">1.1.3.</span> <span class="nav-text">卸载</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%94%E8%AE%B0%E5%B9%B3%E5%8F%B0"><span class="nav-number">1.2.</span> <span class="nav-text">笔记平台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.3.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">1.4.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%8D%81%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">二、十大数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.</span> <span class="nav-text">基础命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.1.</span> <span class="nav-text">数据库相关命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#KEY%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.2.</span> <span class="nav-text">KEY相关命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99%E8%AF%B4%E6%98%8E%E5%92%8C%E5%B8%AE%E5%8A%A9%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.3.</span> <span class="nav-text">大小写说明和帮助命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">String类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%87%8D%E8%A6%81%E3%80%91SET"><span class="nav-number">2.2.1.</span> <span class="nav-text">【重要】SET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GET"><span class="nav-number">2.2.2.</span> <span class="nav-text">GET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MSET"><span class="nav-number">2.2.3.</span> <span class="nav-text">MSET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MGET"><span class="nav-number">2.2.4.</span> <span class="nav-text">MGET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GETRANGE"><span class="nav-number">2.2.5.</span> <span class="nav-text">GETRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SETRANGE"><span class="nav-number">2.2.6.</span> <span class="nav-text">SETRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#APPEND"><span class="nav-number">2.2.7.</span> <span class="nav-text">APPEND</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#STRLEN"><span class="nav-number">2.2.8.</span> <span class="nav-text">STRLEN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#INCR"><span class="nav-number">2.2.9.</span> <span class="nav-text">INCR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#INCRBY"><span class="nav-number">2.2.10.</span> <span class="nav-text">INCRBY</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DECR"><span class="nav-number">2.2.11.</span> <span class="nav-text">DECR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DECRBY"><span class="nav-number">2.2.12.</span> <span class="nav-text">DECRBY</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GETSET"><span class="nav-number">2.2.13.</span> <span class="nav-text">GETSET</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#List%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">List类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LPUSH"><span class="nav-number">2.3.1.</span> <span class="nav-text">LPUSH</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RPUSH"><span class="nav-number">2.3.2.</span> <span class="nav-text">RPUSH</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LPOP"><span class="nav-number">2.3.3.</span> <span class="nav-text">LPOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RPOP"><span class="nav-number">2.3.4.</span> <span class="nav-text">RPOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LRANGE"><span class="nav-number">2.3.5.</span> <span class="nav-text">LRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LINDEX"><span class="nav-number">2.3.6.</span> <span class="nav-text">LINDEX</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LLEN"><span class="nav-number">2.3.7.</span> <span class="nav-text">LLEN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LTRIM"><span class="nav-number">2.3.8.</span> <span class="nav-text">LTRIM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LREM"><span class="nav-number">2.3.9.</span> <span class="nav-text">LREM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RPOPLPUSH"><span class="nav-number">2.3.10.</span> <span class="nav-text">RPOPLPUSH</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LSET"><span class="nav-number">2.3.11.</span> <span class="nav-text">LSET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LINSERT"><span class="nav-number">2.3.12.</span> <span class="nav-text">LINSERT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BLPOP"><span class="nav-number">2.3.13.</span> <span class="nav-text">BLPOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BRPOP"><span class="nav-number">2.3.14.</span> <span class="nav-text">BRPOP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.4.</span> <span class="nav-text">Hash类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HSET"><span class="nav-number">2.4.1.</span> <span class="nav-text">HSET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HGET"><span class="nav-number">2.4.2.</span> <span class="nav-text">HGET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HMGET"><span class="nav-number">2.4.3.</span> <span class="nav-text">HMGET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HLEN"><span class="nav-number">2.4.4.</span> <span class="nav-text">HLEN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HGETALL"><span class="nav-number">2.4.5.</span> <span class="nav-text">HGETALL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HDEL"><span class="nav-number">2.4.6.</span> <span class="nav-text">HDEL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HEXISTS"><span class="nav-number">2.4.7.</span> <span class="nav-text">HEXISTS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HINCRBY"><span class="nav-number">2.4.8.</span> <span class="nav-text">HINCRBY</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HKEYS"><span class="nav-number">2.4.9.</span> <span class="nav-text">HKEYS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HVALS"><span class="nav-number">2.4.10.</span> <span class="nav-text">HVALS</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Set%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.5.</span> <span class="nav-text">Set类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SADD"><span class="nav-number">2.5.1.</span> <span class="nav-text">SADD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SMEMBERS"><span class="nav-number">2.5.2.</span> <span class="nav-text">SMEMBERS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SISMEMBER"><span class="nav-number">2.5.3.</span> <span class="nav-text">SISMEMBER</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SREM"><span class="nav-number">2.5.4.</span> <span class="nav-text">SREM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SCARD"><span class="nav-number">2.5.5.</span> <span class="nav-text">SCARD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SRANDMEMBER"><span class="nav-number">2.5.6.</span> <span class="nav-text">SRANDMEMBER</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SPOP"><span class="nav-number">2.5.7.</span> <span class="nav-text">SPOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SMOVE"><span class="nav-number">2.5.8.</span> <span class="nav-text">SMOVE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%87%8D%E8%A6%81%E3%80%91%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97"><span class="nav-number">2.5.9.</span> <span class="nav-text">【重要】集合运算</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B7%AE%E9%9B%86%E8%BF%90%E7%AE%97SDIFF"><span class="nav-number">2.5.9.1.</span> <span class="nav-text">差集运算SDIFF</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B6%E9%9B%86%E8%BF%90%E7%AE%97SUNION"><span class="nav-number">2.5.9.2.</span> <span class="nav-text">并集运算SUNION</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%A4%E9%9B%86%E8%BF%90%E7%AE%97SINTER"><span class="nav-number">2.5.9.3.</span> <span class="nav-text">交集运算SINTER</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zset%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.6.</span> <span class="nav-text">Zset类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ZADD"><span class="nav-number">2.6.1.</span> <span class="nav-text">ZADD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZRANGE"><span class="nav-number">2.6.2.</span> <span class="nav-text">ZRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZREVRANGE"><span class="nav-number">2.6.3.</span> <span class="nav-text">ZREVRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZREM"><span class="nav-number">2.6.4.</span> <span class="nav-text">ZREM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZSCORE"><span class="nav-number">2.6.5.</span> <span class="nav-text">ZSCORE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZCARD"><span class="nav-number">2.6.6.</span> <span class="nav-text">ZCARD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZINCRBY"><span class="nav-number">2.6.7.</span> <span class="nav-text">ZINCRBY</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZMPOP"><span class="nav-number">2.6.8.</span> <span class="nav-text">ZMPOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZRANK"><span class="nav-number">2.6.9.</span> <span class="nav-text">ZRANK</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmap%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.7.</span> <span class="nav-text">Bitmap类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SETBIT"><span class="nav-number">2.7.1.</span> <span class="nav-text">SETBIT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GETBIT"><span class="nav-number">2.7.2.</span> <span class="nav-text">GETBIT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BITCOUNT"><span class="nav-number">2.7.3.</span> <span class="nav-text">BITCOUNT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BITPOS"><span class="nav-number">2.7.4.</span> <span class="nav-text">BITPOS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BITOP"><span class="nav-number">2.7.5.</span> <span class="nav-text">BITOP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#STRLEN-1"><span class="nav-number">2.7.6.</span> <span class="nav-text">STRLEN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BITSCAN"><span class="nav-number">2.7.7.</span> <span class="nav-text">BITSCAN</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HyperLogLog%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.8.</span> <span class="nav-text">HyperLogLog类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PFADD"><span class="nav-number">2.8.1.</span> <span class="nav-text">PFADD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PFCOUNT"><span class="nav-number">2.8.2.</span> <span class="nav-text">PFCOUNT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PFMERGE"><span class="nav-number">2.8.3.</span> <span class="nav-text">PFMERGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PFCLEAR"><span class="nav-number">2.8.4.</span> <span class="nav-text">PFCLEAR</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GEO-Geospatial-indexes-%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.9.</span> <span class="nav-text">GEO(Geospatial indexes)类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GEOADD"><span class="nav-number">2.9.1.</span> <span class="nav-text">GEOADD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GEODIST"><span class="nav-number">2.9.2.</span> <span class="nav-text">GEODIST</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GEOPOS"><span class="nav-number">2.9.3.</span> <span class="nav-text">GEOPOS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GEORADIUS"><span class="nav-number">2.9.4.</span> <span class="nav-text">GEORADIUS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GEORADIUSBYMEMBER"><span class="nav-number">2.9.5.</span> <span class="nav-text">GEORADIUSBYMEMBER</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GEOHASH"><span class="nav-number">2.9.6.</span> <span class="nav-text">GEOHASH</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stream%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.10.</span> <span class="nav-text">Stream类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#XADD"><span class="nav-number">2.10.1.</span> <span class="nav-text">XADD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XRANGE"><span class="nav-number">2.10.2.</span> <span class="nav-text">XRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XREVRANGE"><span class="nav-number">2.10.3.</span> <span class="nav-text">XREVRANGE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XDEL"><span class="nav-number">2.10.4.</span> <span class="nav-text">XDEL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XLEN"><span class="nav-number">2.10.5.</span> <span class="nav-text">XLEN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XTRIM"><span class="nav-number">2.10.6.</span> <span class="nav-text">XTRIM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XREAD"><span class="nav-number">2.10.7.</span> <span class="nav-text">XREAD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XGROUP-CREATE"><span class="nav-number">2.10.8.</span> <span class="nav-text">XGROUP CREATE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XREADGROUP"><span class="nav-number">2.10.9.</span> <span class="nav-text">XREADGROUP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XINFO-STREAM"><span class="nav-number">2.10.10.</span> <span class="nav-text">XINFO STREAM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XPENDING"><span class="nav-number">2.10.11.</span> <span class="nav-text">XPENDING</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XACK"><span class="nav-number">2.10.12.</span> <span class="nav-text">XACK</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitfield%E7%B1%BB%E5%9E%8B%E3%80%90%E4%BA%86%E8%A7%A3%E3%80%91"><span class="nav-number">2.11.</span> <span class="nav-text">Bitfield类型【了解】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BITFIELD"><span class="nav-number">2.11.1.</span> <span class="nav-text">BITFIELD</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">三、持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RDB-Redis-Database"><span class="nav-number">3.1.</span> <span class="nav-text">RDB(Redis Database)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">3.1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="nav-number">3.1.2.</span> <span class="nav-text">备份与恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E9%97%B4%E9%9A%94"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">备份间隔</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rdb%E6%96%87%E4%BB%B6%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">rdb文件保存位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rdb%E6%96%87%E4%BB%B6%E5%90%8D"><span class="nav-number">3.1.2.3.</span> <span class="nav-text">rdb文件名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BD"><span class="nav-number">3.1.2.4.</span> <span class="nav-text">自动备份</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%A4%87%E4%BB%BD"><span class="nav-number">3.1.2.5.</span> <span class="nav-text">手动备份</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%9C%89%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.2.6.</span> <span class="nav-text">其他有关命令</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RDB%E7%9A%84%E4%BC%98%E5%8A%A3"><span class="nav-number">3.1.3.</span> <span class="nav-text">RDB的优劣</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8A%A3%E5%8A%BF"><span class="nav-number">3.1.3.2.</span> <span class="nav-text">劣势</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RDB%E6%96%87%E4%BB%B6%E6%8D%9F%E5%9D%8F%E4%BF%AE%E5%A4%8D"><span class="nav-number">3.1.4.</span> <span class="nav-text">RDB文件损坏修复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A6%81%E7%94%A8RDB%E5%8A%9F%E8%83%BD"><span class="nav-number">3.1.5.</span> <span class="nav-text">禁用RDB功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RDB%E4%BC%98%E5%8C%96%E9%85%8D%E7%BD%AE%E9%A1%B9"><span class="nav-number">3.1.6.</span> <span class="nav-text">RDB优化配置项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF-Append-Only-File"><span class="nav-number">3.2.</span> <span class="nav-text">AOF(Append Only File)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">备份与恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BC%80%E5%90%AFaof%E6%94%AF%E6%8C%81%EF%BC%9A"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">开启aof支持：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%86%99%E5%9B%9E%E7%AD%96%E7%95%A5"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">写回策略</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE"><span class="nav-number">3.2.2.3.</span> <span class="nav-text">备份文件位置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6%E5%90%8D"><span class="nav-number">3.2.2.4.</span> <span class="nav-text">备份文件名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF%E6%96%87%E4%BB%B6%E9%94%99%E8%AF%AF%E5%92%8C%E4%BF%AE%E5%A4%8D"><span class="nav-number">3.2.2.5.</span> <span class="nav-text">AOF文件错误和修复</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%A3"><span class="nav-number">3.2.3.</span> <span class="nav-text">优劣</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF%EF%BC%9A"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">优势：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8A%A3%E5%8A%BF%EF%BC%9A"><span class="nav-number">3.2.3.2.</span> <span class="nav-text">劣势：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AOF%E9%87%8D%E5%86%99%E6%9C%BA%E5%88%B6"><span class="nav-number">3.2.4.</span> <span class="nav-text">AOF重写机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%87%8D%E5%86%99"><span class="nav-number">3.2.4.1.</span> <span class="nav-text">自动重写</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E9%87%8D%E5%86%99"><span class="nav-number">3.2.4.2.</span> <span class="nav-text">手动重写</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AOF%E9%85%8D%E7%BD%AE%E6%80%BB%E7%BB%93"><span class="nav-number">3.2.5.</span> <span class="nav-text">AOF配置总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ROB-AOF%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">3.3.</span> <span class="nav-text">ROB+AOF持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E6%96%B9%E5%BC%8F"><span class="nav-number">3.3.1.</span> <span class="nav-text">开启方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">3.3.2.</span> <span class="nav-text">工作原理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%AF%E7%BC%93%E5%AD%98%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.4.</span> <span class="nav-text">纯缓存模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E4%BA%8B%E5%8A%A1"><span class="nav-number">4.</span> <span class="nav-text">四、事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D"><span class="nav-number">4.1.</span> <span class="nav-text">基础介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-%E4%BA%8B%E5%8A%A1%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%BC%82%E5%90%8C"><span class="nav-number">4.1.1.</span> <span class="nav-text">Redis 事务与数据库事务的异同</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">4.2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="nav-number">4.2.1.</span> <span class="nav-text">基本流程：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-%E4%BA%8B%E5%8A%A1%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4%E7%AE%80%E8%BF%B0"><span class="nav-number">4.2.2.</span> <span class="nav-text">Redis 事务相关命令简述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#watch%E7%9B%91%E6%8E%A7"><span class="nav-number">4.2.3.</span> <span class="nav-text">watch监控</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E7%AE%A1%E9%81%93"><span class="nav-number">5.</span> <span class="nav-text">五、管道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D-1"><span class="nav-number">5.1.</span> <span class="nav-text">基础介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E6%8A%80%E6%9C%AF%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="nav-number">5.1.1.</span> <span class="nav-text">管道技术的核心原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E4%B8%8E%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">5.1.2.</span> <span class="nav-text">管道与事务的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E6%8A%80%E6%9C%AF%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="nav-number">5.1.3.</span> <span class="nav-text">管道技术的局限性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-1"><span class="nav-number">5.2.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E3%80%90%E4%BA%86%E8%A7%A3%E3%80%91"><span class="nav-number">6.</span> <span class="nav-text">六、发布订阅【了解】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%9C%BA%E5%88%B6"><span class="nav-number">6.1.</span> <span class="nav-text">发布订阅机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">6.2.</span> <span class="nav-text">常用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E5%A4%8D%E5%88%B6"><span class="nav-number">7.</span> <span class="nav-text">七、复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%E3%80%81%E6%B5%81%E7%A8%8B%E5%92%8C%E7%BC%BA%E7%82%B9"><span class="nav-number">7.1.</span> <span class="nav-text">原理、流程和缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E5%92%8C%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">7.1.1.</span> <span class="nav-text">基本原理和工作流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">7.1.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%85%B3%E7%B3%BB%E5%BB%BA%E7%AB%8B"><span class="nav-number">7.2.</span> <span class="nav-text">主从关系建立</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-1"><span class="nav-number">7.2.1.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="nav-number">7.2.2.</span> <span class="nav-text">配置文件配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E9%85%8D%E7%BD%AE"><span class="nav-number">7.2.3.</span> <span class="nav-text">命令配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5"><span class="nav-number">7.2.4.</span> <span class="nav-text">连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%85%B3%E7%B3%BB%E6%80%BB%E7%BB%93"><span class="nav-number">7.2.5.</span> <span class="nav-text">主从关系总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%B1%82%E4%B8%BB%E4%BB%8E"><span class="nav-number">7.3.</span> <span class="nav-text">多层主从</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%B1%E7%A6%BB%E4%B8%BB%E6%9C%BA"><span class="nav-number">7.4.</span> <span class="nav-text">脱离主机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E5%93%A8%E5%85%B5"><span class="nav-number">8.</span> <span class="nav-text">八、哨兵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-1"><span class="nav-number">8.1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8"><span class="nav-number">8.2.</span> <span class="nav-text">启动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.2.1.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%A8%E5%85%B5%E7%9A%84%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B%E5%92%8C%E9%80%89%E4%B8%BE%E5%8E%9F%E7%90%86"><span class="nav-number">8.3.</span> <span class="nav-text">哨兵的运行流程和选举原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-%E5%93%A8%E5%85%B5%E7%9A%84%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">8.3.1.</span> <span class="nav-text">Redis 哨兵的运行流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%B6%E6%AE%B5"><span class="nav-number">8.3.1.1.</span> <span class="nav-text">（1）初始化阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E7%9B%91%E6%8E%A7%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="nav-number">8.3.1.2.</span> <span class="nav-text">（2）监控主从节点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%AE%A2%E8%A7%82%E4%B8%8B%E7%BA%BF%E5%88%A4%E6%96%AD"><span class="nav-number">8.3.1.3.</span> <span class="nav-text">（3）客观下线判断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E9%A2%86%E5%AF%BC%E8%80%85%E9%80%89%E4%B8%BE"><span class="nav-number">8.3.1.4.</span> <span class="nav-text">（4）领导者选举</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB"><span class="nav-number">8.3.1.5.</span> <span class="nav-text">（5）故障转移</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%886%EF%BC%89%E6%81%A2%E5%A4%8D%E4%B8%8E%E9%87%8D%E6%96%B0%E9%85%8D%E7%BD%AE"><span class="nav-number">8.3.1.6.</span> <span class="nav-text">（6）恢复与重新配置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Raft%E5%8D%8F%E8%AE%AE"><span class="nav-number">8.3.2.</span> <span class="nav-text">Raft协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Master%E9%80%89%E4%B8%BE%E6%B5%81%E7%A8%8B"><span class="nav-number">8.3.3.</span> <span class="nav-text">Master选举流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%A8%E5%85%B5%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE"><span class="nav-number">8.4.</span> <span class="nav-text">哨兵使用建议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%9D%E3%80%81%E9%9B%86%E7%BE%A4"><span class="nav-number">9.</span> <span class="nav-text">九、集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">9.1.</span> <span class="nav-text">集群的算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A7%BD%E4%BD%8D%E5%92%8C%E5%88%86%E7%89%87"><span class="nav-number">9.1.1.</span> <span class="nav-text">槽位和分片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E6%98%A0%E5%B0%84%E7%AE%97%E6%B3%95"><span class="nav-number">9.1.2.</span> <span class="nav-text">哈希映射算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E5%8F%96%E4%BD%99%E5%88%86%E5%8C%BA"><span class="nav-number">9.1.2.1.</span> <span class="nav-text">哈希取余分区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E5%88%86%E5%8C%BA"><span class="nav-number">9.1.2.2.</span> <span class="nav-text">一致性哈希算法分区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E6%A7%BD%E5%88%86%E5%8C%BA"><span class="nav-number">9.1.2.3.</span> <span class="nav-text">哈希槽分区</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E6%90%AD%E5%BB%BA%E7%A4%BA%E4%BE%8B"><span class="nav-number">9.2.</span> <span class="nav-text">集群的搭建示例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E4%B8%BB%E4%B8%89%E4%BB%8E%E6%90%AD%E5%BB%BA"><span class="nav-number">9.2.1.</span> <span class="nav-text">三主三从搭建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E8%AF%BB%E5%86%99"><span class="nav-number">9.2.2.</span> <span class="nav-text">集群的读写</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%90%86%E8%AE%BA%EF%BC%9A"><span class="nav-number">9.2.2.1.</span> <span class="nav-text">理论：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C"><span class="nav-number">9.2.2.2.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB-%E8%8A%82%E7%82%B9%E4%BB%8E%E5%B1%9E%E8%B0%83%E6%95%B4"><span class="nav-number">9.2.3.</span> <span class="nav-text">手动故障转移&amp;节点从属调整</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E6%89%A9%E5%AE%B9"><span class="nav-number">9.3.</span> <span class="nav-text">集群扩容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E8%8A%82%E7%82%B9%E5%8A%A0%E5%85%A5%E5%8E%9F%E6%9C%89%E9%9B%86%E7%BE%A4"><span class="nav-number">9.3.1.</span> <span class="nav-text">新节点加入原有集群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E5%88%86%E9%85%8D%E6%A7%BD%E4%BD%8D"><span class="nav-number">9.3.2.</span> <span class="nav-text">重新分配槽位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%96%B0%E8%8A%82%E7%82%B9%E7%9A%84%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="nav-number">9.3.3.</span> <span class="nav-text">添加新节点的从节点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E7%BC%A9%E5%AE%B9"><span class="nav-number">9.4.</span> <span class="nav-text">集群缩容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E%E9%9B%86%E7%BE%A4%E4%B8%AD%E6%B8%85%E9%99%A4%E4%BB%8E%E6%9C%BA"><span class="nav-number">9.4.1.</span> <span class="nav-text">从集群中清除从机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E5%BA%9F%E5%BC%83%E8%8A%82%E7%82%B9%E6%A7%BD%E4%BD%8D%E5%88%86%E7%BB%99%E5%85%B6%E4%BB%96%E8%8A%82%E7%82%B9"><span class="nav-number">9.4.2.</span> <span class="nav-text">将废弃节点槽位分给其他节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E6%88%90%E4%B8%BA%E4%BB%8E%E8%8A%82%E7%82%B9%E7%9A%84%E5%BA%9F%E5%BC%83%E8%8A%82%E7%82%B9%E6%B8%85%E9%99%A4"><span class="nav-number">9.4.3.</span> <span class="nav-text">将成为从节点的废弃节点清除</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E5%85%B6%E4%BB%96%E7%9F%A5%E8%AF%86"><span class="nav-number">9.5.</span> <span class="nav-text">集群其他知识</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BC%BA%E9%99%B7%E4%B8%8E%E8%A7%A3%E5%86%B3%EF%BC%9A%E4%B8%8D%E5%9C%A8%E5%90%8C%E4%B8%80%E8%8A%82%E7%82%B9%E7%9A%84key%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E5%A4%9A%E9%94%AE%E6%93%8D%E4%BD%9C"><span class="nav-number">9.5.0.1.</span> <span class="nav-text">缺陷与解决：不在同一节点的key无法使用多键操作</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CRC16%E6%BA%90%E7%A0%81"><span class="nav-number">9.5.1.</span> <span class="nav-text">CRC16源码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-%E9%85%8D%E7%BD%AE"><span class="nav-number">9.5.2.</span> <span class="nav-text">其他常用命令|配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E3%80%81SpringBoot%E9%9B%86%E6%88%90"><span class="nav-number">10.</span> <span class="nav-text">十、SpringBoot集成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Jedis%E9%A9%B1%E5%8A%A8%E5%8C%85"><span class="nav-number">10.1.</span> <span class="nav-text">Jedis驱动包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">10.1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-2"><span class="nav-number">10.1.2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96"><span class="nav-number">10.1.2.1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">10.1.2.2.</span> <span class="nav-text">使用示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lettuce%E9%A9%B1%E5%8A%A8%E5%8C%85"><span class="nav-number">10.2.</span> <span class="nav-text">Lettuce驱动包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">10.2.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-3"><span class="nav-number">10.2.2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96-1"><span class="nav-number">10.2.2.1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-4"><span class="nav-number">10.2.2.2.</span> <span class="nav-text">使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RedisTemplate%E9%A9%B1%E5%8A%A8%E5%8C%85"><span class="nav-number">10.3.</span> <span class="nav-text">RedisTemplate驱动包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="nav-number">10.3.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96-2"><span class="nav-number">10.3.2.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E6%9C%BARedis%E8%BF%9E%E6%8E%A5%E9%85%8D%E7%BD%AE"><span class="nav-number">10.3.3.</span> <span class="nav-text">单机Redis连接配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4Redis%E8%BF%9E%E6%8E%A5%E9%85%8D%E7%BD%AE"><span class="nav-number">10.3.4.</span> <span class="nav-text">集群Redis连接配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%A4%BA%E4%BE%8B"><span class="nav-number">10.3.5.</span> <span class="nav-text">操作示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-number">11.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">11.1.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="nav-number">11.2.</span> <span class="nav-text">问题排查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-number">11.2.1.</span> <span class="nav-text">基础</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9Aredis%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87"><span class="nav-number">11.2.1.1.</span> <span class="nav-text">问题1：redis客户端无法显示中文</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4"><span class="nav-number">11.2.2.</span> <span class="nav-text">集群</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9A%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E7%9A%84%E4%B8%80%E8%88%AC%E5%8E%9F%E5%9B%A0%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">11.2.2.1.</span> <span class="nav-text">问题1：连接失败的一般原因及解决方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%982%EF%BC%9A%E9%9B%86%E7%BE%A4%E5%BB%BA%E7%AB%8B%E5%8D%A1%E5%9C%A8Waiting-for-the-cluster-to-join"><span class="nav-number">11.2.2.2.</span> <span class="nav-text">问题2：集群建立卡在Waiting for the cluster to join</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%983%EF%BC%9A%E8%8A%82%E7%82%B9%E6%A7%BD%E4%BD%8D%E5%88%86%E9%85%8D%E5%A4%B1%E8%B4%A5%EF%BC%9A"><span class="nav-number">11.2.2.3.</span> <span class="nav-text">问题3：节点槽位分配失败：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%984%EF%BC%9ANode-IP-Port-has-slots-in-importing-state-5461"><span class="nav-number">11.2.2.4.</span> <span class="nav-text">问题4：Node  IP:Port has slots in importing state 5461.</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B4%E5%90%88"><span class="nav-number">11.2.3.</span> <span class="nav-text">整合</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9ASpringboot%E4%BD%BF%E7%94%A8RedisTemplate%E6%8F%92%E5%85%A5%E9%94%AE%E5%80%BC%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B8%8D%E6%98%8E%E5%89%8D%E7%BC%80"><span class="nav-number">11.2.3.1.</span> <span class="nav-text">问题1：Springboot使用RedisTemplate插入键值时出现不明前缀</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%AE%E9%A2%982%EF%BC%9A%E4%B8%BB%E6%9C%BA%E5%AE%95%E6%9C%BA%E4%BB%8E%E6%9C%BA%E7%BB%A7%E4%BD%8D%E5%90%8ESpringboot2-x%E7%A8%8B%E5%BA%8F%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5Redis"><span class="nav-number">11.2.3.2.</span> <span class="nav-text">问题2：主机宕机从机继位后Springboot2.x程序无法连接Redis</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96-1"><span class="nav-number">11.3.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-%E7%AB%AF%E5%8F%A3-6379%E3%80%8116379-%E5%92%8C-26379-%E7%9A%84%E7%94%A8%E9%80%94"><span class="nav-number">11.3.1.</span> <span class="nav-text">Redis 端口 6379、16379 和 26379 的用途</span></a></li></ol></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Shearington"
-      src="/images/head.jpg">
-  <p class="site-author-name" itemprop="name">Shearington</p>
-  <div class="site-description" itemprop="description">诗酒趁年华</div>
 </div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">44</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">18</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">44</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
+
+
+
+
+
+
 </div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/Fushiye/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fushiye&#x2F;" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:shearington@foxmail.com" title="E-Mail → mailto:shearington@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
-      </span>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Shearington</span>
   </div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2025</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">434k</span>
   </span>
-  <span class="author" itemprop="copyrightHolder">Shearington</span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">24:07</span>
+  </span>
 </div>
 <!--
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 -->
 
-        
+    </div>
+  </footer>
 
-
-
-
-
-
-
-
-      </div>
-    </footer>
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
   </div>
 
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-  
-<script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 </body>
 </html>

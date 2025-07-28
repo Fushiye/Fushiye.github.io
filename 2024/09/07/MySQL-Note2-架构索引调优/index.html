@@ -2,10 +2,11 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 7.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_apple-touch-icon-human">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_apple-touch-icon-human.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_human_32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_human_16x16.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
@@ -13,14 +14,13 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"fushiye.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-  <meta name="description" content="MySQL架构和性能优化学习笔记，欢迎指正~">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fushiye.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism-darcula","dark":"prism-darcula"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null,"giscus":{"enable":true,"repo":"Fushiye/Fushiye.github.io","repo_id":"R_kgDOLyiTvA","category":"Announcements","category_id":"DIC_kwDOLyiTvM4CteAo","mapping":"title","reactions_enabled":1,"emit_metadata":0,"input_position":"top","lang":"zh-CN","loading":"lazy","crossorigin":"anonymous"}},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":3,"unescape":false,"preload":true}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="MySQL架构和性能优化学习笔记，欢迎指正~">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL-Note2-架构索引调优">
 <meta property="og:url" content="https://fushiye.github.io/2024/09/07/MySQL-Note2-%E6%9E%B6%E6%9E%84%E7%B4%A2%E5%BC%95%E8%B0%83%E4%BC%98/index.html">
@@ -67,20 +67,14 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240815203947.png">
 
+
 <link rel="canonical" href="https://fushiye.github.io/2024/09/07/MySQL-Note2-%E6%9E%B6%E6%9E%84%E7%B4%A2%E5%BC%95%E8%B0%83%E4%BC%98/">
 
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fushiye.github.io/2024/09/07/MySQL-Note2-%E6%9E%B6%E6%9E%84%E7%B4%A2%E5%BC%95%E8%B0%83%E4%BC%98/","path":"2024/09/07/MySQL-Note2-架构索引调优/","title":"MySQL-Note2-架构索引调优"}</script>
 
-  <title>MySQL-Note2-架构索引调优 | 星海拾贝</title>
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MySQL-Note2-架构索引调优 | 星海拾贝</title>
   
 
 
@@ -88,57 +82,58 @@
 
 
 
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
   <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">星海拾贝</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
+      <p class="site-title">星海拾贝</p>
+      <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">探索永无止境</p>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
         <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
@@ -146,34 +141,8 @@
 
 
 
-
 <nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -185,109 +154,184 @@
 
   <div class="search-pop-overlay">
     <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
-
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
     </div>
   </div>
 
-</div>
-    </header>
+</header>
+        
+  
+  <aside class="sidebar">
 
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">MySQL架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E4%B8%ADMySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95"><span class="nav-number">1.1.</span> <span class="nav-text">Linux中MySQL的数据目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">MySQL的数据目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB"><span class="nav-number">1.1.2.</span> <span class="nav-text">InnoDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISBM"><span class="nav-number">1.1.3.</span> <span class="nav-text">MyISBM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E5%92%8C%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">用户和权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.1.</span> <span class="nav-text">[!] 用户的创建和管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.2.</span> <span class="nav-text">[!] 用户密码管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">设置当前用户密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%85%B6%E4%BB%96%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">设置其他用户密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL%E5%AF%86%E7%A0%81%E7%AE%A1%E7%90%86-%E8%BF%87%E6%9C%9F%E5%92%8C%E9%87%8D%E7%94%A8"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">MySQL密码管理-过期和重用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5"><span class="nav-number">1.2.2.3.1.</span> <span class="nav-text">密码过期策略</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E9%87%8D%E7%94%A8%E7%AD%96%E7%95%A5"><span class="nav-number">1.2.2.3.2.</span> <span class="nav-text">密码重用策略</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.3.</span> <span class="nav-text">[!] 权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E5%88%97%E8%A1%A8%E5%92%8C%E6%8E%88%E6%9D%83%E5%8E%9F%E5%88%99"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">权限列表和授权原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%88%E6%9D%83"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">授权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9D%83%E9%99%90"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">查看权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%B6%E5%9B%9E%E6%9D%83%E9%99%90"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">收回权限</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3-%E6%9D%83%E9%99%90%E8%A1%A8"><span class="nav-number">1.2.4.</span> <span class="nav-text">(了解)权限表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#user%E8%A1%A8"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">user表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#db%E3%80%81table-priv%E3%80%81columns-priv%E3%80%81procs-priv%E8%A1%A8"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">db、table_priv、columns_priv、procs_priv表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3-%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.5.</span> <span class="nav-text">(了解)访问控制流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%92%E8%89%B2%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.6.</span> <span class="nav-text">[!] 角色管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%92%E8%89%B2%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">角色的创建和管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%92%E8%89%B2%E7%9A%84%E6%8E%88%E4%BA%88%EF%BC%8C%E6%BF%80%E6%B4%BB%E5%92%8C%E5%89%A5%E5%A4%BA"><span class="nav-number">1.2.6.2.</span> <span class="nav-text">角色的授予，激活和剥夺</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%BA%E5%88%B6%E8%A7%92%E8%89%B2"><span class="nav-number">1.2.6.3.</span> <span class="nav-text">强制角色</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">逻辑架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84"><span class="nav-number">1.3.1.</span> <span class="nav-text">MySQL逻辑架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E5%B1%82"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">连接层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%95%E6%93%8E%E5%B1%82"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">引擎层</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E8%A6%81-SQL%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.3.2.</span> <span class="nav-text">(重要) SQL的执行流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL8-0%E4%B8%AD%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E7%9A%84%E6%B5%8B%E8%AF%95"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">MySQL8.0中执行流程的测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL5-7%E4%B8%AD%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E7%9A%84%E6%B5%8B%E8%AF%95"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">MySQL5.7中执行流程的测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3-Oracle%E4%B8%AD%E7%9A%84SQL%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.3.3.</span> <span class="nav-text">(了解)Oracle中的SQL执行流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%93%E5%AD%98%E6%B1%A0"><span class="nav-number">1.3.4.</span> <span class="nav-text">数据库缓存池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">1.4.</span> <span class="nav-text">存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">1.4.1.</span> <span class="nav-text">查看存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E8%A1%A8%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">1.4.2.</span> <span class="nav-text">设置表的存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E6%93%8E%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.4.3.</span> <span class="nav-text">引擎介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%87%8D%E8%A6%81%E3%80%91InnoDB-%E5%BC%95%E6%93%8E%EF%BC%9A%E5%85%B7%E5%A4%87%E5%A4%96%E9%94%AE%E6%94%AF%E6%8C%81%E5%8A%9F%E8%83%BD%E7%9A%84%E4%BA%8B%E5%8A%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">【重要】InnoDB 引擎：具备外键支持功能的事务存储引擎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%87%8D%E8%A6%81%E3%80%91MyISAM-%E5%BC%95%E6%93%8E%EF%BC%9A%E4%B8%BB%E8%A6%81%E7%9A%84%E9%9D%9E%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">【重要】MyISAM 引擎：主要的非事务处理存储引擎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E4%BA%86%E8%A7%A3%E3%80%91Archive-%E5%BC%95%E6%93%8E%EF%BC%9A%E7%94%A8%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%AD%98%E6%A1%A3"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">【了解】Archive 引擎：用于数据存档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E4%BA%86%E8%A7%A3%E3%80%91CSV-%E5%BC%95%E6%93%8E%EF%BC%9A%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E4%BB%A5%E9%80%97%E5%8F%B7%E5%88%86%E9%9A%94%E5%90%84%E4%B8%AA%E6%95%B0%E6%8D%AE%E9%A1%B9"><span class="nav-number">1.4.3.4.</span> <span class="nav-text">【了解】CSV 引擎：存储数据时，以逗号分隔各个数据项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E4%BA%86%E8%A7%A3%E3%80%91Memory-%E5%BC%95%E6%93%8E%EF%BC%9A%E7%BD%AE%E4%BA%8E%E5%86%85%E5%AD%98%E7%9A%84%E8%A1%A8"><span class="nav-number">1.4.3.5.</span> <span class="nav-text">【了解】Memory 引擎：置于内存的表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Blackhole%E3%80%81Merge%E3%80%81NDB%E3%80%81Federated"><span class="nav-number">1.4.3.6.</span> <span class="nav-text">Blackhole、Merge、NDB、Federated</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%90%E9%87%8D%E8%A6%81%E3%80%91InnoDB%E5%90%88MyISAM%E5%AF%B9%E6%AF%94"><span class="nav-number">1.4.4.</span> <span class="nav-text">【重要】InnoDB合MyISAM对比</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E5%92%8C%E8%B0%83%E4%BC%98"><span class="nav-number">2.</span> <span class="nav-text">索引和调优</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">索引的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">2.1.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E7%B4%A2%E5%BC%95"><span class="nav-number">2.1.2.</span> <span class="nav-text">设计索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E7%B4%A2%E5%BC%95%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.3.</span> <span class="nav-text">常见的索引概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">聚簇索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95%EF%BC%88%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E3%80%81%E8%BE%85%E5%8A%A9%E7%B4%A2%E5%BC%95%EF%BC%89"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">二级索引（非聚簇索引、辅助索引）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.1.3.3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%EF%BC%88%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E7%9A%84%E4%B8%80%E7%A7%8D%EF%BC%89"><span class="nav-number">2.1.3.4.</span> <span class="nav-text">联合索引（非聚簇索引的一种）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB%E7%9A%84%E7%B4%A2%E5%BC%95%E6%96%B9%E6%A1%88"><span class="nav-number">2.1.4.</span> <span class="nav-text">InnoDB的索引方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Compact%E8%A1%8C%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">Compact行格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-%E6%A0%91"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">B+树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB%E7%9A%84B-%E7%B4%A2%E5%BC%95%E8%A1%A5%E5%85%85"><span class="nav-number">2.1.4.3.</span> <span class="nav-text">InnoDB的B+索引补充</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISAM%E7%9A%84%E7%B4%A2%E5%BC%95%E6%96%B9%E6%A1%88"><span class="nav-number">2.1.5.</span> <span class="nav-text">MyISAM的索引方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BB%A3%E4%BB%B7"><span class="nav-number">2.1.6.</span> <span class="nav-text">索引的代价</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9B-%E6%A0%91%E4%BD%9C%E4%B8%BA%E7%B4%A2%E5%BC%95"><span class="nav-number">2.2.</span> <span class="nav-text">为什么选择B+树作为索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E8%A1%A8%E9%81%8D%E5%8E%86"><span class="nav-number">2.2.1.</span> <span class="nav-text">全表遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E7%BB%93%E6%9E%84"><span class="nav-number">2.2.2.</span> <span class="nav-text">哈希结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%93%88%E5%B8%8C%E7%B4%A2%E5%BC%95"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">自适应哈希索引</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="nav-number">2.2.3.</span> <span class="nav-text">二叉搜索树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AVL%E6%A0%91"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">AVL树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-balance-%E6%A0%91%EF%BC%88%E5%A4%9A%E8%B7%AF%E5%B9%B3%E8%A1%A1%E6%9F%A5%E6%89%BE%E6%A0%91%EF%BC%89"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">B(balance)树（多路平衡查找树）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-%E6%A0%91-1"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">B+树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#R%E6%A0%91%E7%B4%A2%E5%BC%95"><span class="nav-number">2.2.3.4.</span> <span class="nav-text">R树索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text">InnoDB数据存储结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84-%E2%80%93-%E9%A1%B5"><span class="nav-number">2.3.1.</span> <span class="nav-text">数据库的存储结构 – 页</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E4%B8%8E%E5%86%85%E5%AD%98%E4%BA%A4%E4%BA%92%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8D%95%E4%BD%8D"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">磁盘与内存交互的基本单位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B5%E7%9A%84%E5%A4%A7%E5%B0%8F"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">页的大小</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B5%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.1.3.</span> <span class="nav-text">页的结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B5%E7%9A%84%E4%B8%8A%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.1.4.</span> <span class="nav-text">页的上层结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B5%E7%9A%84%E5%85%B7%E4%BD%93%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.2.</span> <span class="nav-text">页的具体内部结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4%E5%92%8C%E6%96%87%E4%BB%B6%E5%B0%BE"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">文件头和文件尾</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4"><span class="nav-number">2.3.2.1.1.</span> <span class="nav-text">文件头</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%B0%BE"><span class="nav-number">2.3.2.1.2.</span> <span class="nav-text">文件尾</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A9%BA%E9%97%B2%E7%A9%BA%E9%97%B4%E3%80%81%E7%94%A8%E6%88%B7%E8%AE%B0%E5%BD%95%E3%80%81%E6%9C%80%E5%A4%A7%E6%9C%80%E5%B0%8F%E8%AE%B0%E5%BD%95"><span class="nav-number">2.3.2.2.</span> <span class="nav-text">空闲空间、用户记录、最大最小记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B5%E5%A4%B4%E5%92%8C%E9%A1%B5%E7%9B%AE%E5%BD%95"><span class="nav-number">2.3.2.3.</span> <span class="nav-text">页头和页目录</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A1%B5%E7%9B%AE%E5%BD%95"><span class="nav-number">2.3.2.3.1.</span> <span class="nav-text">页目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A1%B5%E5%A4%B4"><span class="nav-number">2.3.2.3.2.</span> <span class="nav-text">页头</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.3.3.</span> <span class="nav-text">行格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E9%95%BF%E5%AD%97%E6%AE%B5%E9%95%BF%E5%BA%A6%E5%88%97%E8%A1%A8"><span class="nav-number">2.3.3.1.</span> <span class="nav-text">变长字段长度列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NULL%E5%80%BC%E5%88%97%E8%A1%A8"><span class="nav-number">2.3.3.2.</span> <span class="nav-text">NULL值列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E5%A4%B4%E4%BF%A1%E6%81%AF%EF%BC%885B%EF%BC%89"><span class="nav-number">2.3.3.3.</span> <span class="nav-text">记录头信息（5B）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E7%9A%84%E7%9C%9F%E5%AE%9E%E6%95%B0%E6%8D%AE"><span class="nav-number">2.3.3.4.</span> <span class="nav-text">记录的真实数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dynamic%E5%92%8CCompressed"><span class="nav-number">2.3.3.5.</span> <span class="nav-text">Dynamic和Compressed</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A1%8C%E6%BA%A2%E5%87%BA"><span class="nav-number">2.3.3.5.1.</span> <span class="nav-text">行溢出</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redundant"><span class="nav-number">2.3.3.6.</span> <span class="nav-text">Redundant</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%BA%E3%80%81%E6%AE%B5%E5%92%8C%E7%A2%8E%E7%89%87%E5%8C%BA"><span class="nav-number">2.3.4.</span> <span class="nav-text">区、段和碎片区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89%E5%8C%BA%E3%80%81%E6%AE%B5%E5%92%8C%E7%A2%8E%E7%89%87%E6%AE%B5%EF%BC%9F"><span class="nav-number">2.3.4.1.</span> <span class="nav-text">为什么要有区、段和碎片段？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8C%BA%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">2.3.4.2.</span> <span class="nav-text">区的分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">2.3.5.</span> <span class="nav-text">表空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8B%AC%E7%AB%8B%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">2.3.5.1.</span> <span class="nav-text">独立表空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">2.3.5.2.</span> <span class="nav-text">系统表空间</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E5%88%A0%E9%99%A4"><span class="nav-number">2.4.</span> <span class="nav-text">索引的创建和删除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.4.1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">索引的分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.2.</span> <span class="nav-text">创建索引</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%A1%A8%E6%97%B6%E6%B7%BB%E5%8A%A0%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.2.0.1.</span> <span class="nav-text">创建表时添加索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%91%E8%A1%A8%E6%B7%BB%E5%8A%A0%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.2.0.2.</span> <span class="nav-text">向表添加索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.3.</span> <span class="nav-text">删除索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL8-0%E7%B4%A2%E5%BC%95%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7"><span class="nav-number">2.4.4.</span> <span class="nav-text">MySQL8.0索引的新特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E9%99%8D%E5%BA%8F%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.4.1.</span> <span class="nav-text">支持降序索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9A%90%E8%97%8F%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.4.2.</span> <span class="nav-text">隐藏索引</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%B4%A2%E5%BC%95%E9%9A%90%E8%97%8F%E5%92%8C%E5%8F%AF%E8%A7%81"><span class="nav-number">2.4.4.2.1.</span> <span class="nav-text">设置索引隐藏和可见</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="nav-number">2.5.</span> <span class="nav-text">索引的设计原则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E5%90%88%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.5.1.</span> <span class="nav-text">适合创建索引的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E9%80%82%E5%90%88%E4%BD%9C%E4%B8%BA%E7%B4%A2%E5%BC%95%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.5.2.</span> <span class="nav-text">不适合作为索引的情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.6.</span> <span class="nav-text">性能分析工具的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BC%98%E5%8C%96%E7%9A%84%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.6.1.</span> <span class="nav-text">数据库服务器优化的一般步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E5%8F%82%E6%95%B0"><span class="nav-number">2.6.2.</span> <span class="nav-text">查看系统参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%84%E7%B1%BB%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E5%8F%82%E6%95%B0"><span class="nav-number">2.6.2.1.</span> <span class="nav-text">各类系统性能参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1SQL%E7%9A%84%E6%9F%A5%E8%AF%A2%E6%88%90%E6%9C%AC%EF%BC%9Alast-query-cost"><span class="nav-number">2.6.2.2.</span> <span class="nav-text">统计SQL的查询成本：last_query_cost</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D%E6%89%A7%E8%A1%8C%E6%85%A2%E7%9A%84-SQL%EF%BC%9A%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="nav-number">2.6.3.</span> <span class="nav-text">定位执行慢的 SQL：慢查询日志</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97%E5%BC%80%E5%85%B3%E6%83%85%E5%86%B5"><span class="nav-number">2.6.3.1.</span> <span class="nav-text">查看慢查询日志开关情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%93%E5%BC%80-%E5%85%B3%E9%97%AD%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="nav-number">2.6.3.2.</span> <span class="nav-text">打开&#x2F;关闭慢查询日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%85%A2%E6%9F%A5%E8%AF%A2%E9%98%88%E5%80%BClong-query-time"><span class="nav-number">2.6.3.3.</span> <span class="nav-text">修改慢查询阈值long_query_time</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B0%B8%E4%B9%85%E4%BF%AE%E6%94%B9%E4%B8%8A%E8%BF%B0%E5%8F%82%E6%95%B0"><span class="nav-number">2.6.3.4.</span> <span class="nav-text">永久修改上述参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%EF%BC%9Amysqldumpslow"><span class="nav-number">2.6.3.5.</span> <span class="nav-text">慢查询日志分析工具：mysqldumpslow</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B-SQL-%E6%89%A7%E8%A1%8C%E6%88%90%E6%9C%AC%EF%BC%9ASHOW-PROFILE"><span class="nav-number">2.6.4.</span> <span class="nav-text">查看 SQL 执行成本：SHOW PROFILE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5%EF%BC%9AEXPLAIN"><span class="nav-number">2.6.5.</span> <span class="nav-text">分析查询语句：EXPLAIN</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-number">2.6.5.1.</span> <span class="nav-text">基本语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EXPLAIN%E5%90%84%E5%88%97%E7%9A%84%E5%85%B7%E4%BD%93%E4%BD%9C%E7%94%A8"><span class="nav-number">2.6.5.2.</span> <span class="nav-text">EXPLAIN各列的具体作用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#table"><span class="nav-number">2.6.5.2.1.</span> <span class="nav-text">table</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#id"><span class="nav-number">2.6.5.2.2.</span> <span class="nav-text">id</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#select-type"><span class="nav-number">2.6.5.2.3.</span> <span class="nav-text">select_type</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#type-%E9%87%8D%E8%A6%81"><span class="nav-number">2.6.5.2.4.</span> <span class="nav-text">type(重要)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#possible-keys%E3%80%81key%E3%80%81key-len"><span class="nav-number">2.6.5.2.5.</span> <span class="nav-text">possible_keys、key、key_len</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ref%E3%80%81rows%E3%80%81filtered"><span class="nav-number">2.6.5.2.6.</span> <span class="nav-text">ref、rows、filtered</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Extra%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%89"><span class="nav-number">2.6.5.2.7.</span> <span class="nav-text">Extra（重要）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EXPLAIN%E7%9A%84%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BD%BF%E7%94%A8"><span class="nav-number">2.6.6.</span> <span class="nav-text">EXPLAIN的进一步使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-explain%E7%9A%84%E5%9B%9B%E7%A7%8D%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.6.6.1.</span> <span class="nav-text">1. explain的四种输出格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#show-warnings%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.6.6.2.</span> <span class="nav-text">show warnings的使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E4%BC%98%E5%8C%96%E5%99%A8%E7%9A%84%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92-trace"><span class="nav-number">2.6.7.</span> <span class="nav-text">分析优化器的执行计划 trace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E7%9B%91%E6%8E%A7%E5%88%86%E6%9E%90%E8%A7%86%E5%9B%BE-sys-schema"><span class="nav-number">2.6.8.</span> <span class="nav-text">MySQL监控分析视图-sys schema</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96%E5%92%8C%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.</span> <span class="nav-text">索引优化和查询优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-number">2.7.1.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88%E6%A1%88%E4%BE%8B"><span class="nav-number">2.7.2.</span> <span class="nav-text">索引失效案例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.2.1.</span> <span class="nav-text">关联查询优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A6%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.7.2.2.</span> <span class="nav-text">左外连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.7.2.3.</span> <span class="nav-text">内连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JOIN-%E8%AF%AD%E5%8F%A5%E5%8E%9F%E7%90%86"><span class="nav-number">2.7.2.4.</span> <span class="nav-text">JOIN 语句原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Simple-Nested-Loop-Join-%EF%BC%88%E7%AE%80%E5%8D%95%E5%B5%8C%E5%A5%97%E5%BE%AA%E7%8E%AF%E8%BF%9E%E6%8E%A5%EF%BC%89"><span class="nav-number">2.7.2.4.1.</span> <span class="nav-text">Simple Nested-Loop Join （简单嵌套循环连接）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Index-Nested-Loop-Join-%EF%BC%88%E7%B4%A2%E5%BC%95%E5%B5%8C%E5%A5%97%E5%BE%AA%E7%8E%AF%E8%BF%9E%E6%8E%A5%EF%BC%89"><span class="nav-number">2.7.2.4.2.</span> <span class="nav-text">Index Nested-Loop Join （索引嵌套循环连接）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Block-Nested-Loop-Join-%EF%BC%88%E5%9D%97%E5%B5%8C%E5%A5%97%E5%BE%AA%E7%8E%AF%E8%BF%9E%E6%8E%A5%EF%BC%89"><span class="nav-number">2.7.2.4.3.</span> <span class="nav-text">Block  Nested-Loop Join （块嵌套循环连接）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.3.</span> <span class="nav-text">子查询优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.4.</span> <span class="nav-text">排序优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#filesort%E7%AE%97%E6%B3%95%EF%BC%9A%E5%8F%8C%E8%B7%AF%E6%8E%92%E5%BA%8F%E5%92%8C%E5%8D%95%E8%B7%AF%E6%8E%92%E5%BA%8F"><span class="nav-number">2.7.4.1.</span> <span class="nav-text">filesort算法：双路排序和单路排序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Group-by%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.5.</span> <span class="nav-text">Group by优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.6.</span> <span class="nav-text">分页查询优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95%E4%BC%98%E5%85%88"><span class="nav-number">2.7.7.</span> <span class="nav-text">覆盖索引优先</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E7%B4%A2%E5%BC%95"><span class="nav-number">2.7.8.</span> <span class="nav-text">字符串的索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8ICP"><span class="nav-number">2.7.9.</span> <span class="nav-text">索引下推ICP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ICP%E7%9A%84%E4%BD%BF%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="nav-number">2.7.9.1.</span> <span class="nav-text">ICP的使用条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ICP%E5%BC%80%E5%90%AF%E5%85%B3%E9%97%AD"><span class="nav-number">2.7.9.2.</span> <span class="nav-text">ICP开启关闭</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E7%B4%A2%E5%BC%95%E5%92%8C%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95"><span class="nav-number">2.7.10.</span> <span class="nav-text">普通索引和唯一索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.11.</span> <span class="nav-text">其他查询优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EXISTS%E5%92%8CIN%E7%9A%84%E5%8C%BA%E5%88%86"><span class="nav-number">2.7.11.1.</span> <span class="nav-text">EXISTS和IN的区分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#COUNT-%E5%92%8CCOUNT-%E5%AD%97%E6%AE%B5-%E6%95%88%E7%8E%87"><span class="nav-number">2.7.11.2.</span> <span class="nav-text">COUNT(*)和COUNT(字段)效率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LIMIT-1-%E5%AF%B9%E4%BC%98%E5%8C%96%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">2.7.11.3.</span> <span class="nav-text">LIMIT 1 对优化的影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%94%A8COMMIT"><span class="nav-number">2.7.11.4.</span> <span class="nav-text">多用COMMIT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">2.7.11.5.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-%E6%B7%98%E5%AE%9D%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%BB%E9%94%AE%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.7.12.</span> <span class="nav-text">示例 - 淘宝数据库的主键设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E4%B8%9A%E5%8A%A1%E7%9A%84%E4%B8%BB%E9%94%AE%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.7.12.1.</span> <span class="nav-text">核心业务的主键设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%A2%9EID%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.7.12.2.</span> <span class="nav-text">自增ID的问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83"><span class="nav-number">2.8.</span> <span class="nav-text">数据库设计规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%AE-%E7%A0%81-%E5%92%8C%E5%B1%9E%E6%80%A7"><span class="nav-number">2.8.1.</span> <span class="nav-text">键(码)和属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8C%83%E5%BC%8F"><span class="nav-number">2.8.2.</span> <span class="nav-text">范式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1NF%EF%BC%88%E7%AC%AC%E4%B8%80%E8%8C%83%E5%BC%8F%EF%BC%89"><span class="nav-number">2.8.2.1.</span> <span class="nav-text">1NF（第一范式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2NF%EF%BC%88%E7%AC%AC%E4%BA%8C%E8%8C%83%E5%BC%8F%EF%BC%89"><span class="nav-number">2.8.2.2.</span> <span class="nav-text">2NF（第二范式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3NF%EF%BC%88%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8F%EF%BC%89"><span class="nav-number">2.8.2.3.</span> <span class="nav-text">3NF（第三范式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BCNF%EF%BC%88Boyce-Codd%E8%8C%83%E5%BC%8F%EF%BC%89"><span class="nav-number">2.8.2.4.</span> <span class="nav-text">BCNF（Boyce-Codd范式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4NF%EF%BC%88%E7%AC%AC%E5%9B%9B%E8%8C%83%E5%BC%8F%EF%BC%89"><span class="nav-number">2.8.2.5.</span> <span class="nav-text">4NF（第四范式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5NF%EF%BC%88%E7%AC%AC%E4%BA%94%E8%8C%83%E5%BC%8F%EF%BC%89"><span class="nav-number">2.8.2.6.</span> <span class="nav-text">5NF（第五范式）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E8%8C%83%E5%BC%8F"><span class="nav-number">2.8.3.</span> <span class="nav-text">反范式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E8%8C%83%E5%BC%8F%E7%9A%84%E6%96%B0%E9%97%AE%E9%A2%98"><span class="nav-number">2.8.3.1.</span> <span class="nav-text">反范式的新问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E8%8C%83%E5%BC%8F%E7%9A%84%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.8.3.2.</span> <span class="nav-text">反范式的适用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ER%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.8.4.</span> <span class="nav-text">ER模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ER%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86"><span class="nav-number">2.8.4.1.</span> <span class="nav-text">ER模型的基本组成部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ER%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">2.8.4.2.</span> <span class="nav-text">ER模型和数据表的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="nav-number">2.8.5.</span> <span class="nav-text">数据表的设计原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%B9%E8%B1%A1%E7%BC%96%E5%86%99%E5%BB%BA%E8%AE%AE"><span class="nav-number">2.8.6.</span> <span class="nav-text">数据库对象编写建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">2.8.6.1.</span> <span class="nav-text">对于数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E8%A1%A8%E5%92%8C%E5%88%97"><span class="nav-number">2.8.6.2.</span> <span class="nav-text">对于表和列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E7%B4%A2%E5%BC%95"><span class="nav-number">2.8.6.3.</span> <span class="nav-text">关于索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8ESQL%E7%BC%96%E5%86%99"><span class="nav-number">2.8.6.4.</span> <span class="nav-text">关于SQL编写</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PowerDesigner%E8%AE%BE%E8%AE%A1ER%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.8.7.</span> <span class="nav-text">PowerDesigner设计ER模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%B6%E4%BB%96%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5"><span class="nav-number">2.9.</span> <span class="nav-text">数据库其他调优策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E8%B0%83%E4%BC%98%E9%97%AE%E9%A2%98"><span class="nav-number">2.9.1.</span> <span class="nav-text">如何定位调优问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E4%BC%98%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%92%8C%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.9.2.</span> <span class="nav-text">调优的维度和步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E9%80%89%E6%8B%A9%E5%90%88%E9%80%82%E7%9A%84DBMS"><span class="nav-number">2.9.2.0.1.</span> <span class="nav-text">1.选择合适的DBMS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E4%BC%98%E5%8C%96%E8%A1%A8%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.9.2.0.2.</span> <span class="nav-text">2.优化表的设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E4%BC%98%E5%8C%96%E9%80%BB%E8%BE%91%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.9.2.0.3.</span> <span class="nav-text">3.优化逻辑查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E4%BC%98%E5%8C%96%E7%89%A9%E7%90%86%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.9.2.0.4.</span> <span class="nav-text">4.优化物理查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E4%BD%BF%E7%94%A8redis%E6%88%96Memcached"><span class="nav-number">2.9.2.0.5.</span> <span class="nav-text">5.使用redis或Memcached</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-%E5%BA%93%E7%BA%A7%E4%BC%98%E5%8C%96"><span class="nav-number">2.9.2.0.6.</span> <span class="nav-text">6. 库级优化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96MySQL%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">2.9.3.</span> <span class="nav-text">优化MySQL服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A1%AC%E4%BB%B6"><span class="nav-number">2.9.3.1.</span> <span class="nav-text">优化服务器硬件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%96MySQL%E5%8F%82%E6%95%B0"><span class="nav-number">2.9.3.2.</span> <span class="nav-text">优化MySQL参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84"><span class="nav-number">2.9.4.</span> <span class="nav-text">优化数据库结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E8%A1%A8%EF%BC%8C%E6%A3%80%E6%9F%A5%E8%A1%A8%E5%92%8C%E4%BC%98%E5%8C%96%E8%A1%A8"><span class="nav-number">2.9.4.1.</span> <span class="nav-text">分析表，检查表和优化表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E8%A1%A8"><span class="nav-number">2.9.4.1.1.</span> <span class="nav-text">**分析表 **</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E8%A1%A8"><span class="nav-number">2.9.4.1.2.</span> <span class="nav-text">检查表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E8%A1%A8"><span class="nav-number">2.9.4.1.3.</span> <span class="nav-text">优化表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E8%A1%A8%E4%BC%98%E5%8C%96"><span class="nav-number">2.9.5.</span> <span class="nav-text">大表优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="nav-number">2.9.6.</span> <span class="nav-text">其他优化策略</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shearington"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Shearington</p>
+  <div class="site-description" itemprop="description">诗酒趁年华</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fushiye/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fushiye&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shearington@foxmail.com" title="E-Mail → mailto:shearington@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
   </div>
 
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
+        </div>
+      </div>
+    </div>
 
     
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://fushiye.github.io/2024/09/07/MySQL-Note2-%E6%9E%B6%E6%9E%84%E7%B4%A2%E5%BC%95%E8%B0%83%E4%BC%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head.jpg">
       <meta itemprop="name" content="Shearington">
-      <meta itemprop="description" content="诗酒趁年华">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="星海拾贝">
+      <meta itemprop="description" content="诗酒趁年华">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="MySQL-Note2-架构索引调优 | 星海拾贝">
+      <meta itemprop="description" content="MySQL架构和性能优化学习笔记，欢迎指正~">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           MySQL-Note2-架构索引调优
         </h1>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2024-09-07 15:07:46" itemprop="dateCreated datePublished" datetime="2024-09-07T15:07:46+08:00">2024-09-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-02-15 22:38:55" itemprop="dateModified" datetime="2025-02-15T22:38:55+08:00">2025-02-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">缓存与数据库</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
-                </span>
-            </span>
+      <time title="创建时间：2024-09-07 15:07:46" itemprop="dateCreated datePublished" datetime="2024-09-07T15:07:46+08:00">2024-09-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-02-15 22:38:55" itemprop="dateModified" datetime="2025-02-15T22:38:55+08:00">2025-02-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">缓存与数据库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+    </span>
 
-          
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>36k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2:01</span>
+    </span>
+</div>
+
             <div class="post-description">MySQL架构和性能优化学习笔记，欢迎指正~</div>
-
         </div>
       </header>
 
     
     
     
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <p>参考资料：<br><a target="_blank" rel="noopener" href="https://mysql.net.cn/doc/refman/8.0/en/">MySQL中文文档</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1iq4y1u7vj?p=96">MySQL高级篇-尚硅谷</a></p>
+    <div class="post-body" itemprop="articleBody"><p>参考资料：<br><a target="_blank" rel="noopener" href="https://mysql.net.cn/doc/refman/8.0/en/">MySQL中文文档</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1iq4y1u7vj?p=96">MySQL高级篇-尚硅谷</a></p>
 <h1 id="MySQL架构"><a href="#MySQL架构" class="headerlink" title="MySQL架构"></a>MySQL架构</h1><h2 id="Linux中MySQL的数据目录"><a href="#Linux中MySQL的数据目录" class="headerlink" title="Linux中MySQL的数据目录"></a>Linux中MySQL的数据目录</h2><h3 id="MySQL的数据目录"><a href="#MySQL的数据目录" class="headerlink" title="MySQL的数据目录"></a>MySQL的数据目录</h3><p>数据库存放路径：<code>/var/lib/mysql</code></p>
 <h3 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h3><p>数据与索引一同</p>
 <p><strong>MySQL5.7</strong><br>数据库存放路径下存有默认数据库和创建的数据库同名的文件夹。数据库文件夹中会有文件：<code>db.opt</code>,<code>表名.frm</code>,<code>表名.idb</code>。<br><code>db.opt</code>：存放本数据库使用的字符集、比较规则等<br><code>表名.frm</code>：存储对应表的结构<br><code>表名.idb</code>：（独立表空间）5.5.6后表中的数据默认存储在此文件中。（表中数据也可能存储在上层目录中的ibdata1（系统表空间，初始12M）文件中）<br>视图没有对应idb文件–&gt;没有自己的数据</p>
@@ -2555,211 +2599,87 @@
     
     
 
-      <footer class="post-footer">
+    <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"> MySQL</i></a>
+              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
           </div>
 
         
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2024/09/07/MySQL-Note1-%E8%AF%AD%E6%B3%95%E8%AF%AD%E5%8F%A5/" rel="prev" title="MySQL-Note1-语法语句">
-      <i class="fa fa-chevron-left"></i> MySQL-Note1-语法语句
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2024/09/26/MySQL-Challenges/" rel="next" title="MySQL-Challenges">
-      MySQL-Challenges <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/09/07/MySQL-Note1-%E8%AF%AD%E6%B3%95%E8%AF%AD%E5%8F%A5/" rel="prev" title="MySQL-Note1-语法语句">
+                  <i class="fa fa-angle-left"></i> MySQL-Note1-语法语句
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/09/26/MySQL-Challenges/" rel="next" title="MySQL-Challenges">
+                  MySQL-Challenges <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
   </article>
-  
-  
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">MySQL架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E4%B8%ADMySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95"><span class="nav-number">1.1.</span> <span class="nav-text">Linux中MySQL的数据目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">MySQL的数据目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB"><span class="nav-number">1.1.2.</span> <span class="nav-text">InnoDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISBM"><span class="nav-number">1.1.3.</span> <span class="nav-text">MyISBM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E5%92%8C%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">用户和权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.1.</span> <span class="nav-text">[!] 用户的创建和管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.2.</span> <span class="nav-text">[!] 用户密码管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">设置当前用户密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%85%B6%E4%BB%96%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">设置其他用户密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL%E5%AF%86%E7%A0%81%E7%AE%A1%E7%90%86-%E8%BF%87%E6%9C%9F%E5%92%8C%E9%87%8D%E7%94%A8"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">MySQL密码管理-过期和重用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5"><span class="nav-number">1.2.2.3.1.</span> <span class="nav-text">密码过期策略</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E9%87%8D%E7%94%A8%E7%AD%96%E7%95%A5"><span class="nav-number">1.2.2.3.2.</span> <span class="nav-text">密码重用策略</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.3.</span> <span class="nav-text">[!] 权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E5%88%97%E8%A1%A8%E5%92%8C%E6%8E%88%E6%9D%83%E5%8E%9F%E5%88%99"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">权限列表和授权原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%88%E6%9D%83"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">授权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9D%83%E9%99%90"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">查看权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%B6%E5%9B%9E%E6%9D%83%E9%99%90"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">收回权限</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3-%E6%9D%83%E9%99%90%E8%A1%A8"><span class="nav-number">1.2.4.</span> <span class="nav-text">(了解)权限表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#user%E8%A1%A8"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">user表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#db%E3%80%81table-priv%E3%80%81columns-priv%E3%80%81procs-priv%E8%A1%A8"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">db、table_priv、columns_priv、procs_priv表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3-%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.5.</span> <span class="nav-text">(了解)访问控制流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%92%E8%89%B2%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.6.</span> <span class="nav-text">[!] 角色管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%92%E8%89%B2%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">角色的创建和管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%92%E8%89%B2%E7%9A%84%E6%8E%88%E4%BA%88%EF%BC%8C%E6%BF%80%E6%B4%BB%E5%92%8C%E5%89%A5%E5%A4%BA"><span class="nav-number">1.2.6.2.</span> <span class="nav-text">角色的授予，激活和剥夺</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%BA%E5%88%B6%E8%A7%92%E8%89%B2"><span class="nav-number">1.2.6.3.</span> <span class="nav-text">强制角色</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">逻辑架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84"><span class="nav-number">1.3.1.</span> <span class="nav-text">MySQL逻辑架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E5%B1%82"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">连接层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%95%E6%93%8E%E5%B1%82"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">引擎层</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E8%A6%81-SQL%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.3.2.</span> <span class="nav-text">(重要) SQL的执行流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL8-0%E4%B8%AD%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E7%9A%84%E6%B5%8B%E8%AF%95"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">MySQL8.0中执行流程的测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL5-7%E4%B8%AD%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E7%9A%84%E6%B5%8B%E8%AF%95"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">MySQL5.7中执行流程的测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3-Oracle%E4%B8%AD%E7%9A%84SQL%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.3.3.</span> <span class="nav-text">(了解)Oracle中的SQL执行流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%93%E5%AD%98%E6%B1%A0"><span class="nav-number">1.3.4.</span> <span class="nav-text">数据库缓存池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">1.4.</span> <span class="nav-text">存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">1.4.1.</span> <span class="nav-text">查看存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E8%A1%A8%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">1.4.2.</span> <span class="nav-text">设置表的存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E6%93%8E%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.4.3.</span> <span class="nav-text">引擎介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%87%8D%E8%A6%81%E3%80%91InnoDB-%E5%BC%95%E6%93%8E%EF%BC%9A%E5%85%B7%E5%A4%87%E5%A4%96%E9%94%AE%E6%94%AF%E6%8C%81%E5%8A%9F%E8%83%BD%E7%9A%84%E4%BA%8B%E5%8A%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">【重要】InnoDB 引擎：具备外键支持功能的事务存储引擎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E9%87%8D%E8%A6%81%E3%80%91MyISAM-%E5%BC%95%E6%93%8E%EF%BC%9A%E4%B8%BB%E8%A6%81%E7%9A%84%E9%9D%9E%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">【重要】MyISAM 引擎：主要的非事务处理存储引擎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E4%BA%86%E8%A7%A3%E3%80%91Archive-%E5%BC%95%E6%93%8E%EF%BC%9A%E7%94%A8%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%AD%98%E6%A1%A3"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">【了解】Archive 引擎：用于数据存档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E4%BA%86%E8%A7%A3%E3%80%91CSV-%E5%BC%95%E6%93%8E%EF%BC%9A%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E4%BB%A5%E9%80%97%E5%8F%B7%E5%88%86%E9%9A%94%E5%90%84%E4%B8%AA%E6%95%B0%E6%8D%AE%E9%A1%B9"><span class="nav-number">1.4.3.4.</span> <span class="nav-text">【了解】CSV 引擎：存储数据时，以逗号分隔各个数据项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%90%E4%BA%86%E8%A7%A3%E3%80%91Memory-%E5%BC%95%E6%93%8E%EF%BC%9A%E7%BD%AE%E4%BA%8E%E5%86%85%E5%AD%98%E7%9A%84%E8%A1%A8"><span class="nav-number">1.4.3.5.</span> <span class="nav-text">【了解】Memory 引擎：置于内存的表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Blackhole%E3%80%81Merge%E3%80%81NDB%E3%80%81Federated"><span class="nav-number">1.4.3.6.</span> <span class="nav-text">Blackhole、Merge、NDB、Federated</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%90%E9%87%8D%E8%A6%81%E3%80%91InnoDB%E5%90%88MyISAM%E5%AF%B9%E6%AF%94"><span class="nav-number">1.4.4.</span> <span class="nav-text">【重要】InnoDB合MyISAM对比</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E5%92%8C%E8%B0%83%E4%BC%98"><span class="nav-number">2.</span> <span class="nav-text">索引和调优</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">索引的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">2.1.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E7%B4%A2%E5%BC%95"><span class="nav-number">2.1.2.</span> <span class="nav-text">设计索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E7%B4%A2%E5%BC%95%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.3.</span> <span class="nav-text">常见的索引概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">聚簇索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95%EF%BC%88%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E3%80%81%E8%BE%85%E5%8A%A9%E7%B4%A2%E5%BC%95%EF%BC%89"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">二级索引（非聚簇索引、辅助索引）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.1.3.3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%EF%BC%88%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E7%9A%84%E4%B8%80%E7%A7%8D%EF%BC%89"><span class="nav-number">2.1.3.4.</span> <span class="nav-text">联合索引（非聚簇索引的一种）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB%E7%9A%84%E7%B4%A2%E5%BC%95%E6%96%B9%E6%A1%88"><span class="nav-number">2.1.4.</span> <span class="nav-text">InnoDB的索引方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Compact%E8%A1%8C%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">Compact行格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-%E6%A0%91"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">B+树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB%E7%9A%84B-%E7%B4%A2%E5%BC%95%E8%A1%A5%E5%85%85"><span class="nav-number">2.1.4.3.</span> <span class="nav-text">InnoDB的B+索引补充</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISAM%E7%9A%84%E7%B4%A2%E5%BC%95%E6%96%B9%E6%A1%88"><span class="nav-number">2.1.5.</span> <span class="nav-text">MyISAM的索引方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BB%A3%E4%BB%B7"><span class="nav-number">2.1.6.</span> <span class="nav-text">索引的代价</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9B-%E6%A0%91%E4%BD%9C%E4%B8%BA%E7%B4%A2%E5%BC%95"><span class="nav-number">2.2.</span> <span class="nav-text">为什么选择B+树作为索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E8%A1%A8%E9%81%8D%E5%8E%86"><span class="nav-number">2.2.1.</span> <span class="nav-text">全表遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E7%BB%93%E6%9E%84"><span class="nav-number">2.2.2.</span> <span class="nav-text">哈希结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%93%88%E5%B8%8C%E7%B4%A2%E5%BC%95"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">自适应哈希索引</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="nav-number">2.2.3.</span> <span class="nav-text">二叉搜索树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AVL%E6%A0%91"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">AVL树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-balance-%E6%A0%91%EF%BC%88%E5%A4%9A%E8%B7%AF%E5%B9%B3%E8%A1%A1%E6%9F%A5%E6%89%BE%E6%A0%91%EF%BC%89"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">B(balance)树（多路平衡查找树）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-%E6%A0%91-1"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">B+树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#R%E6%A0%91%E7%B4%A2%E5%BC%95"><span class="nav-number">2.2.3.4.</span> <span class="nav-text">R树索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text">InnoDB数据存储结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84-%E2%80%93-%E9%A1%B5"><span class="nav-number">2.3.1.</span> <span class="nav-text">数据库的存储结构 – 页</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E4%B8%8E%E5%86%85%E5%AD%98%E4%BA%A4%E4%BA%92%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8D%95%E4%BD%8D"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">磁盘与内存交互的基本单位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B5%E7%9A%84%E5%A4%A7%E5%B0%8F"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">页的大小</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B5%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.1.3.</span> <span class="nav-text">页的结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B5%E7%9A%84%E4%B8%8A%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.1.4.</span> <span class="nav-text">页的上层结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B5%E7%9A%84%E5%85%B7%E4%BD%93%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.2.</span> <span class="nav-text">页的具体内部结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4%E5%92%8C%E6%96%87%E4%BB%B6%E5%B0%BE"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">文件头和文件尾</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4"><span class="nav-number">2.3.2.1.1.</span> <span class="nav-text">文件头</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%B0%BE"><span class="nav-number">2.3.2.1.2.</span> <span class="nav-text">文件尾</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A9%BA%E9%97%B2%E7%A9%BA%E9%97%B4%E3%80%81%E7%94%A8%E6%88%B7%E8%AE%B0%E5%BD%95%E3%80%81%E6%9C%80%E5%A4%A7%E6%9C%80%E5%B0%8F%E8%AE%B0%E5%BD%95"><span class="nav-number">2.3.2.2.</span> <span class="nav-text">空闲空间、用户记录、最大最小记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%B5%E5%A4%B4%E5%92%8C%E9%A1%B5%E7%9B%AE%E5%BD%95"><span class="nav-number">2.3.2.3.</span> <span class="nav-text">页头和页目录</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A1%B5%E7%9B%AE%E5%BD%95"><span class="nav-number">2.3.2.3.1.</span> <span class="nav-text">页目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A1%B5%E5%A4%B4"><span class="nav-number">2.3.2.3.2.</span> <span class="nav-text">页头</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.3.3.</span> <span class="nav-text">行格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E9%95%BF%E5%AD%97%E6%AE%B5%E9%95%BF%E5%BA%A6%E5%88%97%E8%A1%A8"><span class="nav-number">2.3.3.1.</span> <span class="nav-text">变长字段长度列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NULL%E5%80%BC%E5%88%97%E8%A1%A8"><span class="nav-number">2.3.3.2.</span> <span class="nav-text">NULL值列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E5%A4%B4%E4%BF%A1%E6%81%AF%EF%BC%885B%EF%BC%89"><span class="nav-number">2.3.3.3.</span> <span class="nav-text">记录头信息（5B）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E7%9A%84%E7%9C%9F%E5%AE%9E%E6%95%B0%E6%8D%AE"><span class="nav-number">2.3.3.4.</span> <span class="nav-text">记录的真实数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dynamic%E5%92%8CCompressed"><span class="nav-number">2.3.3.5.</span> <span class="nav-text">Dynamic和Compressed</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A1%8C%E6%BA%A2%E5%87%BA"><span class="nav-number">2.3.3.5.1.</span> <span class="nav-text">行溢出</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redundant"><span class="nav-number">2.3.3.6.</span> <span class="nav-text">Redundant</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%BA%E3%80%81%E6%AE%B5%E5%92%8C%E7%A2%8E%E7%89%87%E5%8C%BA"><span class="nav-number">2.3.4.</span> <span class="nav-text">区、段和碎片区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89%E5%8C%BA%E3%80%81%E6%AE%B5%E5%92%8C%E7%A2%8E%E7%89%87%E6%AE%B5%EF%BC%9F"><span class="nav-number">2.3.4.1.</span> <span class="nav-text">为什么要有区、段和碎片段？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8C%BA%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">2.3.4.2.</span> <span class="nav-text">区的分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">2.3.5.</span> <span class="nav-text">表空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8B%AC%E7%AB%8B%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">2.3.5.1.</span> <span class="nav-text">独立表空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">2.3.5.2.</span> <span class="nav-text">系统表空间</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E5%88%A0%E9%99%A4"><span class="nav-number">2.4.</span> <span class="nav-text">索引的创建和删除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.4.1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">索引的分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.2.</span> <span class="nav-text">创建索引</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%A1%A8%E6%97%B6%E6%B7%BB%E5%8A%A0%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.2.0.1.</span> <span class="nav-text">创建表时添加索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%91%E8%A1%A8%E6%B7%BB%E5%8A%A0%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.2.0.2.</span> <span class="nav-text">向表添加索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.3.</span> <span class="nav-text">删除索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL8-0%E7%B4%A2%E5%BC%95%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7"><span class="nav-number">2.4.4.</span> <span class="nav-text">MySQL8.0索引的新特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E9%99%8D%E5%BA%8F%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.4.1.</span> <span class="nav-text">支持降序索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9A%90%E8%97%8F%E7%B4%A2%E5%BC%95"><span class="nav-number">2.4.4.2.</span> <span class="nav-text">隐藏索引</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%B4%A2%E5%BC%95%E9%9A%90%E8%97%8F%E5%92%8C%E5%8F%AF%E8%A7%81"><span class="nav-number">2.4.4.2.1.</span> <span class="nav-text">设置索引隐藏和可见</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="nav-number">2.5.</span> <span class="nav-text">索引的设计原则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E5%90%88%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.5.1.</span> <span class="nav-text">适合创建索引的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E9%80%82%E5%90%88%E4%BD%9C%E4%B8%BA%E7%B4%A2%E5%BC%95%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.5.2.</span> <span class="nav-text">不适合作为索引的情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.6.</span> <span class="nav-text">性能分析工具的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BC%98%E5%8C%96%E7%9A%84%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.6.1.</span> <span class="nav-text">数据库服务器优化的一般步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E5%8F%82%E6%95%B0"><span class="nav-number">2.6.2.</span> <span class="nav-text">查看系统参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%84%E7%B1%BB%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E5%8F%82%E6%95%B0"><span class="nav-number">2.6.2.1.</span> <span class="nav-text">各类系统性能参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1SQL%E7%9A%84%E6%9F%A5%E8%AF%A2%E6%88%90%E6%9C%AC%EF%BC%9Alast-query-cost"><span class="nav-number">2.6.2.2.</span> <span class="nav-text">统计SQL的查询成本：last_query_cost</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D%E6%89%A7%E8%A1%8C%E6%85%A2%E7%9A%84-SQL%EF%BC%9A%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="nav-number">2.6.3.</span> <span class="nav-text">定位执行慢的 SQL：慢查询日志</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97%E5%BC%80%E5%85%B3%E6%83%85%E5%86%B5"><span class="nav-number">2.6.3.1.</span> <span class="nav-text">查看慢查询日志开关情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%93%E5%BC%80-%E5%85%B3%E9%97%AD%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="nav-number">2.6.3.2.</span> <span class="nav-text">打开&#x2F;关闭慢查询日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%85%A2%E6%9F%A5%E8%AF%A2%E9%98%88%E5%80%BClong-query-time"><span class="nav-number">2.6.3.3.</span> <span class="nav-text">修改慢查询阈值long_query_time</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B0%B8%E4%B9%85%E4%BF%AE%E6%94%B9%E4%B8%8A%E8%BF%B0%E5%8F%82%E6%95%B0"><span class="nav-number">2.6.3.4.</span> <span class="nav-text">永久修改上述参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%EF%BC%9Amysqldumpslow"><span class="nav-number">2.6.3.5.</span> <span class="nav-text">慢查询日志分析工具：mysqldumpslow</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B-SQL-%E6%89%A7%E8%A1%8C%E6%88%90%E6%9C%AC%EF%BC%9ASHOW-PROFILE"><span class="nav-number">2.6.4.</span> <span class="nav-text">查看 SQL 执行成本：SHOW PROFILE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5%EF%BC%9AEXPLAIN"><span class="nav-number">2.6.5.</span> <span class="nav-text">分析查询语句：EXPLAIN</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-number">2.6.5.1.</span> <span class="nav-text">基本语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EXPLAIN%E5%90%84%E5%88%97%E7%9A%84%E5%85%B7%E4%BD%93%E4%BD%9C%E7%94%A8"><span class="nav-number">2.6.5.2.</span> <span class="nav-text">EXPLAIN各列的具体作用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#table"><span class="nav-number">2.6.5.2.1.</span> <span class="nav-text">table</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#id"><span class="nav-number">2.6.5.2.2.</span> <span class="nav-text">id</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#select-type"><span class="nav-number">2.6.5.2.3.</span> <span class="nav-text">select_type</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#type-%E9%87%8D%E8%A6%81"><span class="nav-number">2.6.5.2.4.</span> <span class="nav-text">type(重要)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#possible-keys%E3%80%81key%E3%80%81key-len"><span class="nav-number">2.6.5.2.5.</span> <span class="nav-text">possible_keys、key、key_len</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ref%E3%80%81rows%E3%80%81filtered"><span class="nav-number">2.6.5.2.6.</span> <span class="nav-text">ref、rows、filtered</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Extra%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%89"><span class="nav-number">2.6.5.2.7.</span> <span class="nav-text">Extra（重要）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EXPLAIN%E7%9A%84%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BD%BF%E7%94%A8"><span class="nav-number">2.6.6.</span> <span class="nav-text">EXPLAIN的进一步使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-explain%E7%9A%84%E5%9B%9B%E7%A7%8D%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.6.6.1.</span> <span class="nav-text">1. explain的四种输出格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#show-warnings%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.6.6.2.</span> <span class="nav-text">show warnings的使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E4%BC%98%E5%8C%96%E5%99%A8%E7%9A%84%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92-trace"><span class="nav-number">2.6.7.</span> <span class="nav-text">分析优化器的执行计划 trace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E7%9B%91%E6%8E%A7%E5%88%86%E6%9E%90%E8%A7%86%E5%9B%BE-sys-schema"><span class="nav-number">2.6.8.</span> <span class="nav-text">MySQL监控分析视图-sys schema</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96%E5%92%8C%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.</span> <span class="nav-text">索引优化和查询优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-number">2.7.1.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88%E6%A1%88%E4%BE%8B"><span class="nav-number">2.7.2.</span> <span class="nav-text">索引失效案例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.2.1.</span> <span class="nav-text">关联查询优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A6%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.7.2.2.</span> <span class="nav-text">左外连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.7.2.3.</span> <span class="nav-text">内连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JOIN-%E8%AF%AD%E5%8F%A5%E5%8E%9F%E7%90%86"><span class="nav-number">2.7.2.4.</span> <span class="nav-text">JOIN 语句原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Simple-Nested-Loop-Join-%EF%BC%88%E7%AE%80%E5%8D%95%E5%B5%8C%E5%A5%97%E5%BE%AA%E7%8E%AF%E8%BF%9E%E6%8E%A5%EF%BC%89"><span class="nav-number">2.7.2.4.1.</span> <span class="nav-text">Simple Nested-Loop Join （简单嵌套循环连接）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Index-Nested-Loop-Join-%EF%BC%88%E7%B4%A2%E5%BC%95%E5%B5%8C%E5%A5%97%E5%BE%AA%E7%8E%AF%E8%BF%9E%E6%8E%A5%EF%BC%89"><span class="nav-number">2.7.2.4.2.</span> <span class="nav-text">Index Nested-Loop Join （索引嵌套循环连接）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Block-Nested-Loop-Join-%EF%BC%88%E5%9D%97%E5%B5%8C%E5%A5%97%E5%BE%AA%E7%8E%AF%E8%BF%9E%E6%8E%A5%EF%BC%89"><span class="nav-number">2.7.2.4.3.</span> <span class="nav-text">Block  Nested-Loop Join （块嵌套循环连接）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.3.</span> <span class="nav-text">子查询优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.4.</span> <span class="nav-text">排序优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#filesort%E7%AE%97%E6%B3%95%EF%BC%9A%E5%8F%8C%E8%B7%AF%E6%8E%92%E5%BA%8F%E5%92%8C%E5%8D%95%E8%B7%AF%E6%8E%92%E5%BA%8F"><span class="nav-number">2.7.4.1.</span> <span class="nav-text">filesort算法：双路排序和单路排序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Group-by%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.5.</span> <span class="nav-text">Group by优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.6.</span> <span class="nav-text">分页查询优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A6%86%E7%9B%96%E7%B4%A2%E5%BC%95%E4%BC%98%E5%85%88"><span class="nav-number">2.7.7.</span> <span class="nav-text">覆盖索引优先</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E7%B4%A2%E5%BC%95"><span class="nav-number">2.7.8.</span> <span class="nav-text">字符串的索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8ICP"><span class="nav-number">2.7.9.</span> <span class="nav-text">索引下推ICP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ICP%E7%9A%84%E4%BD%BF%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="nav-number">2.7.9.1.</span> <span class="nav-text">ICP的使用条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ICP%E5%BC%80%E5%90%AF%E5%85%B3%E9%97%AD"><span class="nav-number">2.7.9.2.</span> <span class="nav-text">ICP开启关闭</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E7%B4%A2%E5%BC%95%E5%92%8C%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95"><span class="nav-number">2.7.10.</span> <span class="nav-text">普通索引和唯一索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">2.7.11.</span> <span class="nav-text">其他查询优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EXISTS%E5%92%8CIN%E7%9A%84%E5%8C%BA%E5%88%86"><span class="nav-number">2.7.11.1.</span> <span class="nav-text">EXISTS和IN的区分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#COUNT-%E5%92%8CCOUNT-%E5%AD%97%E6%AE%B5-%E6%95%88%E7%8E%87"><span class="nav-number">2.7.11.2.</span> <span class="nav-text">COUNT(*)和COUNT(字段)效率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LIMIT-1-%E5%AF%B9%E4%BC%98%E5%8C%96%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">2.7.11.3.</span> <span class="nav-text">LIMIT 1 对优化的影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%94%A8COMMIT"><span class="nav-number">2.7.11.4.</span> <span class="nav-text">多用COMMIT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">2.7.11.5.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-%E6%B7%98%E5%AE%9D%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%BB%E9%94%AE%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.7.12.</span> <span class="nav-text">示例 - 淘宝数据库的主键设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E4%B8%9A%E5%8A%A1%E7%9A%84%E4%B8%BB%E9%94%AE%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.7.12.1.</span> <span class="nav-text">核心业务的主键设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%A2%9EID%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.7.12.2.</span> <span class="nav-text">自增ID的问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83"><span class="nav-number">2.8.</span> <span class="nav-text">数据库设计规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%AE-%E7%A0%81-%E5%92%8C%E5%B1%9E%E6%80%A7"><span class="nav-number">2.8.1.</span> <span class="nav-text">键(码)和属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8C%83%E5%BC%8F"><span class="nav-number">2.8.2.</span> <span class="nav-text">范式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1NF%EF%BC%88%E7%AC%AC%E4%B8%80%E8%8C%83%E5%BC%8F%EF%BC%89"><span class="nav-number">2.8.2.1.</span> <span class="nav-text">1NF（第一范式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2NF%EF%BC%88%E7%AC%AC%E4%BA%8C%E8%8C%83%E5%BC%8F%EF%BC%89"><span class="nav-number">2.8.2.2.</span> <span class="nav-text">2NF（第二范式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3NF%EF%BC%88%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8F%EF%BC%89"><span class="nav-number">2.8.2.3.</span> <span class="nav-text">3NF（第三范式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BCNF%EF%BC%88Boyce-Codd%E8%8C%83%E5%BC%8F%EF%BC%89"><span class="nav-number">2.8.2.4.</span> <span class="nav-text">BCNF（Boyce-Codd范式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4NF%EF%BC%88%E7%AC%AC%E5%9B%9B%E8%8C%83%E5%BC%8F%EF%BC%89"><span class="nav-number">2.8.2.5.</span> <span class="nav-text">4NF（第四范式）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5NF%EF%BC%88%E7%AC%AC%E4%BA%94%E8%8C%83%E5%BC%8F%EF%BC%89"><span class="nav-number">2.8.2.6.</span> <span class="nav-text">5NF（第五范式）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E8%8C%83%E5%BC%8F"><span class="nav-number">2.8.3.</span> <span class="nav-text">反范式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E8%8C%83%E5%BC%8F%E7%9A%84%E6%96%B0%E9%97%AE%E9%A2%98"><span class="nav-number">2.8.3.1.</span> <span class="nav-text">反范式的新问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E8%8C%83%E5%BC%8F%E7%9A%84%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.8.3.2.</span> <span class="nav-text">反范式的适用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ER%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.8.4.</span> <span class="nav-text">ER模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ER%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86"><span class="nav-number">2.8.4.1.</span> <span class="nav-text">ER模型的基本组成部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ER%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">2.8.4.2.</span> <span class="nav-text">ER模型和数据表的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="nav-number">2.8.5.</span> <span class="nav-text">数据表的设计原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%B9%E8%B1%A1%E7%BC%96%E5%86%99%E5%BB%BA%E8%AE%AE"><span class="nav-number">2.8.6.</span> <span class="nav-text">数据库对象编写建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">2.8.6.1.</span> <span class="nav-text">对于数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E8%A1%A8%E5%92%8C%E5%88%97"><span class="nav-number">2.8.6.2.</span> <span class="nav-text">对于表和列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E7%B4%A2%E5%BC%95"><span class="nav-number">2.8.6.3.</span> <span class="nav-text">关于索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8ESQL%E7%BC%96%E5%86%99"><span class="nav-number">2.8.6.4.</span> <span class="nav-text">关于SQL编写</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PowerDesigner%E8%AE%BE%E8%AE%A1ER%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.8.7.</span> <span class="nav-text">PowerDesigner设计ER模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%B6%E4%BB%96%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5"><span class="nav-number">2.9.</span> <span class="nav-text">数据库其他调优策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E8%B0%83%E4%BC%98%E9%97%AE%E9%A2%98"><span class="nav-number">2.9.1.</span> <span class="nav-text">如何定位调优问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E4%BC%98%E7%9A%84%E7%BB%B4%E5%BA%A6%E5%92%8C%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.9.2.</span> <span class="nav-text">调优的维度和步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E9%80%89%E6%8B%A9%E5%90%88%E9%80%82%E7%9A%84DBMS"><span class="nav-number">2.9.2.0.1.</span> <span class="nav-text">1.选择合适的DBMS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E4%BC%98%E5%8C%96%E8%A1%A8%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.9.2.0.2.</span> <span class="nav-text">2.优化表的设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E4%BC%98%E5%8C%96%E9%80%BB%E8%BE%91%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.9.2.0.3.</span> <span class="nav-text">3.优化逻辑查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E4%BC%98%E5%8C%96%E7%89%A9%E7%90%86%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.9.2.0.4.</span> <span class="nav-text">4.优化物理查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E4%BD%BF%E7%94%A8redis%E6%88%96Memcached"><span class="nav-number">2.9.2.0.5.</span> <span class="nav-text">5.使用redis或Memcached</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-%E5%BA%93%E7%BA%A7%E4%BC%98%E5%8C%96"><span class="nav-number">2.9.2.0.6.</span> <span class="nav-text">6. 库级优化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96MySQL%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">2.9.3.</span> <span class="nav-text">优化MySQL服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A1%AC%E4%BB%B6"><span class="nav-number">2.9.3.1.</span> <span class="nav-text">优化服务器硬件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%96MySQL%E5%8F%82%E6%95%B0"><span class="nav-number">2.9.3.2.</span> <span class="nav-text">优化MySQL参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84"><span class="nav-number">2.9.4.</span> <span class="nav-text">优化数据库结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E8%A1%A8%EF%BC%8C%E6%A3%80%E6%9F%A5%E8%A1%A8%E5%92%8C%E4%BC%98%E5%8C%96%E8%A1%A8"><span class="nav-number">2.9.4.1.</span> <span class="nav-text">分析表，检查表和优化表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E8%A1%A8"><span class="nav-number">2.9.4.1.1.</span> <span class="nav-text">**分析表 **</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E8%A1%A8"><span class="nav-number">2.9.4.1.2.</span> <span class="nav-text">检查表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E8%A1%A8"><span class="nav-number">2.9.4.1.3.</span> <span class="nav-text">优化表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E8%A1%A8%E4%BC%98%E5%8C%96"><span class="nav-number">2.9.5.</span> <span class="nav-text">大表优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="nav-number">2.9.6.</span> <span class="nav-text">其他优化策略</span></a></li></ol></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="Shearington"
-      src="/images/head.jpg">
-  <p class="site-author-name" itemprop="name">Shearington</p>
-  <div class="site-description" itemprop="description">诗酒趁年华</div>
 </div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">44</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">18</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">44</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
+
+
+
+
+
+
 </div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/Fushiye/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fushiye&#x2F;" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:shearington@foxmail.com" title="E-Mail → mailto:shearington@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
-      </span>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Shearington</span>
   </div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2025</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">434k</span>
   </span>
-  <span class="author" itemprop="copyrightHolder">Shearington</span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">24:07</span>
+  </span>
 </div>
 <!--
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 -->
 
-        
+    </div>
+  </footer>
 
-
-
-
-
-
-
-
-      </div>
-    </footer>
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
   </div>
 
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-  
-<script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 </body>
 </html>
