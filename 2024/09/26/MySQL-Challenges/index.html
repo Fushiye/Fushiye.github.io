@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_apple-touch-icon-human.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_human_32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_human_16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fushiye.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism-darcula","dark":"prism-darcula"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":3,"unescape":false,"preload":true}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="实践过程中遇到的MySQL题目，欢迎指正">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL-Challenges">
+<meta property="og:url" content="https://fushiye.github.io/2024/09/26/MySQL-Challenges/index.html">
+<meta property="og:site_name" content="星海拾贝">
+<meta property="og:description" content="实践过程中遇到的MySQL题目，欢迎指正">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240808173328.png">
+<meta property="article:published_time" content="2024-09-26T14:58:24.000Z">
+<meta property="article:modified_time" content="2025-02-15T14:38:48.873Z">
+<meta property="article:author" content="Shearington">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240808173328.png">
+
+
+<link rel="canonical" href="https://fushiye.github.io/2024/09/26/MySQL-Challenges/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fushiye.github.io/2024/09/26/MySQL-Challenges/","path":"2024/09/26/MySQL-Challenges/","title":"MySQL-Challenges"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MySQL-Challenges | 星海拾贝</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">星海拾贝</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">探索永无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%99%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">错题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E8%AE%A9%E6%9F%A5%E8%AF%A2%E4%B8%BA%E7%A9%BA%E7%9A%84%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E6%98%BE%E7%A4%BA%E4%B8%BAnull"><span class="nav-number">1.1.</span> <span class="nav-text">（1）让查询为空的查询结果显示为null</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89-%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B0-%E6%9F%A5%E8%AF%A2%E8%BF%91n%E5%A4%A9%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.</span> <span class="nav-text">（2）[日期函数] 查询近n天的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89-%E5%AD%90%E6%9F%A5%E8%AF%A2-%E5%90%84%E9%83%A8%E9%97%A8%E5%89%8Dn%E9%AB%98%E7%9A%84%E6%88%90%E5%91%98"><span class="nav-number">1.3.</span> <span class="nav-text">（3）[子查询] 各部门前n高的成员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%884%EF%BC%89-%E5%8D%95%E8%A1%A8%E8%87%AA%E8%BF%9E%E6%8E%A5-%E6%9F%A5%E8%AF%A2%E8%BF%9E%E7%BB%ADn%E4%B8%AA%E7%AC%A6%E5%90%88%E8%A6%81%E6%B1%82%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">1.4.</span> <span class="nav-text">（4）[单表自连接] 查询连续n个符合要求的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%885%EF%BC%89-%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2-%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6-%E6%A0%B9%E6%8D%AE%E6%9F%90%E5%88%97%E7%89%B9%E5%BE%81%E5%88%92%E5%88%86%E6%95%B0%E6%8D%AE%E4%BA%A7%E7%94%9F%E6%96%B0%E5%88%97"><span class="nav-number">1.5.</span> <span class="nav-text">（5）[联合查询&#x2F;流程控制] 根据某列特征划分数据产生新列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%886%EF%BC%89%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE-%E5%A6%82%E6%9E%9C%E6%95%B0%E6%8D%AE%E5%B7%B2%E7%BB%8F%E5%AD%98%E5%9C%A8%EF%BC%8C%E5%BF%BD%E7%95%A5"><span class="nav-number">1.6.</span> <span class="nav-text">（6）插入数据,如果数据已经存在，忽略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">常见错误及注意事项：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">聚合函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.2.</span> <span class="nav-text">子查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6"><span class="nav-number">2.3.</span> <span class="nav-text">流程控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E5%8F%A5%E7%BB%93%E6%9E%84%E5%92%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.4.</span> <span class="nav-text">语句结构和顺序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%94%99%E9%A2%98%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">其他错题：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shearington"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Shearington</p>
+  <div class="site-description" itemprop="description">诗酒趁年华</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fushiye/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fushiye&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shearington@foxmail.com" title="E-Mail → mailto:shearington@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fushiye.github.io/2024/09/26/MySQL-Challenges/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Shearington">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="星海拾贝">
+      <meta itemprop="description" content="诗酒趁年华">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="MySQL-Challenges | 星海拾贝">
+      <meta itemprop="description" content="实践过程中遇到的MySQL题目，欢迎指正">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL-Challenges
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-09-26 22:58:24" itemprop="dateCreated datePublished" datetime="2024-09-26T22:58:24+08:00">2024-09-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-02-15 22:38:48" itemprop="dateModified" datetime="2025-02-15T22:38:48+08:00">2025-02-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">缓存与数据库</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">实践过程中遇到的MySQL题目，欢迎指正</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>题目来自</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/studyplan/sql-free-50/">高频 SQL 50 题（基础版）</a></p>
+<h2 id="错题"><a href="#错题" class="headerlink" title="错题"></a>错题</h2><h3 id="（1）让查询为空的查询结果显示为null"><a href="#（1）让查询为空的查询结果显示为null" class="headerlink" title="（1）让查询为空的查询结果显示为null"></a>（1）让查询为空的查询结果显示为null</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/second-highest-salary/">176. 第二高的薪水</a></p>
+<p>方法：</p>
+<pre><code> 1. 在外层包裹一个select，即可实现结果为空时显示null
+ 2. 使用ifnull(expr,null)
+</code></pre>
+<p>题解：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span>(</span><br><span class="line">    <span class="keyword">select</span></span><br><span class="line">    	<span class="keyword">distinct</span> salary </span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">    Employee</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span></span><br><span class="line">    salary <span class="keyword">desc</span></span><br><span class="line">limit <span class="number">1</span> <span class="keyword">offset</span> <span class="number">1</span></span><br><span class="line">) <span class="keyword">as</span> SecondHighestSalary</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="（2）-日期函数-查询近n天的数据"><a href="#（2）-日期函数-查询近n天的数据" class="headerlink" title="（2）[日期函数] 查询近n天的数据"></a>（2）[日期函数] 查询近n天的数据</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/user-activity-for-the-past-30-days-i/">题目</a></p>
+<p><strong>重点：</strong></p>
+<p>DATEDIFF( ‘2019-07-27’,activity_date) &lt; 30 截至 <code>2019-07-27</code>（包含2019-07-27），近 <code>30</code> 天，因为此函数的返回值可能为负数。</p>
+<p>题解：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">select</span><br><span class="line">    activity_date as day,</span><br><span class="line">    count(distinct user_id) as active_users</span><br><span class="line">from </span><br><span class="line">    Activity</span><br><span class="line">where </span><br><span class="line">    Datediff(&quot;2019-07-27&quot;,activity_date) between 0 and 29</span><br><span class="line">group by </span><br><span class="line">    day</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="（3）-子查询-各部门前n高的成员"><a href="#（3）-子查询-各部门前n高的成员" class="headerlink" title="（3）[子查询] 各部门前n高的成员"></a>（3）[子查询] 各部门前n高的成员</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/department-top-three-salaries/">185. 部门工资前三高的所有员工</a></p>
+<p>【重点】</p>
+<p>​	<strong>相关子查询（correlated subquery）</strong></p>
+<p>子查询依赖于外部查询的某些值，每次执行子查询时，它都会根据外部查询的当前行重新计算结果</p>
+<p>【题解】</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    d.Name <span class="keyword">AS</span> <span class="string">&#x27;Department&#x27;</span>, e1.Name <span class="keyword">AS</span> <span class="string">&#x27;Employee&#x27;</span>, e1.Salary</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    Employee e1</span><br><span class="line">        <span class="keyword">JOIN</span></span><br><span class="line">    Department d <span class="keyword">ON</span> e1.DepartmentId <span class="operator">=</span> d.Id</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    <span class="number">3</span> <span class="operator">&gt;</span> (<span class="keyword">SELECT</span></span><br><span class="line">            <span class="built_in">COUNT</span>(<span class="keyword">DISTINCT</span> e2.Salary)</span><br><span class="line">        <span class="keyword">FROM</span></span><br><span class="line">            Employee e2</span><br><span class="line">        <span class="keyword">WHERE</span></span><br><span class="line">            e2.Salary <span class="operator">&gt;</span> e1.Salary</span><br><span class="line">                <span class="keyword">AND</span> e1.DepartmentId <span class="operator">=</span> e2.DepartmentId</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="（4）-单表自连接-查询连续n个符合要求的数据"><a href="#（4）-单表自连接-查询连续n个符合要求的数据" class="headerlink" title="（4）[单表自连接] 查询连续n个符合要求的数据"></a>（4）[单表自连接] 查询连续n个符合要求的数据</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/human-traffic-of-stadium/">601. 体育馆的人流量</a></p>
+<p>找出每行的人数大于或等于 <code>100</code> 且 <code>id</code> 连续的三行或更多行记录。</p>
+<p>单表自连接并通过其他n个表来得到连续n个</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> t1.<span class="operator">*</span></span><br><span class="line"><span class="keyword">from</span> stadium t1, stadium t2, stadium t3</span><br><span class="line"><span class="keyword">where</span> t1.people <span class="operator">&gt;=</span> <span class="number">100</span> <span class="keyword">and</span> t2.people <span class="operator">&gt;=</span> <span class="number">100</span> <span class="keyword">and</span> t3.people <span class="operator">&gt;=</span> <span class="number">100</span></span><br><span class="line"><span class="keyword">and</span></span><br><span class="line">(</span><br><span class="line">	  (t1.id <span class="operator">-</span> t2.id <span class="operator">=</span> <span class="number">1</span> <span class="keyword">and</span> t1.id <span class="operator">-</span> t3.id <span class="operator">=</span> <span class="number">2</span> <span class="keyword">and</span> t2.id <span class="operator">-</span> t3.id <span class="operator">=</span><span class="number">1</span>)  <span class="comment">-- t1, t2, t3</span></span><br><span class="line">    <span class="keyword">or</span></span><br><span class="line">    (t2.id <span class="operator">-</span> t1.id <span class="operator">=</span> <span class="number">1</span> <span class="keyword">and</span> t2.id <span class="operator">-</span> t3.id <span class="operator">=</span> <span class="number">2</span> <span class="keyword">and</span> t1.id <span class="operator">-</span> t3.id <span class="operator">=</span><span class="number">1</span>) <span class="comment">-- t2, t1, t3</span></span><br><span class="line">    <span class="keyword">or</span></span><br><span class="line">    (t3.id <span class="operator">-</span> t2.id <span class="operator">=</span> <span class="number">1</span> <span class="keyword">and</span> t2.id <span class="operator">-</span> t1.id <span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> t3.id <span class="operator">-</span> t1.id <span class="operator">=</span> <span class="number">2</span>) <span class="comment">-- t3, t2, t1</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> t1.id</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="（5）-联合查询-流程控制-根据某列特征划分数据产生新列"><a href="#（5）-联合查询-流程控制-根据某列特征划分数据产生新列" class="headerlink" title="（5）[联合查询&#x2F;流程控制] 根据某列特征划分数据产生新列"></a>（5）[联合查询&#x2F;流程控制] 根据某列特征划分数据产生新列</h3><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/tree-node/">608. 树节点</a></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 联合</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    id, <span class="string">&#x27;Root&#x27;</span> <span class="keyword">AS</span> Type</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    tree</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    p_id <span class="keyword">IS</span> <span class="keyword">NULL</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    id, <span class="string">&#x27;Leaf&#x27;</span> <span class="keyword">AS</span> Type</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    tree</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    id <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span></span><br><span class="line">            p_id</span><br><span class="line">        <span class="keyword">FROM</span></span><br><span class="line">            tree</span><br><span class="line">        <span class="keyword">WHERE</span></span><br><span class="line">            p_id <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>)</span><br><span class="line">        <span class="keyword">AND</span> p_id <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    id, <span class="string">&#x27;Inner&#x27;</span> <span class="keyword">AS</span> Type</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    tree</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    id <span class="keyword">IN</span> (<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span></span><br><span class="line">            p_id</span><br><span class="line">        <span class="keyword">FROM</span></span><br><span class="line">            tree</span><br><span class="line">        <span class="keyword">WHERE</span></span><br><span class="line">            p_id <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>)</span><br><span class="line">        <span class="keyword">AND</span> p_id <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> id;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 流程控制</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    id <span class="keyword">AS</span> `Id`,</span><br><span class="line">    <span class="keyword">CASE</span></span><br><span class="line">        <span class="keyword">WHEN</span> tree.id <span class="operator">=</span> (<span class="keyword">SELECT</span> atree.id <span class="keyword">FROM</span> tree atree <span class="keyword">WHERE</span> atree.p_id <span class="keyword">IS</span> <span class="keyword">NULL</span>)</span><br><span class="line">          <span class="keyword">THEN</span> <span class="string">&#x27;Root&#x27;</span></span><br><span class="line">        <span class="keyword">WHEN</span> tree.id <span class="keyword">IN</span> (<span class="keyword">SELECT</span> atree.p_id <span class="keyword">FROM</span> tree atree)</span><br><span class="line">          <span class="keyword">THEN</span> <span class="string">&#x27;Inner&#x27;</span></span><br><span class="line">        <span class="keyword">ELSE</span> <span class="string">&#x27;Leaf&#x27;</span></span><br><span class="line">    <span class="keyword">END</span> <span class="keyword">AS</span> Type</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    tree</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> `Id`</span><br><span class="line">;</span><br></pre></td></tr></table></figure>
+
+<h3 id="（6）插入数据-如果数据已经存在，忽略"><a href="#（6）插入数据-如果数据已经存在，忽略" class="headerlink" title="（6）插入数据,如果数据已经存在，忽略"></a>（6）插入数据,如果数据已经存在，忽略</h3><p>使用ignore关键字：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> ignore <span class="keyword">into</span> actor</span><br><span class="line"><span class="keyword">values</span>(<span class="number">3</span>,<span class="string">&#x27;ED&#x27;</span>,<span class="string">&#x27;CHASE&#x27;</span>,<span class="string">&#x27;2006-02-15 12:34:33&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="常见错误及注意事项："><a href="#常见错误及注意事项：" class="headerlink" title="常见错误及注意事项："></a>常见错误及注意事项：</h2><h3 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h3><ol>
+<li>聚合函数和group by是同时进行的，一边遍历所有数据进行分组，一边进行聚合函数计算</li>
+<li>所有非聚合列必须在 <code>GROUP BY</code> 子句中列出，不能在 <code>GROUP BY</code> 中使用别名。</li>
+<li><code>HAVING</code> 可以使用聚合函数，但 <code>WHERE</code> 不能，<code>HAVING</code> 必须在 <code>GROUP BY</code> 之后使用。</li>
+<li>可以在 <code>ORDER BY</code> 中使用聚合函数。</li>
+</ol>
+<h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><ol>
+<li><p>子查询结果作为表、视图、临时表时必须取别名</p>
+</li>
+<li><p>子查询可以和父查询联动（<strong>相关子查询（correlated subquery）</strong>），查看错题（3）[子查询] 各部门前n高的成员</p>
+</li>
+</ol>
+<h3 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h3><ol>
+<li><p><code>IF</code> 语句只能在存储过程、函数、触发器和事件中使用，不能直接在普通的 SQL 查询中使用。</p>
+<blockquote>
+<p>普通的 SQL 查询中可以使用if(condition,truevalue,falsevalue)代替</p>
+</blockquote>
+</li>
+<li><p><code>CASE</code> 语句可以在 SQL 查询中使用，只能出现在 <code>SELECT</code>、<code>WHERE</code>、<code>HAVING</code> 等 SQL 子句中。</p>
+</li>
+<li></li>
+</ol>
+<h3 id="语句结构和顺序"><a href="#语句结构和顺序" class="headerlink" title="语句结构和顺序"></a>语句结构和顺序</h3><p>SELECT 语句的执行顺序（在 MySQL 和 Oracle 中，SELECT 执行顺序基本相同）：<br><code>FROM -&gt; (ON)WHERE -&gt; GROUP BY -&gt; HAVING -&gt; SELECT 的字段 -&gt; DISTINCT -&gt; ORDER BY -&gt; LIMIT</code></p>
+<h2 id="其他错题："><a href="#其他错题：" class="headerlink" title="其他错题："></a>其他错题：</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/product-price-at-a-given-date/">1164. 指定日期的产品价格</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reformat-department-table/">1179. 重新格式化部门表</a></p>
+<p>1、查询所有部门的名字，location_id，员工数量和平均工资，并按平均工资降序</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 正确</span></span><br><span class="line"><span class="keyword">SELECT</span> department_name, location_id, <span class="built_in">COUNT</span>(employee_id), <span class="built_in">AVG</span>(salary) avg_sal</span><br><span class="line"><span class="keyword">FROM</span> employees e <span class="keyword">RIGHT</span> <span class="keyword">JOIN</span> departments d</span><br><span class="line"><span class="keyword">ON</span> e.`department_id` <span class="operator">=</span> d.`department_id`</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> department_name, location_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> avg_sal <span class="keyword">DESC</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 错误:这样的count结果中没有员工的部门的结果会是1</span></span><br><span class="line"><span class="keyword">select</span> department_name,location_id,<span class="built_in">count</span>(<span class="operator">*</span>),<span class="built_in">avg</span>(salary) avg_sal</span><br><span class="line"><span class="keyword">from</span> departments t2 <span class="keyword">left</span> <span class="keyword">join</span> employees t1 </span><br><span class="line"><span class="keyword">on</span> t2.department_id <span class="operator">=</span> t1.department_id </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> department_name,location_id </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> avg_sal <span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure>
+
+<p>2、查询每个工种、每个部门的部门名、工种名和最低工资</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 正确</span></span><br><span class="line"><span class="keyword">SELECT</span> department_name,job_id,<span class="built_in">MIN</span>(salary)</span><br><span class="line"><span class="keyword">FROM</span> departments d <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> employees e</span><br><span class="line"><span class="keyword">ON</span> e.`department_id` <span class="operator">=</span> d.`department_id`</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> department_name,job_id；</span><br><span class="line"><span class="comment">-- 错误：应当以部门为主线</span></span><br><span class="line"><span class="keyword">select</span> department_name,job_title,<span class="built_in">min</span>(salary) </span><br><span class="line"><span class="keyword">from</span> employees t1 <span class="keyword">left</span> <span class="keyword">join</span> departments t2 </span><br><span class="line"><span class="keyword">on</span> t1.department_id <span class="operator">=</span> t2.department_id <span class="keyword">left</span> <span class="keyword">join</span> jobs t3 </span><br><span class="line"><span class="keyword">on</span> t1.job_id <span class="operator">=</span> t3.job_id </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> department_name,job_title;</span><br><span class="line"><span class="comment">-- </span></span><br></pre></td></tr></table></figure>
+
+<p>3.查询平均工资最低的部门信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> d.<span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> departments d,(</span><br><span class="line"><span class="keyword">SELECT</span> department_id,<span class="built_in">AVG</span>(salary) avg_sal</span><br><span class="line"><span class="keyword">FROM</span> employees</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> department_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> avg_sal</span><br><span class="line">LIMIT <span class="number">0</span>,<span class="number">1</span>) dept_avg_sal</span><br><span class="line"><span class="keyword">WHERE</span> d.department_id <span class="operator">=</span> dept_avg_sal.department_id</span><br><span class="line"><span class="comment">-- 进阶：查询平均工资最低的部门信息和该部门的平均工资（相关子查询）</span></span><br><span class="line"><span class="keyword">SELECT</span> d.<span class="operator">*</span>,dept_avg_sal.avg_sal</span><br><span class="line"><span class="keyword">FROM</span> departments d,(</span><br><span class="line"><span class="keyword">SELECT</span> department_id,<span class="built_in">AVG</span>(salary) avg_sal</span><br><span class="line"><span class="keyword">FROM</span> employees</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> department_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> avg_sal</span><br><span class="line">LIMIT <span class="number">0</span>,<span class="number">1</span>) dept_avg_sal</span><br><span class="line"><span class="keyword">WHERE</span> d.department_id <span class="operator">=</span> dept_avg_sal.department_id</span><br></pre></td></tr></table></figure>
+
+<p>4,查询各部门中工资比本部门平均工资高的员工的员工号, 姓名和工资(难)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> employee_id,last_name,salary</span><br><span class="line"><span class="keyword">FROM</span> employees e1</span><br><span class="line"><span class="keyword">WHERE</span> salary <span class="operator">&gt;</span> (</span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">AVG</span>(salary)</span><br><span class="line"><span class="keyword">FROM</span> employees e2</span><br><span class="line"><span class="keyword">WHERE</span> e2.department_id <span class="operator">=</span> e1.`department_id`</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>5,查询书名和类型，其中note值为 novel显示小说，law显示法律，medicine显示医药，cartoon显示卡通，joke显示笑话</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name <span class="keyword">AS</span> &quot;书名&quot; ,note, <span class="keyword">CASE</span> note</span><br><span class="line"><span class="keyword">WHEN</span> <span class="string">&#x27;novel&#x27;</span> <span class="keyword">THEN</span> <span class="string">&#x27;小说&#x27;</span></span><br><span class="line"><span class="keyword">WHEN</span> <span class="string">&#x27;law&#x27;</span> <span class="keyword">THEN</span> <span class="string">&#x27;法律&#x27;</span></span><br><span class="line"><span class="keyword">WHEN</span> <span class="string">&#x27;medicine&#x27;</span> <span class="keyword">THEN</span> <span class="string">&#x27;医药&#x27;</span></span><br><span class="line"><span class="keyword">WHEN</span> <span class="string">&#x27;cartoon&#x27;</span> <span class="keyword">THEN</span> <span class="string">&#x27;卡通&#x27;</span></span><br><span class="line"><span class="keyword">WHEN</span> <span class="string">&#x27;joke&#x27;</span> <span class="keyword">THEN</span> <span class="string">&#x27;笑话&#x27;</span></span><br><span class="line"><span class="keyword">END</span> <span class="keyword">AS</span> &quot;类型&quot;</span><br><span class="line"><span class="keyword">FROM</span> books;</span><br><span class="line"><span class="comment">-- case-when语句不熟悉</span></span><br><span class="line"><span class="comment">-- 查询书名、库存，其中num值超过30本的，显示滞销，大于0并低于10的，显示畅销，为0的显示需要无货</span></span><br><span class="line"><span class="keyword">SELECT</span> name,num,<span class="keyword">CASE</span></span><br><span class="line"><span class="keyword">WHEN</span> num<span class="operator">&gt;</span><span class="number">30</span> <span class="keyword">THEN</span> <span class="string">&#x27;滞销&#x27;</span></span><br><span class="line"><span class="keyword">WHEN</span> num<span class="operator">&gt;</span><span class="number">0</span> <span class="keyword">AND</span> num<span class="operator">&lt;</span><span class="number">10</span> <span class="keyword">THEN</span> <span class="string">&#x27;畅销&#x27;</span></span><br><span class="line"><span class="keyword">WHEN</span> num<span class="operator">=</span><span class="number">0</span> <span class="keyword">THEN</span> <span class="string">&#x27;无货&#x27;</span></span><br><span class="line"><span class="keyword">ELSE</span> <span class="string">&#x27;正常&#x27;</span></span><br><span class="line"><span class="keyword">END</span> <span class="keyword">AS</span> &quot;库存状态&quot;</span><br><span class="line"><span class="keyword">FROM</span> books</span><br></pre></td></tr></table></figure>
+
+<p>6,<code>ifnull</code>和<code>with rollup</code>:统计每一种note的库存量，并合计总量</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> IFNULL(note,<span class="string">&#x27;合计总库存量&#x27;</span>) <span class="keyword">AS</span> note,<span class="built_in">SUM</span>(num) <span class="keyword">FROM</span> books <span class="keyword">GROUP</span> <span class="keyword">BY</span> note <span class="keyword">WITH</span> <span class="keyword">ROLLUP</span>;</span><br></pre></td></tr></table></figure>
+
+<p>7,<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240808173328.png" alt="游标的使用"></p>
+<p>8,复制一张只有表结构的空表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> emps_back <span class="keyword">as</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> emps <span class="keyword">where</span> <span class="number">1</span><span class="operator">=</span><span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>9,创建触发器emps_insert_trigger，每当向emps表中添加一条记录时，同步将这条记录添加到emps_back表中，当前emps_back为空表但emps表中已经有多条数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> emps_insert_trigger</span><br><span class="line">AFTER <span class="keyword">INSERT</span> <span class="keyword">ON</span> emps</span><br><span class="line"><span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> emps_back(employee_id,last_name,salary)</span><br><span class="line"><span class="keyword">VALUES</span>(NEW.employee_id,NEW.last_name,NEW.salary);</span><br><span class="line"><span class="keyword">end</span> $$</span><br></pre></td></tr></table></figure>
+
+<p>10,创建触发器emps_del_trigger，每当向emps表中删除一条记录时，同步将删除的这条记录添加到emps_back1表中</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> emps_del_trigger</span><br><span class="line">BEFORE <span class="keyword">DELETE</span> <span class="keyword">ON</span> emps</span><br><span class="line"><span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> emps_back1(employee_id,last_name,salary)</span><br><span class="line"><span class="keyword">VALUES</span>(OLD.employee_id,OLD.last_name,OLD.salary);</span><br><span class="line"><span class="keyword">end</span> $$</span><br></pre></td></tr></table></figure>
+
+<p>11.<a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/88aa923a9a674253b861a8fa56bac8e5?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=/exam/oj?page=1&tab=SQL%25E7%25AF%2587&topicId=199">牛客网-MySQL练习</a></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">    university,</span><br><span class="line">    <span class="built_in">count</span>(question_id) <span class="operator">/</span> <span class="built_in">count</span>(<span class="keyword">distinct</span> qpd.device_id) <span class="keyword">as</span> avg_answer_cnt</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">    question_practice_detail <span class="keyword">as</span> qpd</span><br><span class="line">    <span class="keyword">inner</span> <span class="keyword">join</span> user_profile <span class="keyword">as</span> up <span class="keyword">on</span> qpd.device_id <span class="operator">=</span> up.device_id</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span></span><br><span class="line">    university</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/5400df085a034f88b2e17941ab338ee8?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=/exam/oj?page=1&tab=SQL%25E7%25AF%2587&topicId=199">牛客错题1</a><br><a target="_blank" rel="noopener" href="https://www.nowcoder.com/practice/126083961ae0415fbde061d7ebbde453?tpId=199&tags=&title=&difficulty=0&judgeStatus=0&rp=0&sourceUrl=/exam/oj?page=1&tab=SQL%25E7%25AF%2587&topicId=199">牛客错题2</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/09/07/MySQL-Note2-%E6%9E%B6%E6%9E%84%E7%B4%A2%E5%BC%95%E8%B0%83%E4%BC%98/" rel="prev" title="MySQL-Note2-架构索引调优">
+                  <i class="fa fa-angle-left"></i> MySQL-Note2-架构索引调优
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/11/11/MySQL-Note3-%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/" rel="next" title="MySQL-Note3-事务日志">
+                  MySQL-Note3-事务日志 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Shearington</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">442k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">24:34</span>
+  </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"Fushiye/Fushiye.github.io","repo_id":"R_kgDOLyiTvA","category":"Announcements","category_id":"DIC_kwDOLyiTvM4CteAo","mapping":"title","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"zh-CN","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+
+</body>
+</html>

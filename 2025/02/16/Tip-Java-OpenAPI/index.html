@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_apple-touch-icon-human.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_human_32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_human_16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fushiye.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism-darcula","dark":"prism-darcula"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":3,"unescape":false,"preload":true}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="在当前前后端分离的软件开发过程中，API文档的生成是每个开发者都无法回避的重要任务。而SpringDoc作为一款强大的开源工具，能够为基于Spring Boot的应用程序自动生成RESTful API文档，极大地简化了这一过程。本文将介绍SpringDoc的核心功能与使用方法，从基础集成到高级定制，一步步实现快速上手并优化API文档的生成。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tip-Java-OpenAPI">
+<meta property="og:url" content="https://fushiye.github.io/2025/02/16/Tip-Java-OpenAPI/index.html">
+<meta property="og:site_name" content="星海拾贝">
+<meta property="og:description" content="在当前前后端分离的软件开发过程中，API文档的生成是每个开发者都无法回避的重要任务。而SpringDoc作为一款强大的开源工具，能够为基于Spring Boot的应用程序自动生成RESTful API文档，极大地简化了这一过程。本文将介绍SpringDoc的核心功能与使用方法，从基础集成到高级定制，一步步实现快速上手并优化API文档的生成。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-16T14:17:26.000Z">
+<meta property="article:modified_time" content="2025-03-24T18:04:44.357Z">
+<meta property="article:author" content="Shearington">
+<meta property="article:tag" content="Swagger">
+<meta property="article:tag" content="OpenAPI">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fushiye.github.io/2025/02/16/Tip-Java-OpenAPI/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fushiye.github.io/2025/02/16/Tip-Java-OpenAPI/","path":"2025/02/16/Tip-Java-OpenAPI/","title":"Tip-Java-OpenAPI"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Tip-Java-OpenAPI | 星海拾贝</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">星海拾贝</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">探索永无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AFSpringDoc%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">1. 什么是SpringDoc？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.</span> <span class="nav-text">2. 核心概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8SpringDoc%EF%BC%9F"><span class="nav-number">1.3.</span> <span class="nav-text">3. 为什么使用SpringDoc？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Springfox%E7%9A%84Swagger%E5%92%8CSpringDOC%E5%AF%B9%E6%AF%94"><span class="nav-number">1.4.</span> <span class="nav-text">4. Springfox的Swagger和SpringDOC对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E3%80%81%E9%85%8D%E7%BD%AE%E5%92%8C%E6%B3%A8%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">依赖、配置和注解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E4%BE%9D%E8%B5%96%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.1.</span> <span class="nav-text">相关依赖介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.2.</span> <span class="nav-text">相关配置介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 基础配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%88%86%E7%BB%84%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 分组配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 安全配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%85%A8%E5%B1%80%E4%BF%A1%E6%81%AF%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.4.</span> <span class="nav-text">4. 全局信息配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%89%A9%E5%B1%95%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.5.</span> <span class="nav-text">5. 扩展配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E6%89%AB%E6%8F%8F%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.6.</span> <span class="nav-text">6. 扫描配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E6%8F%92%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.7.</span> <span class="nav-text">7. 插件配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%B3%A8%E8%A7%A3%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.3.</span> <span class="nav-text">相关注解介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%8F%8F%E8%BF%B0%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.3.1.</span> <span class="nav-text">1. 描述类和接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%8F%8F%E8%BF%B0%E5%8F%82%E6%95%B0"><span class="nav-number">2.3.2.</span> <span class="nav-text">2. 描述参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%8F%8F%E8%BF%B0%E6%A8%A1%E5%9E%8B%E5%92%8C%E5%AD%97%E6%AE%B5"><span class="nav-number">2.3.3.</span> <span class="nav-text">3. 描述模型和字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE"><span class="nav-number">2.3.4.</span> <span class="nav-text">4. 全局配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E7%89%B9%E6%AE%8A%E5%9C%BA%E6%99%AF"><span class="nav-number">2.3.5.</span> <span class="nav-text">5. 特殊场景</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="nav-number">3.1.</span> <span class="nav-text">导入依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%92%8C%E8%BF%90%E8%A1%8C"><span class="nav-number">3.2.</span> <span class="nav-text">启动和运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#knife4j"><span class="nav-number">4.</span> <span class="nav-text">knife4j</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shearington"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Shearington</p>
+  <div class="site-description" itemprop="description">诗酒趁年华</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fushiye/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fushiye&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shearington@foxmail.com" title="E-Mail → mailto:shearington@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fushiye.github.io/2025/02/16/Tip-Java-OpenAPI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Shearington">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="星海拾贝">
+      <meta itemprop="description" content="诗酒趁年华">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Tip-Java-OpenAPI | 星海拾贝">
+      <meta itemprop="description" content="在当前前后端分离的软件开发过程中，API文档的生成是每个开发者都无法回避的重要任务。而SpringDoc作为一款强大的开源工具，能够为基于Spring Boot的应用程序自动生成RESTful API文档，极大地简化了这一过程。本文将介绍SpringDoc的核心功能与使用方法，从基础集成到高级定制，一步步实现快速上手并优化API文档的生成。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Tip-Java-OpenAPI
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-02-16 22:17:26" itemprop="dateCreated datePublished" datetime="2025-02-16T22:17:26+08:00">2025-02-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-25 02:04:44" itemprop="dateModified" datetime="2025-03-25T02:04:44+08:00">2025-03-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/%E6%A1%86%E6%9E%B6%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">框架与工具</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">在当前前后端分离的软件开发过程中，API文档的生成是每个开发者都无法回避的重要任务。而SpringDoc作为一款强大的开源工具，能够为基于Spring Boot的应用程序自动生成RESTful API文档，极大地简化了这一过程。本文将介绍SpringDoc的核心功能与使用方法，从基础集成到高级定制，一步步实现快速上手并优化API文档的生成。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="1-什么是SpringDoc？"><a href="#1-什么是SpringDoc？" class="headerlink" title="1. 什么是SpringDoc？"></a>1. <strong>什么是SpringDoc？</strong></h3><p>SpringDoc 是一个用于在基于 Spring Boot 的应用程序中生成 OpenAPI 文档的库。它能够自动扫描项目中的 RESTful API，并生成交互式的 API 文档，通常以 Swagger UI (或 ReDoc )的形式展示。</p>
+<p>Swagger官网：<a target="_blank" rel="noopener" href="https://swagger.io/">https://swagger.io/</a></p>
+<p>SpringFox项目：<a target="_blank" rel="noopener" href="https://github.com/springfox/springfox">https://github.com/springfox/springfox</a></p>
+<p>SpringDoc项目：<a target="_blank" rel="noopener" href="https://github.com/springdoc/springdoc-openapi">https://github.com/springdoc/springdoc-openapi</a></p>
+<p>SpringDoc文档：<a target="_blank" rel="noopener" href="https://springdoc.org/">https://springdoc.org/</a></p>
+<h3 id="2-核心概念"><a href="#2-核心概念" class="headerlink" title="2. 核心概念"></a>2. <strong>核心概念</strong></h3><ul>
+<li><strong>OpenAPI</strong>：一种标准化的规范，用于描述和定义 RESTful API 的结构，包括路径、参数、请求体、响应等。</li>
+<li><strong>Swagger</strong>：一个工具集，支持 OpenAPI 规范，提供 API 文档生成、测试等功能。</li>
+<li><strong>SpringDoc</strong>：专注于与 Spring 生态系统集成，简化了 OpenAPI 文档的生成过程。</li>
+</ul>
+<h3 id="3-为什么使用SpringDoc？"><a href="#3-为什么使用SpringDoc？" class="headerlink" title="3. 为什么使用SpringDoc？"></a>3. <strong>为什么使用SpringDoc？</strong></h3><ul>
+<li>自动生成 API 文档，减少手动维护的工作量。</li>
+<li>提供交互式文档界面（如 Swagger UI），方便开发者和测试人员调试 API。</li>
+<li>支持多种扩展功能，例如安全认证、分组文档等。</li>
+</ul>
+<h3 id="4-Springfox的Swagger和SpringDOC对比"><a href="#4-Springfox的Swagger和SpringDOC对比" class="headerlink" title="4. Springfox的Swagger和SpringDOC对比"></a>4. Springfox的Swagger和SpringDOC对比</h3><p>Springfox 是早期用于在 Spring 项目中集成 Swagger 的常用工具，但它存在一些局限性(主要是<strong>不支持SpringBoot3.x和JDK17+</strong>)，导致现在更推荐使用 SpringDoc。以下是主要原因：</p>
+<ol>
+<li><strong>维护状态</strong>：Springfox 更新缓慢，对新版本的 Spring 和 Spring Boot 支持不足，而 SpringDoc 积极维护，兼容性更好。</li>
+<li><strong>复杂性</strong>：Springfox 配置较为繁琐，需要手动处理大量细节，而 SpringDoc 更加轻量级，开箱即用。</li>
+<li><strong>性能问题</strong>：Springfox 在大型项目中可能导致启动时间过长或内存占用过高，SpringDoc 性能更优。</li>
+<li><strong>社区支持</strong>：SpringDoc 的社区活跃度更高，文档和示例丰富，更容易上手。</li>
+</ol>
+<p>综上，SpringDoc 更适合现代开发需求，尤其是在使用较新版本的 Spring Boot 时。</p>
+<h2 id="依赖、配置和注解"><a href="#依赖、配置和注解" class="headerlink" title="依赖、配置和注解"></a>依赖、配置和注解</h2><h3 id="相关依赖介绍"><a href="#相关依赖介绍" class="headerlink" title="相关依赖介绍"></a>相关依赖介绍</h3><table>
+<thead>
+<tr>
+<th>依赖名称</th>
+<th>功能描述</th>
+<th>适用场景</th>
+<th>是否包含UI支持</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>springdoc-openapi-starter-webmvc-api</code></td>
+<td>提供基于 Spring Web MVC 的 API 文档生成功能，生成符合 OpenAPI 3 规范的文档。</td>
+<td>适用于需要生成 API 文档但不需要可视化界面的传统 Web 应用程序。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>springdoc-openapi-starter-webmvc-ui</code></td>
+<td>在提供 API 文档生成功能的同时，集成了 Swagger UI，允许通过浏览器查看和测试 API。</td>
+<td>适用于需要可视化 API 文档的项目，方便开发者、测试人员和前端工程师快速理解和测试 API。</td>
+<td>是</td>
+</tr>
+<tr>
+<td><code>springdoc-openapi-starter-webflux-api</code></td>
+<td>提供基于 Spring WebFlux 的响应式应用程序的 API 文档生成功能。</td>
+<td>适用于使用 Spring WebFlux 构建的响应式应用程序。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>springdoc-openapi-starter-webflux-ui</code></td>
+<td>在提供 API 文档生成功能的同时，为 Spring WebFlux 应用程序集成了 Swagger UI。</td>
+<td>适用于需要可视化 API 文档的响应式应用程序。</td>
+<td>是</td>
+</tr>
+<tr>
+<td><code>springdoc-openapi-security</code></td>
+<td>提供与安全相关的功能，如 OAuth2 和 JWT 认证，确保 API 文档的安全性。</td>
+<td>适用于需要对 API 进行身份验证和授权的项目。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>springdoc-openapi-data-rest</code></td>
+<td>为 Spring Data REST 提供 OpenAPI 文档生成支持，自动扫描并生成基于 Spring Data REST 的 API 文档。</td>
+<td>适用于使用 Spring Data REST 构建的应用程序。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>springdoc-openapi-jaxrs</code></td>
+<td>为基于 JAX-RS 的应用程序提供 OpenAPI 文档生成支持。</td>
+<td>适用于使用 JAX-RS 构建的 RESTful 服务。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>springdoc-openapi-kotlin</code></td>
+<td>为 Kotlin 语言提供更好的支持，确保 Kotlin 特有的类型和语法能够在生成的文档中正确显示。</td>
+<td>适用于使用 Kotlin 编写的 Spring Boot 应用程序。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>springdoc-openapi-maven-plugin</code></td>
+<td>提供 Maven 插件支持，可以在构建过程中生成静态的 OpenAPI 文档文件（如 JSON 或 YAML 格式）。</td>
+<td>适用于需要在构建时生成静态文档的项目。</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<h3 id="相关配置介绍"><a href="#相关配置介绍" class="headerlink" title="相关配置介绍"></a>相关配置介绍</h3><h4 id="1-基础配置"><a href="#1-基础配置" class="headerlink" title="1. 基础配置"></a><strong>1. 基础配置</strong></h4><table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>springdoc.api-docs.path</code></td>
+<td>设置 API 文档的基础路径，默认为 <code>/v3/api-docs</code>。例如：<code>/api/v3/api-docs</code>。</td>
+</tr>
+<tr>
+<td><code>springdoc.swagger-ui.path</code></td>
+<td>设置 Swagger UI 的访问路径，默认为 <code>/swagger-ui.html</code>。例如：<code>/swagger-ui/index.html</code>。</td>
+</tr>
+</tbody></table>
+<h4 id="2-分组配置"><a href="#2-分组配置" class="headerlink" title="2. 分组配置"></a><strong>2. 分组配置</strong></h4><table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>springdoc.group-configs[0].group</code></td>
+<td>定义分组名称，用于将 API 按照逻辑分组显示。</td>
+</tr>
+<tr>
+<td><code>springdoc.group-configs[0].paths-to-match</code></td>
+<td>指定该分组匹配的路径规则（正则表达式）。</td>
+</tr>
+<tr>
+<td><code>springdoc.group-configs[0].packages-to-scan</code></td>
+<td>指定该分组扫描的包名。</td>
+</tr>
+</tbody></table>
+<h4 id="3-安全配置"><a href="#3-安全配置" class="headerlink" title="3. 安全配置"></a><strong>3. 安全配置</strong></h4><table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>springdoc.security.enabled</code></td>
+<td>是否启用安全配置，默认为 <code>true</code>。</td>
+</tr>
+<tr>
+<td><code>springdoc.security.schemes[0].name</code></td>
+<td>定义安全方案的名称，例如 OAuth2 或 JWT。</td>
+</tr>
+<tr>
+<td><code>springdoc.security.schemes[0].type</code></td>
+<td>安全方案类型，例如 <code>oauth2</code>、<code>apiKey</code> 等。</td>
+</tr>
+<tr>
+<td><code>springdoc.security.schemes[0].in</code></td>
+<td>指定认证信息的位置，例如 <code>header</code> 或 <code>query</code>。</td>
+</tr>
+<tr>
+<td><code>springdoc.security.schemes[0].flows.authorizationUrl</code></td>
+<td>对于 OAuth2，指定授权 URL。</td>
+</tr>
+</tbody></table>
+<h4 id="4-全局信息配置"><a href="#4-全局信息配置" class="headerlink" title="4. 全局信息配置"></a><strong>4. 全局信息配置</strong></h4><table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>springdoc.info.title</code></td>
+<td>设置 API 文档的标题。</td>
+</tr>
+<tr>
+<td><code>springdoc.info.description</code></td>
+<td>设置 API 文档的描述信息。</td>
+</tr>
+<tr>
+<td><code>springdoc.info.version</code></td>
+<td>设置 API 文档的版本号。</td>
+</tr>
+<tr>
+<td><code>springdoc.info.contact.name</code></td>
+<td>设置联系人姓名。</td>
+</tr>
+<tr>
+<td><code>springdoc.info.contact.url</code></td>
+<td>设置联系人的 URL 地址。</td>
+</tr>
+<tr>
+<td><code>springdoc.info.contact.email</code></td>
+<td>设置联系人邮箱地址。</td>
+</tr>
+<tr>
+<td><code>springdoc.info.license.name</code></td>
+<td>设置许可证名称。</td>
+</tr>
+<tr>
+<td><code>springdoc.info.license.url</code></td>
+<td>设置许可证 URL 地址。</td>
+</tr>
+</tbody></table>
+<p><strong>示例</strong>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">springdoc:</span></span><br><span class="line">  <span class="attr">info:</span></span><br><span class="line">    <span class="attr">title:</span> <span class="string">用户管理</span> <span class="string">API</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">提供用户相关的接口文档。</span></span><br><span class="line">    <span class="attr">version:</span> <span class="number">1.0</span><span class="number">.0</span></span><br><span class="line">    <span class="attr">contact:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">张三</span></span><br><span class="line">      <span class="attr">email:</span> <span class="string">zhangsan@example.com</span></span><br><span class="line">    <span class="attr">license:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">Apache</span> <span class="number">2.0</span></span><br><span class="line">      <span class="attr">url:</span> <span class="string">https://www.apache.org/licenses/LICENSE-2.0.html</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="5-扩展配置"><a href="#5-扩展配置" class="headerlink" title="5. 扩展配置"></a><strong>5. 扩展配置</strong></h4><table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>springdoc.use-management-port</code></td>
+<td>是否在管理端口上暴露 API 文档，默认为 <code>false</code>。</td>
+</tr>
+<tr>
+<td><code>springdoc.expand-request-body</code></td>
+<td>是否默认展开请求体，默认为 <code>false</code>。</td>
+</tr>
+<tr>
+<td><code>springdoc.expand-responses</code></td>
+<td>是否默认展开响应体，默认为 <code>false</code>。</td>
+</tr>
+<tr>
+<td><code>springdoc.try-it-out-enabled</code></td>
+<td>是否启用“Try it out”功能，默认为 <code>true</code>。</td>
+</tr>
+<tr>
+<td><code>springdoc.default-consumes-media-type</code></td>
+<td>设置默认的媒体类型（如 <code>application/json</code>）。</td>
+</tr>
+<tr>
+<td><code>springdoc.default-produces-media-type</code></td>
+<td>设置默认的响应媒体类型（如 <code>application/json</code>）。</td>
+</tr>
+</tbody></table>
+<h4 id="6-扫描配置"><a href="#6-扫描配置" class="headerlink" title="6. 扫描配置"></a><strong>6. 扫描配置</strong></h4><table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>springdoc.packages-to-scan</code></td>
+<td>指定需要扫描的包名，默认扫描所有包。</td>
+</tr>
+<tr>
+<td><code>springdoc.paths-to-match</code></td>
+<td>指定需要匹配的路径规则（正则表达式）。</td>
+</tr>
+<tr>
+<td><code>springdoc.paths-to-exclude</code></td>
+<td>指定需要排除的路径规则（正则表达式）。</td>
+</tr>
+</tbody></table>
+<h4 id="7-插件配置"><a href="#7-插件配置" class="headerlink" title="7. 插件配置"></a><strong>7. 插件配置</strong></h4><table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>springdoc.show-actuator</code></td>
+<td>是否显示 Actuator 的端点，默认为 <code>false</code>。</td>
+</tr>
+<tr>
+<td><code>springdoc.cache.disabled</code></td>
+<td>是否禁用缓存，默认为 <code>false</code>。</td>
+</tr>
+<tr>
+<td><code>springdoc.skip-undocumented-models</code></td>
+<td>是否跳过未文档化的模型，默认为 <code>false</code>。</td>
+</tr>
+</tbody></table>
+<h3 id="相关注解介绍"><a href="#相关注解介绍" class="headerlink" title="相关注解介绍"></a>相关注解介绍</h3><h4 id="1-描述类和接口"><a href="#1-描述类和接口" class="headerlink" title="1. 描述类和接口"></a><strong>1. 描述类和接口</strong></h4><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@Tag</code></td>
+<td>为控制器或 API 分组添加标签，便于分类管理。</td>
+</tr>
+<tr>
+<td><code>@Operation</code></td>
+<td>描述某个方法的操作信息，如摘要、详细描述等。</td>
+</tr>
+<tr>
+<td><code>@ApiResponses</code></td>
+<td>定义一组可能的响应结果。</td>
+</tr>
+<tr>
+<td><code>@ApiResponse</code></td>
+<td>定义单个响应结果，通常与 <code>@ApiResponses</code> 配合使用。</td>
+</tr>
+</tbody></table>
+<p><strong>示例</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/users&quot;)</span></span><br><span class="line"><span class="meta">@Tag(name = &quot;用户管理&quot;, description = &quot;用户相关的 API 操作&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Operation(summary = &quot;获取用户信息&quot;, description = &quot;根据用户 ID 获取用户详细信息&quot;)</span></span><br><span class="line">    <span class="meta">@ApiResponses(value = &#123;</span></span><br><span class="line"><span class="meta">        @ApiResponse(responseCode = &quot;200&quot;, description = &quot;成功返回用户信息&quot;),</span></span><br><span class="line"><span class="meta">        @ApiResponse(responseCode = &quot;404&quot;, description = &quot;用户不存在&quot;)</span></span><br><span class="line"><span class="meta">    &#125;)</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">getUser</span><span class="params">(<span class="meta">@PathVariable</span> Long id)</span> &#123;</span><br><span class="line">        <span class="comment">// 方法实现</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-描述参数"><a href="#2-描述参数" class="headerlink" title="2. 描述参数"></a><strong>2. 描述参数</strong></h4><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@Parameter</code></td>
+<td>描述单个参数，包括名称、类型、是否必填等。</td>
+</tr>
+<tr>
+<td><code>@Parameters</code></td>
+<td>描述多个参数，通常与 <code>@Parameter</code> 配合使用。</td>
+</tr>
+<tr>
+<td><code>@RequestBody</code></td>
+<td>描述请求体的内容和结构。</td>
+</tr>
+</tbody></table>
+<p><strong>示例</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping</span></span><br><span class="line"><span class="meta">@Operation(summary = &quot;创建用户&quot;, description = &quot;创建一个新的用户&quot;)</span></span><br><span class="line"><span class="meta">@ApiResponse(responseCode = &quot;201&quot;, description = &quot;用户创建成功&quot;)</span></span><br><span class="line"><span class="keyword">public</span> ResponseEntity&lt;User&gt; <span class="title function_">createUser</span><span class="params">(</span></span><br><span class="line"><span class="params">    <span class="meta">@Parameter(description = &quot;用户对象&quot;)</span> <span class="meta">@RequestBody</span> User user)</span> &#123;</span><br><span class="line">    <span class="comment">// 方法实现</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-描述模型和字段"><a href="#3-描述模型和字段" class="headerlink" title="3. 描述模型和字段"></a><strong>3. 描述模型和字段</strong></h4><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@Schema</code></td>
+<td>描述模型或字段的信息，包括类型、格式、示例值等。</td>
+</tr>
+<tr>
+<td><code>@Hidden</code></td>
+<td>隐藏某些字段或方法，使其不显示在文档中。</td>
+</tr>
+</tbody></table>
+<p><strong>示例</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Schema(description = &quot;用户 ID&quot;, example = &quot;1&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Schema(description = &quot;用户名&quot;, required = true, example = &quot;张三&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Schema(description = &quot;密码&quot;, required = true)</span></span><br><span class="line">    <span class="meta">@Hidden</span> <span class="comment">// 隐藏该字段，不在文档中显示</span></span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-全局配置"><a href="#4-全局配置" class="headerlink" title="4. 全局配置"></a><strong>4. 全局配置</strong></h4><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@SecurityScheme</code></td>
+<td>定义全局的安全方案（如 OAuth2、JWT 等）。</td>
+</tr>
+<tr>
+<td><code>@SecurityRequirement</code></td>
+<td>指定某个操作需要的安全要求。</td>
+</tr>
+</tbody></table>
+<p><strong>示例</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SecurityScheme(</span></span><br><span class="line"><span class="meta">    name = &quot;bearerAuth&quot;,</span></span><br><span class="line"><span class="meta">    type = SecuritySchemeType.HTTP,</span></span><br><span class="line"><span class="meta">    bearerFormat = &quot;JWT&quot;,</span></span><br><span class="line"><span class="meta">    scheme = &quot;bearer&quot;</span></span><br><span class="line"><span class="meta">)</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/secure&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SecureController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Operation(security = @SecurityRequirement(name = &quot;bearerAuth&quot;))</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/data&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getData</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 方法实现</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="5-特殊场景"><a href="#5-特殊场景" class="headerlink" title="5. 特殊场景"></a><strong>5. 特殊场景</strong></h4><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@Deprecated</code></td>
+<td>标记某个接口或方法为废弃状态，提示用户不要使用。</td>
+</tr>
+<tr>
+<td><code>@Extensions</code> 和 <code>@Extension</code></td>
+<td>添加自定义扩展信息到文档中。</td>
+</tr>
+</tbody></table>
+<p><strong>示例</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Operation(summary = &quot;已废弃的接口&quot;, deprecated = true)</span></span><br><span class="line"><span class="meta">@GetMapping(&quot;/deprecated&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">getDeprecatedData</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 方法实现</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Operation(summary = &quot;带扩展信息的接口&quot;)</span></span><br><span class="line"><span class="meta">@Extensions(&#123;</span></span><br><span class="line"><span class="meta">    @Extension(name = &quot;custom-key&quot;, value = &quot;custom-value&quot;)</span></span><br><span class="line"><span class="meta">&#125;)</span></span><br><span class="line"><span class="meta">@GetMapping(&quot;/extended&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">getExtendedData</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 方法实现</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><h3 id="导入依赖"><a href="#导入依赖" class="headerlink" title="导入依赖"></a>导入依赖</h3><p>在普通的基于SpringBoot开发的Web项目中，只需要在 <code>pom.xml</code> 文件中添加以下依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springdoc<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springdoc-openapi-starter-webmvc-ui<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="启动和运行"><a href="#启动和运行" class="headerlink" title="启动和运行"></a>启动和运行</h3><p>正常启动Springboot项目后，即可自动生成API文档，默认情况下可访问以下网站测试API并查看文档</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://localhost:8080/swagger-ui.html">Swagger UI</a>：<code>http://localhost:8080/swagger-ui.html</code></li>
+</ul>
+<h2 id="knife4j"><a href="#knife4j" class="headerlink" title="knife4j"></a>knife4j</h2><p><a target="_blank" rel="noopener" href="https://doc.xiaominfo.com/">官方文档</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Swagger/" rel="tag"><i class="fa fa-tag"></i> Swagger</a>
+              <a href="/tags/OpenAPI/" rel="tag"><i class="fa fa-tag"></i> OpenAPI</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/02/07/Redis-Basic-Note/" rel="prev" title="Redis-Basic-Note">
+                  <i class="fa fa-angle-left"></i> Redis-Basic-Note
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/02/17/Tip-Java-Lombok/" rel="next" title="Tip-Java-Lombok">
+                  Tip-Java-Lombok <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Shearington</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">442k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">24:34</span>
+  </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"Fushiye/Fushiye.github.io","repo_id":"R_kgDOLyiTvA","category":"Announcements","category_id":"DIC_kwDOLyiTvM4CteAo","mapping":"title","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"zh-CN","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+
+</body>
+</html>

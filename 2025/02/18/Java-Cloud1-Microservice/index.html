@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_apple-touch-icon-human.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_human_32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_human_16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fushiye.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism-darcula","dark":"prism-darcula"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":3,"unescape":false,"preload":true}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="微服务是一种软件架构风格，它将一个完整的应用程序拆分为一组小型、独立部署的服务，每个服务专注于完成特定的业务功能，并通过轻量级的通信机制（如 HTTP API）进行交互。这些服务可以独立开发、测试、部署和扩展，从而提高系统的灵活性、可维护性和可伸缩性，特别适合复杂的大型应用开发。Cloud系列主要是学习学习微服务和SpringCloud过程中记录的笔记，本文是第一篇，主要涉及微服务项目开发规范以及">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java-Cloud1-Microservice">
+<meta property="og:url" content="https://fushiye.github.io/2025/02/18/Java-Cloud1-Microservice/index.html">
+<meta property="og:site_name" content="星海拾贝">
+<meta property="og:description" content="微服务是一种软件架构风格，它将一个完整的应用程序拆分为一组小型、独立部署的服务，每个服务专注于完成特定的业务功能，并通过轻量级的通信机制（如 HTTP API）进行交互。这些服务可以独立开发、测试、部署和扩展，从而提高系统的灵活性、可维护性和可伸缩性，特别适合复杂的大型应用开发。Cloud系列主要是学习学习微服务和SpringCloud过程中记录的笔记，本文是第一篇，主要涉及微服务项目开发规范以及">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20250219232030.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/SpringCloud2024.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/BlogPicture/main/img_blog/20250221220131.png">
+<meta property="article:published_time" content="2025-02-18T15:10:12.000Z">
+<meta property="article:modified_time" content="2025-03-06T06:55:55.120Z">
+<meta property="article:author" content="Shearington">
+<meta property="article:tag" content="微服务">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20250219232030.png">
+
+
+<link rel="canonical" href="https://fushiye.github.io/2025/02/18/Java-Cloud1-Microservice/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fushiye.github.io/2025/02/18/Java-Cloud1-Microservice/","path":"2025/02/18/Java-Cloud1-Microservice/","title":"Java-Cloud1-Microservice"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java-Cloud1-Microservice | 星海拾贝</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">星海拾贝</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">探索永无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">基本说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SpringCloud%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">SpringCloud简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SpringCloud%E7%BB%84%E4%BB%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">SpringCloud组件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%94%E8%AE%B0%E7%8E%AF%E5%A2%83"><span class="nav-number">1.2.</span> <span class="nav-text">笔记环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.3.</span> <span class="nav-text">参考资料</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA"><span class="nav-number">2.</span> <span class="nav-text">微服务项目构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E8%AF%B4%E6%98%8E"><span class="nav-number">2.1.</span> <span class="nav-text">项目说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%88%B6%E5%B7%A5%E7%A8%8B%E5%87%86%E5%A4%87"><span class="nav-number">2.2.</span> <span class="nav-text">父工程准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mapper%E5%87%86%E5%A4%87"><span class="nav-number">2.3.</span> <span class="nav-text">mapper准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E4%BB%98%E5%BE%AE%E6%9C%8D%E5%8A%A1%EF%BC%88Base%E5%B7%A5%E7%A8%8B%E7%A4%BA%E4%BE%8B%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">支付微服务（Base工程示例）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%9F%BA%E6%9C%AC%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="nav-number">2.4.1.</span> <span class="nav-text">一个基本的微服务项目构建流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%B1%BB%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.4.2.</span> <span class="nav-text">全局异常处理类设计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A2%E5%8D%95%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.5.</span> <span class="nav-text">订单微服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RestTemplate"><span class="nav-number">2.5.1.</span> <span class="nav-text">RestTemplate</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="nav-number">2.5.1.1.</span> <span class="nav-text">配置类</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.5.2.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E9%87%8D%E6%9E%84"><span class="nav-number">2.6.</span> <span class="nav-text">工程重构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E9%94%99%E8%AF%AF-%E9%97%AE%E9%A2%98"><span class="nav-number">3.1.</span> <span class="nav-text">编程错误&#x2F;问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E9%87%8D%E6%9E%84-1"><span class="nav-number">3.1.1.</span> <span class="nav-text">工程重构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E9%87%8D%E6%9E%84Maven-install%E6%8A%A5%E9%94%99-The-packaging-for-this-project-did-not-assign-a-file-to-the-build-artifact"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">工程重构Maven install报错 The packaging for this project did not assign a file to the build artifact</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Concul"><span class="nav-number">3.1.2.</span> <span class="nav-text">Concul</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Standard-Commons-Logging-discovery-in-action-with-spring-jcl-please-remove-commons-logging-jar-from-classpath-in-order-to-avoid-potential-conflicts"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Caused-by-java-net-UnknownHostException-cloud-payment-service"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">Caused by: java.net.UnknownHostException: cloud-payment-service</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Openfeign"><span class="nav-number">3.2.</span> <span class="nav-text">Openfeign</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#A-component-required-a-bean-of-type-%E2%80%98com-fu-apis-PayFeignApi%E2%80%99-that-could-not-be-found-Action-Consider-defining-a-bean-of-type-%E2%80%98com-fu-apis-PayFeignApi%E2%80%99-in-your-configuration"><span class="nav-number">3.2.1.</span> <span class="nav-text">A component required a bean of type ‘com.fu.apis.PayFeignApi’ that could not be found.  Action: Consider defining a bean of type ‘com.fu.apis.PayFeignApi’ in your configuration.</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sentinel-openfein"><span class="nav-number">3.3.</span> <span class="nav-text">sentinel+openfein</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B4%E5%90%88%E5%90%8E%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8%E8%80%85%E6%A8%A1%E5%9D%97%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8"><span class="nav-number">3.3.1.</span> <span class="nav-text">整合后服务调用者模块无法启动</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93"><span class="nav-number">3.4.</span> <span class="nav-text">知识点总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#loadbalancer"><span class="nav-number">3.4.1.</span> <span class="nav-text">loadbalancer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OpenFeign"><span class="nav-number">3.4.2.</span> <span class="nav-text">OpenFeign</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shearington"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Shearington</p>
+  <div class="site-description" itemprop="description">诗酒趁年华</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fushiye/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fushiye&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shearington@foxmail.com" title="E-Mail → mailto:shearington@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fushiye.github.io/2025/02/18/Java-Cloud1-Microservice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Shearington">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="星海拾贝">
+      <meta itemprop="description" content="诗酒趁年华">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java-Cloud1-Microservice | 星海拾贝">
+      <meta itemprop="description" content="微服务是一种软件架构风格，它将一个完整的应用程序拆分为一组小型、独立部署的服务，每个服务专注于完成特定的业务功能，并通过轻量级的通信机制（如 HTTP API）进行交互。这些服务可以独立开发、测试、部署和扩展，从而提高系统的灵活性、可维护性和可伸缩性，特别适合复杂的大型应用开发。Cloud系列主要是学习学习微服务和SpringCloud过程中记录的笔记，本文是第一篇，主要涉及微服务项目开发规范以及学习过程中遇到问题及重要知识点总结。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java-Cloud1-Microservice
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-02-18 23:10:12" itemprop="dateCreated datePublished" datetime="2025-02-18T23:10:12+08:00">2025-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-06 14:55:55" itemprop="dateModified" datetime="2025-03-06T14:55:55+08:00">2025-03-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/%E6%A1%86%E6%9E%B6%E4%B8%8E%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">框架与工具</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">微服务是一种软件架构风格，它将一个完整的应用程序拆分为一组小型、独立部署的服务，每个服务专注于完成特定的业务功能，并通过轻量级的通信机制（如 HTTP API）进行交互。这些服务可以独立开发、测试、部署和扩展，从而提高系统的灵活性、可维护性和可伸缩性，特别适合复杂的大型应用开发。Cloud系列主要是学习学习微服务和SpringCloud过程中记录的笔记，本文是第一篇，主要涉及微服务项目开发规范以及学习过程中遇到问题及重要知识点总结。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="基本说明"><a href="#基本说明" class="headerlink" title="基本说明"></a>基本说明</h2><h3 id="SpringCloud简介"><a href="#SpringCloud简介" class="headerlink" title="SpringCloud简介"></a>SpringCloud简介</h3><p><strong>Spring Cloud</strong> 是一个用于构建分布式系统和微服务架构的开源框架，基于 <strong>Spring Boot</strong> 开发。它提供了一套工具和组件，帮助开发者快速实现微服务之间的通信、配置管理、负载均衡、服务注册与发现等功能。适合希望采用微服务架构的企业级应用开发。</p>
+<p><strong>关键点</strong>：</p>
+<ol>
+<li><strong>微服务支持</strong>：简化微服务开发，解决服务间通信、容错、监控等问题。<strong>微服务</strong>是一种软件架构风格，它将一个完整的应用程序拆分为一组小型、独立、自治的服务，每个服务专注于完成特定的业务功能，并通过轻量级的通信机制（如 HTTP&#x2F;REST API、消息队列等）进行交互。</li>
+<li><strong>核心模块</strong>：<ul>
+<li><strong>Spring Cloud Netflix</strong>（如 Eureka、Ribbon、Hystrix）：服务注册与发现、负载均衡、断路器。</li>
+<li><strong>Spring Cloud Config</strong>：集中化配置管理。</li>
+<li><strong>Spring Cloud Gateway&#x2F;Zuul</strong>：API 网关。</li>
+<li><strong>Spring Cloud Stream&#x2F;Bus</strong>：消息驱动与事件总线。</li>
+</ul>
+</li>
+<li><strong>适用场景</strong>：适用于需要构建高可用、可扩展的分布式系统的项目。</li>
+<li><strong>优势</strong>：整合性强，生态丰富，与 Spring Boot 高度集成，降低微服务开发复杂度。</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20250219232030.png"></p>
+<h4 id="SpringCloud组件"><a href="#SpringCloud组件" class="headerlink" title="SpringCloud组件"></a>SpringCloud组件</h4><p>画线属于不推荐使用的。</p>
+<p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/SpringCloud2024.png"></p>
+<h3 id="笔记环境"><a href="#笔记环境" class="headerlink" title="笔记环境"></a>笔记环境</h3><p>Java JDK17+</p>
+<p><a target="_blank" rel="noopener" href="https://spring.io/projects/spring-cloud#overview">Cloud 2023.0.0</a>  <a target="_blank" rel="noopener" href="https://github.com/spring-cloud">源码</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Release-Notes">Boot 3.2.0</a>  <a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-boot/releases">源码</a></p>
+<p><a target="_blank" rel="noopener" href="https://sca.aliyun.com/">Cloud Alibaba 2022.0.0.0 -RC2</a></p>
+<p>Maven 3.9+</p>
+<p>MySQL 8.0+</p>
+<p>consul 1.20.4</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1gW421P7RD?vd_source=20530c92c1be8bd70e37346e3a5c037a&spm_id_from=333.788.videopod.episodes&p=3">尚硅谷SpringCloud2024</a></p>
+<h2 id="微服务项目构建"><a href="#微服务项目构建" class="headerlink" title="微服务项目构建"></a>微服务项目构建</h2><h3 id="项目说明"><a href="#项目说明" class="headerlink" title="项目说明"></a>项目说明</h3><ol>
+<li><p>模块命名规则：<code>cloud-[服务提供者/消费者]provider/consumer-[服务名][暴露端口]</code></p>
+</li>
+<li><p>微服务是一种软件架构风格，其核心是将一个完整的应用程序拆分为一组小型、独立的服务，每个服务专注于完成特定的业务功能。因此，每个微服务工程由自己暴露的端口。</p>
+</li>
+</ol>
+<h3 id="父工程准备"><a href="#父工程准备" class="headerlink" title="父工程准备"></a>父工程准备</h3><p>包含的核心依赖及其作用：</p>
+<ul>
+<li><strong>Spring Boot</strong>：引入 <code>spring-boot-starter-parent</code>，版本为 <code>3.2.0</code>，作为基础框架。</li>
+<li><strong>Spring Cloud</strong>：引入 <code>spring-cloud-dependencies</code>，版本为 <code>2023.0.0</code>，支持分布式系统开发。</li>
+<li><strong>Spring Cloud Alibaba</strong>：引入 <code>spring-cloud-alibaba-dependencies</code>，版本为 <code>2022.0.0.0-RC2</code>，集成阿里巴巴的中间件组件。</li>
+<li><strong>MyBatis</strong>：通过 <code>mybatis-spring-boot-starter</code> 集成 MyBatis 框架，版本为 <code>3.0.2</code>。</li>
+<li><strong>MySQL 驱动</strong>：使用 <code>mysql-connector-java</code>，版本为 <code>8.0.11</code>。</li>
+<li><strong>Druid 连接池</strong>：集成阿里云的 Druid 数据库连接池，版本为 <code>1.1.20</code>。</li>
+<li><strong>通用 Mapper</strong>：引入 <code>tk.mybatis.mapper</code>，版本为 <code>4.2.3</code>，简化 MyBatis 的 CRUD 操作。</li>
+<li><strong>FastJSON2</strong>：集成阿里巴巴的 JSON 序列化工具，版本为 <code>2.0.40</code>。</li>
+<li><strong>Swagger3</strong>：通过 <code>springdoc-openapi-starter-webmvc-ui</code> 提供 API 文档生成功能，版本为 <code>2.2.0</code>。</li>
+<li><strong>Hutool</strong>：引入 <code>hutool-all</code> 工具包，版本为 <code>5.8.22</code>，提供丰富的工具类。</li>
+<li><strong>Lombok</strong>：集成 Lombok 工具，版本为 <code>1.18.26</code>，减少样板代码。</li>
+<li><strong>JUnit 测试</strong>：引入 <code>spring-boot-starter-test</code>，版本为 <code>3.1.5</code>，用于单元测试。</li>
+</ul>
+<h3 id="mapper准备"><a href="#mapper准备" class="headerlink" title="mapper准备"></a>mapper准备</h3><p>在Pom文件引入相关依赖，并创建generatorConfig.xml文件配置MapperGenerator，创建config.properties记录JDBC配置。<a target="_blank" rel="noopener" href="https://github.com/Fushiye/BlogDocuments/tree/main/SpringCloud/mapper">详情</a></p>
+<p>config.properties</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">package.name</span>=<span class="string">com.fu</span></span><br><span class="line"><span class="comment"># mysql8.0</span></span><br><span class="line"><span class="attr">jdbc.driverClass</span> = <span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"><span class="attr">jdbc.url</span>= <span class="string">jdbc:mysql://localhost:3306/db2024?characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT%2B8&amp;rewriteBatchedStatements=true&amp;allowPublicKeyRetrieval=true</span></span><br><span class="line"><span class="attr">jdbc.user</span> = <span class="string">15767</span></span><br><span class="line"><span class="attr">jdbc.password</span> = <span class="string">password</span></span><br></pre></td></tr></table></figure>
+
+<p>此后在侧边栏Maven中点击插件-mybatis-generator即可主动生成。</p>
+<h3 id="支付微服务（Base工程示例）"><a href="#支付微服务（Base工程示例）" class="headerlink" title="支付微服务（Base工程示例）"></a>支付微服务（Base工程示例）</h3><p>整体上按正常的项目编写步骤，编写entities、controller、mapper、service等</p>
+<h4 id="一个基本的微服务项目构建流程"><a href="#一个基本的微服务项目构建流程" class="headerlink" title="一个基本的微服务项目构建流程"></a>一个基本的微服务项目构建流程</h4><p>本节代码</p>
+<p>创建Module &#x3D;》修改POM &#x3D;》编写yaml &#x3D;》主启动类 &#x3D;》业务类</p>
+<p>业务类中直接将generator中生成的xml、entities、mapper文件直接复制过来，mapper.xml文件需要置于resources目录下。一个好的工程应当做到如下优化：</p>
+<ul>
+<li>如果使用swagger，需要编写配置类，同时为实体类和controller添加如<code>@Tag</code>，<code>@Schema</code>，<code>@Operation</code>等注解说明</li>
+<li>为了避免直接暴露领域模型或数据库实体类，降低系统各层之间的耦合度，防止敏感信息被意外传递到客户端，只传输必要的数据。需要为实体类设计一个与前端交互的DTO类</li>
+<li>为了方便前端读取数据，应当设计一个全局统一返回格式类详情，一般包括：<ul>
+<li>code：状态值，建议和message一起使用枚举类（包含举值、构造方法、遍历 详情）表示。</li>
+<li>message：本次接口调用结果描述</li>
+<li>data：本次返回的数据</li>
+<li>timestamp：可能有时间戳，接口的调用时间</li>
+<li>操作成功函数、其他操作结果函数</li>
+</ul>
+</li>
+<li>为了减少try-catch等代码，规范返回数据，应当有全局异常接入返回的标准格式.</li>
+</ul>
+<h4 id="全局异常处理类设计"><a href="#全局异常处理类设计" class="headerlink" title="全局异常处理类设计"></a>全局异常处理类设计</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 全局异常处理器类，用于捕获并处理应用程序中的异常。</span></span><br><span class="line"><span class="comment"> * 通过 &#123;<span class="doctag">@code</span> <span class="doctag">@RestControllerAdvice</span>&#125; 注解，将该类定义为一个全局异常处理控制器，</span></span><br><span class="line"><span class="comment"> * 并适用于整个应用程序的 RESTful 接口。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf4j</span> <span class="comment">// 使用 Lombok 提供的注解，自动生成日志对象 log，方便记录日志信息。</span></span><br><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GlobalExceptionHandler</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 捕获 RuntimeException 类型的异常，并返回统一的错误响应结果。</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> e 异常对象，包含异常的具体信息。</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回封装后的 ResultData 对象，表示异常处理的结果。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(RuntimeException.class)</span> <span class="comment">// 指定该方法用于处理 RuntimeException 及其子类异常。</span></span><br><span class="line">    <span class="meta">@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)</span> <span class="comment">// 响应 HTTP 状态码 500（内部服务器错误）。</span></span><br><span class="line">    <span class="keyword">public</span> ResultData&lt;String&gt; <span class="title function_">exception</span><span class="params">(Exception e)</span> &#123;</span><br><span class="line">        <span class="comment">// 记录异常信息到日志中，使用 error 级别记录详细信息和堆栈跟踪。</span></span><br><span class="line">        log.error(<span class="string">&quot;全局异常信息：&#123;&#125;&quot;</span>, e.getMessage(), e);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 返回封装后的错误结果，调用 ResultData 的 fail 方法，</span></span><br><span class="line">        <span class="comment">// 设置错误码为 RC500（通常表示系统内部错误），并将异常消息作为提示信息返回。</span></span><br><span class="line">        <span class="keyword">return</span> ResultData.fail(ReturnCodeEnum.RC500.getCode(), e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注释说明</strong>：</p>
+<ol>
+<li>**<code>@Slf4j</code>**：Lombok 提供的注解，用于自动生成 <code>log</code> 对象，简化日志记录代码。</li>
+<li>**<code>@RestControllerAdvice</code>**：Spring 提供的注解，声明该类是一个全局异常处理控制器，专门用于处理 RESTful 接口中的异常。</li>
+<li>**<code>@ExceptionHandler(RuntimeException.class)</code>**：指定该方法用于捕获 <code>RuntimeException</code> 类型及其子类的异常。</li>
+<li>**<code>@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)</code>**：设置当该方法被触发时，HTTP 响应的状态码为 500（内部服务器错误）。</li>
+<li>**<code>log.error</code>**：记录异常的详细信息，包括异常消息和堆栈跟踪，便于后续排查问题。</li>
+<li>**<code>ResultData.fail</code>**：调用 <code>ResultData</code> 的 <code>fail</code> 方法，返回封装后的错误结果，包含错误码和错误消息。</li>
+</ol>
+<h3 id="订单微服务"><a href="#订单微服务" class="headerlink" title="订单微服务"></a>订单微服务</h3><p>本节代码</p>
+<p>编写原则：</p>
+<ul>
+<li>服务的调用者的访问URI应该在提供者接口URI基础上添加，如<code>/consumer/pay/add</code>和<code>/pay/add</code></li>
+</ul>
+<h4 id="RestTemplate"><a href="#RestTemplate" class="headerlink" title="RestTemplate"></a>RestTemplate</h4><p><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/6.0.11/javadoc-api/org/springframework/web/client/RestTemplate.html">官网介绍</a></p>
+<p><strong>RestTemplate</strong> 是 Spring 框架提供的一个用于与 RESTful 服务进行交互的客户端工具类。<code>RestTemplate</code> 是一个同步的 HTTP 客户端，用于发送 HTTP 请求（如 GET、POST、PUT、DELETE 等）并处理响应。在微服务架构中，服务间通信常通过 <code>RestTemplate</code> 实现。它可以：</p>
+<ul>
+<li>调用外部 RESTful API 或微服务接口。</li>
+<li>支持多种数据格式（如 JSON、XML）的请求和响应转换。</li>
+<li>提供便捷的方法封装 HTTP 请求逻辑。</li>
+</ul>
+<p>使用restTemplate访问restful接口非常的简单粗暴。(url, requestMap, ResponseBean.class)这三个参数分别代表 REST请求地址、请求参数、HTTP响应转换被转换成的对象类型，常用API如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法名称</strong></th>
+<th><strong>功能描述</strong></th>
+<th><strong>返回值类型</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>exchange()</code></td>
+<td>发送任意类型的 HTTP 请求（GET、POST、PUT、DELETE 等），并允许自定义请求头和请求体。</td>
+<td><code>ResponseEntity&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td><code>execute()</code></td>
+<td>执行 HTTP 请求，并允许通过回调函数处理响应内容，适合更复杂的场景。</td>
+<td>用户定义的类型</td>
+</tr>
+<tr>
+<td><code>headForHeaders()</code></td>
+<td>发送 HEAD 请求，用于获取目标资源的响应头信息。</td>
+<td><code>HttpHeaders</code></td>
+</tr>
+<tr>
+<td><code>put()</code></td>
+<td>发送 PUT 请求，通常用于更新资源，不返回响应体。</td>
+<td><code>void</code></td>
+</tr>
+<tr>
+<td><code>delete()</code></td>
+<td>发送 DELETE 请求，用于删除资源，不返回响应体。</td>
+<td><code>void</code></td>
+</tr>
+<tr>
+<td><code>optionsForAllow()</code></td>
+<td>发送 OPTIONS 请求，用于获取目标资源支持的 HTTP 方法列表。</td>
+<td><code>Set&lt;HttpMethod&gt;</code></td>
+</tr>
+</tbody></table>
+<p><img src="https://raw.githubusercontent.com/Fushiye/BlogPicture/main/img_blog/20250221220131.png"></p>
+<ul>
+<li><code>*Entity()</code>：返回结果为ResponseEntity对象，包含响应体中一些重要信息如响应头、状态码、响应体等。</li>
+<li><code>*Object()</code>：返回结果为响应体中数据转化成的对象，可以理解为JSON</li>
+<li>上述为<code>GET</code>请求方法对应API，<code>POST</code>请求方法对应API只需要将get换为post即可。</li>
+</ul>
+<h5 id="配置类"><a href="#配置类" class="headerlink" title="配置类"></a>配置类</h5><p>调用RestTemplate中的API可以提供在程序中new一个对象的方式，但在Spring项目中更常用配置类的方式将对象放到容器中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RestTemplateConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RestTemplate <span class="title function_">restTemplate</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RestTemplate</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderController</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">PaymentSrv_URL</span> <span class="operator">=</span> <span class="string">&quot;http://localhost:8001&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">public</span> RestTemplate restTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostMapping(value = &quot;/consumer/pay/add&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ResultData <span class="title function_">addOrder</span><span class="params">(PayDTO payDTO)</span>&#123;</span><br><span class="line">       <span class="keyword">return</span> restTemplate.postForObject(PaymentSrv_URL+<span class="string">&quot;/pay/add&quot;</span>,payDTO,ResultData.class);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="工程重构"><a href="#工程重构" class="headerlink" title="工程重构"></a>工程重构</h3><p>在各个微服务项目中可能存在重复的代码，如entities、全局结果类、全局异常类等，这些代码可以提取到同一个模块中，此模块对外暴露通用的组件&#x2F;API&#x2F;接口&#x2F;工具类等，供其他服务调用。此模块无需运行，因此不是一个独立的服务，也无需yaml配置文件，相当于一个工具模块。</p>
+<p>对工具模块执行（生命周期中的）<code>maven clean</code>+<code>maven install</code>操作，清除其他模块的重复部分，然后在其他服务模块的POM文件的<code>dependencys</code>中引入当前工具模块。</p>
+<p>如：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fu<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>cloud-api-commons<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="编程错误-问题"><a href="#编程错误-问题" class="headerlink" title="编程错误&#x2F;问题"></a>编程错误&#x2F;问题</h3><h4 id="工程重构-1"><a href="#工程重构-1" class="headerlink" title="工程重构"></a>工程重构</h4><h5 id="工程重构Maven-install报错-The-packaging-for-this-project-did-not-assign-a-file-to-the-build-artifact"><a href="#工程重构Maven-install报错-The-packaging-for-this-project-did-not-assign-a-file-to-the-build-artifact" class="headerlink" title="工程重构Maven install报错 The packaging for this project did not assign a file to the build artifact"></a>工程重构Maven install报错 The packaging for this project did not assign a file to the build artifact</h5><p>需要使用maven生命周期的工具而不是插件中的工具</p>
+<h4 id="Concul"><a href="#Concul" class="headerlink" title="Concul"></a>Concul</h4><h5 id="Standard-Commons-Logging-discovery-in-action-with-spring-jcl-please-remove-commons-logging-jar-from-classpath-in-order-to-avoid-potential-conflicts"><a href="#Standard-Commons-Logging-discovery-in-action-with-spring-jcl-please-remove-commons-logging-jar-from-classpath-in-order-to-avoid-potential-conflicts" class="headerlink" title="Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts"></a>Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts</h5><p>修改依赖导入：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-consul-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="Caused-by-java-net-UnknownHostException-cloud-payment-service"><a href="#Caused-by-java-net-UnknownHostException-cloud-payment-service" class="headerlink" title="Caused by: java.net.UnknownHostException: cloud-payment-service"></a>Caused by: java.net.UnknownHostException: cloud-payment-service</h5><p>【问题原因】</p>
+<p>consul原生支持负载均衡，默认每个微服务都是集群状态，RestTemplate发送请求时会不清楚具体的对象。</p>
+<p>【解决方案】</p>
+<p>修改RestTemplateConfig，使用注解<code>@LoadBalanced</code>开启负载均衡</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RestTemplateConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@LoadBalanced</span></span><br><span class="line">    <span class="keyword">public</span> RestTemplate <span class="title function_">restTemplate</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RestTemplate</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Openfeign"><a href="#Openfeign" class="headerlink" title="Openfeign"></a>Openfeign</h3><h4 id="A-component-required-a-bean-of-type-‘com-fu-apis-PayFeignApi’-that-could-not-be-found-Action-Consider-defining-a-bean-of-type-‘com-fu-apis-PayFeignApi’-in-your-configuration"><a href="#A-component-required-a-bean-of-type-‘com-fu-apis-PayFeignApi’-that-could-not-be-found-Action-Consider-defining-a-bean-of-type-‘com-fu-apis-PayFeignApi’-in-your-configuration" class="headerlink" title="A component required a bean of type ‘com.fu.apis.PayFeignApi’ that could not be found.  Action: Consider defining a bean of type ‘com.fu.apis.PayFeignApi’ in your configuration."></a>A component required a bean of type ‘com.fu.apis.PayFeignApi’ that could not be found.  Action: Consider defining a bean of type ‘com.fu.apis.PayFeignApi’ in your configuration.</h4><p>【问题概述】：  </p>
+<p>服务调用者启动时出现上述报错，无法找到对应API</p>
+<p>【产生原因】：<br><code>@EnableFeignClients</code> 注解的作用是启用 Feign 客户端功能，并扫描指定范围内的接口以将其注册为 Spring 管理的 Bean。如果不指定 <code>basePackages</code> 参数，默认情况下，Spring Boot 会基于主应用程序类（即带有 <code>@SpringBootApplication</code> 注解的类）所在的包及其子包进行扫描。如果 Feign 接口位于其他模块或不在主应用程序类的包结构中，则不会被自动扫描到。</p>
+<p>【解决方案】：<br>使用 <code>@EnableFeignClients(basePackages = &quot;com.fu.apis&quot;)</code> 明确指定 Feign 接口所在的包路径。</p>
+<h3 id="sentinel-openfein"><a href="#sentinel-openfein" class="headerlink" title="sentinel+openfein"></a>sentinel+openfein</h3><h4 id="整合后服务调用者模块无法启动"><a href="#整合后服务调用者模块无法启动" class="headerlink" title="整合后服务调用者模块无法启动"></a>整合后服务调用者模块无法启动</h4><blockquote>
+<p>Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name ‘com.fu.apis.PayFeignSentinelApi’: FactoryBean threw exception on object creation</p>
+<p>Caused by: java.lang.IllegalStateException: Method PayFeignSentinelApi#getPayByOrderNo(String) not annotated with HTTP method type (ex. GET, POST)</p>
+</blockquote>
+<p>原因：springboot和springcloudalibaba版本兼容出错，修改</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--        &lt;spring.boot.version&gt;3.2.0&lt;/spring.boot.version&gt;--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--        &lt;spring.cloud.version&gt;2023.0.0&lt;/spring.cloud.version&gt;--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">spring.boot.version</span>&gt;</span>3.0.9<span class="tag">&lt;/<span class="name">spring.boot.version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">spring.cloud.version</span>&gt;</span>2022.0.2<span class="tag">&lt;/<span class="name">spring.cloud.version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">spring.cloud.alibaba.version</span>&gt;</span>2022.0.0.0-RC2<span class="tag">&lt;/<span class="name">spring.cloud.alibaba.version</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="知识点总结"><a href="#知识点总结" class="headerlink" title="知识点总结"></a>知识点总结</h3><h4 id="loadbalancer"><a href="#loadbalancer" class="headerlink" title="loadbalancer"></a>loadbalancer</h4><p>依赖<code>spring-cloud-starter-consul-discovery</code>中实际已经包含了<code>spring-cloud-starter-loadbalancer</code>，且如果consul默认情况下没有使用注解<code>@LoadBalanced</code>开启负载均衡会无法使用，所以使用consul时此环节无需任何操作即可自动实现负载均衡！</p>
+<h4 id="OpenFeign"><a href="#OpenFeign" class="headerlink" title="OpenFeign"></a>OpenFeign</h4><p>接口提取服务提供者的对外暴露方法时，最重要的是访问的URL必须和服务提供者的Controller中的一致，抽象方法名可以不一致，但为了方便查看，一般取同名。同时，方法中从配置消息中读取的参数可以省略。</p>
+<p>=============	【<strong>本文终结</strong>】	=============</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag"><i class="fa fa-tag"></i> 微服务</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/02/17/Tip-Java-Lombok/" rel="prev" title="Tip-Java-Lombok">
+                  <i class="fa fa-angle-left"></i> Tip-Java-Lombok
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/02/18/Java-Cloud2-SpringCloud/" rel="next" title="Java-Cloud2-SpringCloud">
+                  Java-Cloud2-SpringCloud <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Shearington</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">442k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">24:34</span>
+  </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"Fushiye/Fushiye.github.io","repo_id":"R_kgDOLyiTvA","category":"Announcements","category_id":"DIC_kwDOLyiTvM4CteAo","mapping":"title","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"zh-CN","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+
+</body>
+</html>

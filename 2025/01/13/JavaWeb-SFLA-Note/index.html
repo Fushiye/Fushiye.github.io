@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_apple-touch-icon-human.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_human_32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_human_16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fushiye.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism-darcula","dark":"prism-darcula"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":3,"unescape":false,"preload":true}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="会话_过滤器_监听器_AJAX(Session_Filters_Listeners_AJAX)学习过程中记录的笔记，仅供参考，如有错漏，敬请指正!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaWeb-SFLA-Note">
+<meta property="og:url" content="https://fushiye.github.io/2025/01/13/JavaWeb-SFLA-Note/index.html">
+<meta property="og:site_name" content="星海拾贝">
+<meta property="og:description" content="会话_过滤器_监听器_AJAX(Session_Filters_Listeners_AJAX)学习过程中记录的笔记，仅供参考，如有错漏，敬请指正!">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="d:\workinenglish\typora_image\image-20250114220330502.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20250118225043.png">
+<meta property="article:published_time" content="2025-01-13T11:55:34.000Z">
+<meta property="article:modified_time" content="2025-02-07T14:39:21.857Z">
+<meta property="article:author" content="Shearington">
+<meta property="article:tag" content="JavaWeb">
+<meta property="article:tag" content="会话">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:\workinenglish\typora_image\image-20250114220330502.png">
+
+
+<link rel="canonical" href="https://fushiye.github.io/2025/01/13/JavaWeb-SFLA-Note/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fushiye.github.io/2025/01/13/JavaWeb-SFLA-Note/","path":"2025/01/13/JavaWeb-SFLA-Note/","title":"JavaWeb-SFLA-Note"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaWeb-SFLA-Note | 星海拾贝</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">星海拾贝</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">探索永无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D"><span class="nav-number">1.</span> <span class="nav-text">会话</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie"><span class="nav-number">1.2.</span> <span class="nav-text">Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.1.</span> <span class="nav-text">Cookie的工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie%E7%9A%84%E6%97%B6%E6%95%88"><span class="nav-number">1.2.2.</span> <span class="nav-text">Cookie的时效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.2.3.</span> <span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Session"><span class="nav-number">1.3.</span> <span class="nav-text">Session</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#session%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">session的工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#session%E7%9A%84%E6%97%B6%E6%95%88"><span class="nav-number">1.3.2.</span> <span class="nav-text">session的时效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-1"><span class="nav-number">1.3.3.</span> <span class="nav-text">使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E5%A4%A7%E5%9F%9F%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.4.</span> <span class="nav-text">三大域对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B-2"><span class="nav-number">1.4.1.</span> <span class="nav-text">使用示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">2.0.1.</span> <span class="nav-text">过滤器的工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">2.0.2.</span> <span class="nav-text">基本使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">2.0.3.</span> <span class="nav-text">生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E9%93%BE"><span class="nav-number">2.0.4.</span> <span class="nav-text">过滤器链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="nav-number">2.0.5.</span> <span class="nav-text">注解配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%91%E5%90%AC%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">监听器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-1"><span class="nav-number">3.0.1.</span> <span class="nav-text">基本使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E6%80%BB%E7%BB%93"><span class="nav-number">3.0.2.</span> <span class="nav-text">功能总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.0.3.</span> <span class="nav-text">应用示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ajax"><span class="nav-number">4.</span> <span class="nav-text">Ajax</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shearington"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Shearington</p>
+  <div class="site-description" itemprop="description">诗酒趁年华</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fushiye/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fushiye&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shearington@foxmail.com" title="E-Mail → mailto:shearington@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fushiye.github.io/2025/01/13/JavaWeb-SFLA-Note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Shearington">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="星海拾贝">
+      <meta itemprop="description" content="诗酒趁年华">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JavaWeb-SFLA-Note | 星海拾贝">
+      <meta itemprop="description" content="会话_过滤器_监听器_AJAX(Session_Filters_Listeners_AJAX)学习过程中记录的笔记，仅供参考，如有错漏，敬请指正!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaWeb-SFLA-Note
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-01-13 19:55:34" itemprop="dateCreated datePublished" datetime="2025-01-13T19:55:34+08:00">2025-01-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-02-07 22:39:21" itemprop="dateModified" datetime="2025-02-07T22:39:21+08:00">2025-02-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">前端技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/JavaWeb/" itemprop="url" rel="index"><span itemprop="name">JavaWeb</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>20 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">会话_过滤器_监听器_AJAX(Session_Filters_Listeners_AJAX)学习过程中记录的笔记，仅供参考，如有错漏，敬请指正!</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在网络应用中，HTTP协议是无状态的，这意味着每个请求都是独立的。然而，许多应用需要跟踪用户的活动，例如登录状态、购物车内容等。会话管理通过创建和维护会话来保存这些信息，确保用户体验的一致性和连贯性。有效的会话管理包括对会话的保护措施，如使用安全令牌、加密会话数据以及设置合理的会话过期时间，从而防止会话劫持和其他安全威胁。通过有效地管理会话，可以减少服务器资源的消耗，例如通过内存或数据库存储会话数据，避免重复查询数据库以获取相同的信息，提高响应速度。基于会话数据，应用能够提供更加个性化的用户体验，比如推荐相关产品或服务、显示用户偏好设置等。随着移动设备、桌面应用和Web服务之间的交互日益增多，良好的会话管理能够确保不同平台之间数据的一致性和互通性，提升用户的整体体验。</p>
+<p><strong>实现会话管理的手段：</strong></p>
+<p>实现会话管理的常用手段主要包括以下几个方面，每种方法都有其特点和适用场景：</p>
+<ol>
+<li><p><strong>Cookie</strong>：</p>
+<ul>
+<li><strong>描述</strong>：Cookie是最常见的会话管理方式之一。服务器可以通过HTTP响应头将少量数据发送到客户端，并由客户端在随后的请求中自动附带这些数据返回给服务器。</li>
+<li><strong>优点</strong>：简单易用，支持跨页面保持用户状态。</li>
+<li><strong>缺点</strong>：大小有限制（通常为4KB），且可能影响性能；存在被篡改或窃取的风险。</li>
+</ul>
+</li>
+<li><p><strong>Session（会话）</strong>：</p>
+<ul>
+<li><strong>描述</strong>：当用户访问网站时，服务器可以创建一个唯一的会话ID并存储在Cookie中。服务器端则维护与该会话ID相关的数据。</li>
+<li><strong>优点</strong>：安全性较高，因为实际的数据保存在服务器上。</li>
+<li><strong>缺点</strong>：需要消耗服务器资源来存储会话数据，不适合分布式环境。</li>
+</ul>
+</li>
+<li><p><strong>Token（令牌）</strong>：</p>
+<ul>
+<li><strong>描述</strong>：使用如JWT（JSON Web Token）这样的技术，通过加密的方式生成一个包含用户信息的令牌，在每次请求时传递给服务器进行验证。</li>
+<li><strong>优点</strong>：自包含、无状态，适合微服务架构和分布式系统；易于扩展和部署。</li>
+<li><strong>缺点</strong>：一旦签发，除非过期，否则无法撤销，需谨慎设置过期时间。</li>
+</ul>
+</li>
+<li><p><strong>隐藏表单字段</strong>：</p>
+<ul>
+<li><strong>描述</strong>：在网页表单中添加一个隐藏字段，用于存储会话标识符或其他重要信息。</li>
+<li><strong>优点</strong>：适用于不支持Cookie的情况。</li>
+<li><strong>缺点</strong>：增加了页面复杂度，且不如Cookie安全。</li>
+</ul>
+</li>
+<li><p><strong>URL重写</strong>：</p>
+<ul>
+<li><strong>描述</strong>：将会话ID直接附加到URL后面，使得每个链接都包含用户的会话信息。</li>
+<li><strong>优点</strong>：不需要依赖于Cookie，适用于不允许使用Cookie的环境。</li>
+<li><strong>缺点</strong>：容易暴露会话ID，不够安全；URL长度限制。</li>
+</ul>
+</li>
+</ol>
+<p>选择合适的会话管理方式取决于具体的应用需求、安全性考虑以及系统架构等因素。在实际应用中，可能会结合多种方法以达到最佳效果。例如，利用Cookie存储会话ID的同时，使用服务器端的Session机制来管理和保护敏感数据。</p>
+<h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><p><strong>Cookie</strong> 是一种小型文本文件，由服务器通过HTTP响应发送给用户的浏览器，并存储在用户的设备上。它主要用于网站识别用户、保存用户的偏好设置或跟踪用户的行为等目的。每个Cookie都包含了一些信息，如名称、值、过期时间、路径、域名和安全属性等。</p>
+<h3 id="Cookie的工作原理"><a href="#Cookie的工作原理" class="headerlink" title="Cookie的工作原理"></a>Cookie的工作原理</h3><ol>
+<li><p><strong>创建与设置</strong>：</p>
+<ul>
+<li>当用户首次访问一个网站时，服务器可以通过HTTP响应头<code>Set-Cookie</code>向用户的浏览器发送一个或多个Cookie。</li>
+<li>例如：<code>Set-Cookie: sessionId=abc123; Max-Age=3600; Path=/; Secure; HttpOnly</code></li>
+</ul>
+</li>
+<li><p><strong>存储</strong>：</p>
+<ul>
+<li>浏览器接收到这些Cookie后，会根据其属性（如域名、路径、有效期等）决定是否以及如何存储它们。</li>
+<li>每个网站可以存储多个Cookie，但总大小通常限制在4KB左右。</li>
+</ul>
+</li>
+<li><p><strong>发送与读取</strong>：</p>
+<ul>
+<li>在后续对该网站的请求中，如果请求的URL符合某个已存储Cookie的路径和域名条件，浏览器就会自动将该Cookie的名称和值附加到HTTP请求头<code>Cookie</code>中发送给服务器。</li>
+<li>例如：<code>Cookie: sessionId=abc123</code></li>
+</ul>
+</li>
+<li><p><strong>更新与删除</strong>：</p>
+<ul>
+<li>服务器可以通过再次发送带有相同名称但不同值或过期时间的<code>Set-Cookie</code>头部来更新或删除Cookie。</li>
+<li>删除Cookie通常是通过设置它的<code>Max-Age</code>或<code>Expires</code>属性为过去的日期来实现的。</li>
+</ul>
+</li>
+</ol>
+<h3 id="Cookie的时效"><a href="#Cookie的时效" class="headerlink" title="Cookie的时效"></a>Cookie的时效</h3><p>根据生命周期和存储方式来区分,，有两种Cookie：</p>
+<ol>
+<li><p>会话级Cookie（Session Cookie）：指那些没有设置明确过期时间（即未设置<code>Max-Age</code>或<code>Expires</code>属性）的Cookie。这类Cookie仅在浏览器会话期间有效。</p>
+<ul>
+<li><p>存在于用户的临时内存中，直到用户关闭浏览器为止，重启浏览器失效。</p>
+</li>
+<li><p>不能跨浏览器使用，不具备长期存储功能。</p>
+</li>
+<li><p>更加注重隐私保护，因为数据仅在当前会话内可用。</p>
+</li>
+<li><p>常用于保存短期的信息，如用户的登录状态、购物车内容等，这些信息在浏览器关闭后不再需要保留。</p>
+</li>
+</ul>
+</li>
+<li><p>持久级Cookie（Persistent Cookie）：指那些设置了明确过期时间（通过<code>Max-Age</code>或<code>Expires</code>属性）的Cookie。这类Cookie可以在浏览器关闭后仍然存在，并且在设定的有效期内重新打开浏览器时仍然可用。</p>
+<ul>
+<li>根据<code>Max-Age</code>或<code>Expires</code>属性指定的时间长度存活。</li>
+</ul>
+<ul>
+<li><p>存储在用户的硬盘上，允许跨多个浏览器会话使用。</p>
+</li>
+<li><p>适用于需要长期保存的信息，如用户偏好设置、自动登录选项等。可以用于跟踪用户行为，提供个性化服务或广告推荐。</p>
+</li>
+<li><p>提供了更长的数据保留期限，但可能涉及更多的隐私问题。需要谨慎管理过期时间和数据更新机制，以避免不必要的数据积累。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h3><p>设置cookie：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/cookie&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServletA</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="comment">// 创建cookie</span></span><br><span class="line">        <span class="type">Cookie</span> <span class="variable">cookie</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cookie</span>(<span class="string">&quot;value&quot;</span>,<span class="string">&quot;key&quot;</span>);</span><br><span class="line">        <span class="comment">// 设置cookie有效时长 单位：秒</span></span><br><span class="line">        cookie.setMaxAge(<span class="number">60</span>*<span class="number">5</span>);</span><br><span class="line">        <span class="comment">// 设置cookie的提交路径：</span></span><br><span class="line">        <span class="comment">// 请求设置路径下的资源时提交而请求其他路径资源时不提交</span></span><br><span class="line">        cookie.setPath(<span class="string">&quot;/web04/servletB&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将cookie放入response对象</span></span><br><span class="line">        resp.addCookie(cookie);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>获取cookie：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/servlet&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServletB</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="comment">// 获取cookie</span></span><br><span class="line">        Cookie[] cookies = req.getCookies();</span><br><span class="line">        <span class="comment">// 迭代cookie数组，如果没有cookie会为空，所以需要先判断</span></span><br><span class="line">        <span class="keyword">if</span>(cookies!=<span class="literal">null</span>&amp;&amp;cookies.length!=<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span> (Cookie cookie:cookies)&#123;</span><br><span class="line">                System.out.println(cookie);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h2><p><strong>Session</strong>（会话）是指在用户与网站或应用交互期间，服务器为每个用户创建的一种临时状态，用于存储特定于该用户的信息。这种机制允许服务器在多个页面请求之间保持用户的登录状态、购物车内容或其他个性化设置等数据。与Cookie不同，Session数据通常保存在服务器端，而仅通过一个唯一的会话ID（通常存储在客户端的Cookie中）来关联用户和其对应的会话数据。这不仅提高了安全性，还使得管理用户状态变得更加灵活和高效。</p>
+<p><strong>实际使用时，Session必须配合Cookie使用</strong></p>
+<h3 id="session的工作原理"><a href="#session的工作原理" class="headerlink" title="session的工作原理"></a>session的工作原理</h3><ol>
+<li><p>创建Session</p>
+<ul>
+<li><p><strong>用户请求</strong>：当用户首次访问网站时，服务器检测到这是一个新的会话（通常是通过检查是否存在有效的Session ID），并创建一个新的会话。</p>
+</li>
+<li><p><strong>生成Session ID</strong>：服务器为这个新会话生成一个唯一的Session ID。这个ID可以是一个随机字符串，确保其具有足够的唯一性和安全性。</p>
+</li>
+<li><p><strong>发送Session ID</strong>：服务器将生成的Session ID发送给客户端。通常通过以下方式之一：</p>
+<ul>
+<li><strong>Cookie</strong>：最常见的方式是将Session ID存储在一个名为<code>session_id</code>的Cookie中，并随着响应返回给客户端。</li>
+<li><strong>URL重写</strong>：也可以将Session ID直接附加到URL中，但这不如Cookie安全。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>存储Session数据</p>
+<ul>
+<li><p><strong>服务器端存储</strong>：一旦Session ID被创建，服务器会在内存或数据库中存储与该Session ID相关联的数据。这可能包括用户的登录状态、购物车内容、偏好设置等。</p>
+</li>
+<li><p><strong>持久化选项</strong>：根据应用的需求，Session数据可以暂时存储在内存中（适用于短期会话），也可以持久化到数据库或其他存储系统中（适用于需要长期保存的会话数据）。</p>
+</li>
+</ul>
+</li>
+<li><p>使用Session</p>
+<ul>
+<li><p><strong>用户后续请求</strong>：当用户进行后续请求时，浏览器会自动将包含Session ID的Cookie（或通过URL参数）发送回服务器。</p>
+</li>
+<li><p><strong>识别用户</strong>：服务器接收到请求后，从Cookie或URL中提取Session ID，并查找对应的Session数据。</p>
+</li>
+<li><p><strong>处理请求</strong>：基于找到的Session数据，服务器可以恢复用户的会话状态，并继续处理请求，例如显示个性化页面或更新购物车。</p>
+</li>
+</ul>
+</li>
+<li><p>更新和删除Session</p>
+<ul>
+<li><p><strong>更新</strong>：如果用户在会话期间进行了某些操作（如添加商品到购物车），服务器会相应地更新Session中的数据。</p>
+</li>
+<li><p><strong>过期</strong>：每个Session都有一个设定的有效期。如果超过这个时间没有活动（即没有新的请求），Session将自动失效。服务器可以通过设置Session的过期时间来控制这一点。</p>
+</li>
+<li><p><strong>手动销毁</strong>：用户也可以主动注销（logout），此时服务器会清除与该Session ID相关的所有数据，并通知客户端删除相应的Cookie。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="session的时效"><a href="#session的时效" class="headerlink" title="session的时效"></a>session的时效</h3><p>Tomcat中采用滑动超时的session，即本次使用与上次使用间隔不超过设定时间时，使用原session，超过后产生新的session。默认为30分钟，可以在web.xml配置文件中使用以下标签设置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">session-config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>30<span class="tag">&lt;/<span class="name">session-timeout</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">session-config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>或在代码中设定（不常用），见下文使用示例</p>
+<h3 id="使用示例-1"><a href="#使用示例-1" class="headerlink" title="使用示例"></a>使用示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/session&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SessionServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">      <span class="comment">// 接收请求中的username参数</span></span><br><span class="line">      <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> req.getParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">      <span class="comment">// 获取session对象</span></span><br><span class="line">      <span class="type">HttpSession</span> <span class="variable">session</span> <span class="operator">=</span> req.getSession();</span><br><span class="line">      <span class="comment">// 设置session有效时长，仅对当前代码产生的session有效</span></span><br><span class="line">      <span class="comment">// 其他类或方法中产生的session不受此代码控制。单位: 秒</span></span><br><span class="line">      session.setMaxInactiveInterval(<span class="number">120</span>);</span><br><span class="line">      <span class="comment">// 自动判断请求中是否存在一个特殊的cookie name:jsessionid value:?</span></span><br><span class="line">      <span class="comment">//    存在：根据jsessionid查找对应的httpSession对象：</span></span><br><span class="line">      <span class="comment">//       找到：返回之前的httpSession对象</span></span><br><span class="line">      <span class="comment">//       没找到：创建一个新的session返回并向response对象中存入一个jsessionid的cookie</span></span><br><span class="line">      <span class="comment">//    不存在：创建一个新的session返回并向response对象中存入一个jsessionid的cookie</span></span><br><span class="line">      System.out.println(session.getId());</span><br><span class="line">      System.out.println(session.isNew());</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 将username存入session</span></span><br><span class="line">      session.setAttribute(<span class="string">&quot;username&quot;</span>,username);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 向客户端响应信息</span></span><br><span class="line">      resp.setContentType(<span class="string">&quot;text/html;charset=UTF-8&quot;</span>);</span><br><span class="line">      resp.getWriter().write(<span class="string">&quot;SUCCESS&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/get&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GetSessionServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="comment">// 获取session对象</span></span><br><span class="line">        <span class="type">HttpSession</span> <span class="variable">session</span> <span class="operator">=</span> req.getSession();</span><br><span class="line">        <span class="comment">// 读取session中存储的信息</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> (String)session.getAttribute(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;username is &quot;</span>+ username);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="三大域对象"><a href="#三大域对象" class="headerlink" title="三大域对象"></a>三大域对象</h2><p>在Web开发中，<strong>域对象（Scope Object）</strong> 是指在特定范围内共享数据的对象。不同的域对象允许开发者在不同层次和生命周期内存储和访问数据。Web开发中通常有三个域对象：</p>
+<ol>
+<li>请求域对象（HttpServletRequest）在一次请求之内及请求转发中传递数据</li>
+<li>会话域对象（HttpSession）在一次会话之内传递数据，可以跨多个请求</li>
+<li>应用域对象（ServletContext）在本应用之内传递数据，可以跨多个会话</li>
+</ol>
+<p>总结：</p>
+<table>
+<thead>
+<tr>
+<th>域对象</th>
+<th>生命周期</th>
+<th>共享范围</th>
+<th>典型用途</th>
+<th>示例数据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>请求域</td>
+<td>单个HTTP请求</td>
+<td>当前请求</td>
+<td>存放本次请求业务有关的数据</td>
+<td>表单验证结果、临时数据</td>
+</tr>
+<tr>
+<td>会话域</td>
+<td>用户与服务器之间的多次交互</td>
+<td>同一用户的多个请求</td>
+<td>存放本次会话的客户端相关的数据</td>
+<td>用户登录状态、购物车内容</td>
+</tr>
+<tr>
+<td>应用域</td>
+<td>整个Web应用程序的生命周期</td>
+<td>所有用户和所有请求</td>
+<td>存放本应用程序有关的数据</td>
+<td>全局配置、共享资源、springIoc容器</td>
+</tr>
+</tbody></table>
+<h3 id="使用示例-2"><a href="#使用示例-2" class="headerlink" title="使用示例"></a>使用示例</h3><p>存放数据：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> * <span class="meta">@Description</span>: 三大域对象数据存储API演示</span><br><span class="line"> */</span><br><span class="line"><span class="meta">@WebServlet(&quot;/put&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ScopePutServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="comment">// 请求域</span></span><br><span class="line">        req.setAttribute(<span class="string">&quot;request&quot;</span>,<span class="string">&quot;requestMessage&quot;</span>);</span><br><span class="line">        <span class="comment">// 会话域</span></span><br><span class="line">        <span class="type">HttpSession</span> <span class="variable">session</span> <span class="operator">=</span> req.getSession();</span><br><span class="line">        session.setAttribute(<span class="string">&quot;session&quot;</span>,<span class="string">&quot;sessionMessage&quot;</span>);</span><br><span class="line">        <span class="comment">// 应用域</span></span><br><span class="line">        <span class="type">ServletContext</span> <span class="variable">application</span> <span class="operator">=</span> req.getServletContext();</span><br><span class="line">        application.setAttribute(<span class="string">&quot;application&quot;</span>,<span class="string">&quot;applicationMessage&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 一次请求中获取数据</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">request</span> <span class="operator">=</span> (String) req.getAttribute(<span class="string">&quot;request&quot;</span>);</span><br><span class="line">        System.out.println(request);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 请求转发中获取数据</span></span><br><span class="line">        req.getRequestDispatcher(<span class="string">&quot;get&quot;</span>).forward(req,resp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>获取数据：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/* @Description: 三大域对象取数据API演示</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@WebServlet(&quot;/get&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ScopeGetServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="comment">// 请求域获取数据</span></span><br><span class="line">        <span class="comment">// 被请求转发时可以获取，单纯提供url访问时无法获取</span></span><br><span class="line">        <span class="comment">// 因此两次输出分别是 requestMessage null</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">request</span> <span class="operator">=</span> (String) req.getAttribute(<span class="string">&quot;request&quot;</span>);</span><br><span class="line">        System.out.println(request);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 会话域获取数据</span></span><br><span class="line">        <span class="comment">// 同一会话时可以获取，打开另一个浏览器（相当于另一个客户端，不同会话）无法获取</span></span><br><span class="line">        <span class="type">HttpSession</span> <span class="variable">session</span> <span class="operator">=</span> req.getSession();</span><br><span class="line">        <span class="type">String</span> <span class="variable">sessionMes</span> <span class="operator">=</span>(String) session.getAttribute(<span class="string">&quot;session&quot;</span>);</span><br><span class="line">        System.out.println(sessionMes);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 应用域获取数据</span></span><br><span class="line">        <span class="comment">// 重新部署应用（相当于一个新的应用）无法获取</span></span><br><span class="line">        <span class="type">ServletContext</span> <span class="variable">application</span> <span class="operator">=</span> req.getServletContext();</span><br><span class="line">        <span class="type">String</span> <span class="variable">applicationMsg</span> <span class="operator">=</span> (String) application.getAttribute(<span class="string">&quot;application&quot;</span>);</span><br><span class="line">        System.out.println(applicationMsg);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<hr>
+<h1 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h1><p>在Web开发中，<strong>过滤器（Filter）</strong> 是一种用于拦截和处理请求或响应的组件。它可以在请求到达Servlet之前或响应返回客户端之前对它们进行预处理或后处理。过滤器广泛应用于各种场景，如身份验证、日志记录、数据压缩等。以下是关于过滤器的详细介绍：</p>
+<h3 id="过滤器的工作原理"><a href="#过滤器的工作原理" class="headerlink" title="过滤器的工作原理"></a>过滤器的工作原理</h3><ol>
+<li><strong>拦截请求和响应</strong>：<ul>
+<li>过滤器可以拦截来自客户端的所有请求，并在请求到达目标资源（如Servlet、JSP页面等）之前对其进行处理。</li>
+<li>同样，过滤器也可以拦截从目标资源返回的响应，并在响应返回给客户端之前对其进行处理。</li>
+</ul>
+</li>
+<li><strong>链式处理</strong>：<ul>
+<li>多个过滤器可以组合成一个过滤器链（Filter Chain）。每个过滤器依次处理请求和响应，最终将请求传递给目标资源，然后将响应按相反顺序返回给客户端。</li>
+</ul>
+</li>
+<li><strong>生命周期管理</strong>：<ul>
+<li>过滤器具有自己的生命周期，通常包括<code>init()</code>、<code>doFilter()</code>和<code>destroy()</code>方法。<ul>
+<li><code>init(FilterConfig filterConfig)</code>：在过滤器初始化时调用，常用于配置过滤器参数。</li>
+<li><code>doFilter(ServletRequest request, ServletResponse response, FilterChain chain)</code>：核心方法，负责处理请求和响应。</li>
+<li><code>destroy()</code>：在过滤器被销毁时调用，用于释放资源。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><img src="D:\workinenglish\typora_image\image-20250114220330502.png" alt="image-20250114220330502"></p>
+<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><p>步骤：</p>
+<ol>
+<li><p>实现Filter接口</p>
+</li>
+<li><p>重写过滤方法</p>
+</li>
+<li><p>配置过滤器</p>
+<ul>
+<li><p>web.xml</p>
+</li>
+<li><p>注解</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>步骤1，2：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">SimpleDateFormat</span> <span class="variable">dateFormat</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleDateFormat</span>();</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException &#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    包含三部分内容：</span></span><br><span class="line"><span class="comment">    1. 请求到达目标资源前的功能代码</span></span><br><span class="line"><span class="comment">    2. 放行代码</span></span><br><span class="line"><span class="comment">    3. 响应之前（HttpServletResponse）转换为响应报文之前的功能代码</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">// 1.</span></span><br><span class="line">    System.out.println(<span class="string">&quot;filter before doFilter&quot;</span>);</span><br><span class="line">    <span class="comment">// 应用示例 - 日志输出</span></span><br><span class="line">    <span class="type">HttpServletRequest</span> <span class="variable">request</span> <span class="operator">=</span> (HttpServletRequest) servletRequest;</span><br><span class="line">    <span class="type">HttpServletResponse</span> <span class="variable">response</span> <span class="operator">=</span> (HttpServletResponse) servletRequest;</span><br><span class="line">    <span class="comment">// 请求到达目标资源前，打印日志</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">requestURI</span> <span class="operator">=</span> request.getRequestURI();</span><br><span class="line">    <span class="type">String</span> <span class="variable">dateTime</span> <span class="operator">=</span> dateFormat.format(<span class="keyword">new</span> <span class="title class_">Date</span>());</span><br><span class="line">    <span class="type">String</span> <span class="variable">beforeLogging</span> <span class="operator">=</span> requestURI + <span class="string">&quot;在&quot;</span> + dateTime + <span class="string">&quot;被访问了&quot;</span>;</span><br><span class="line">    System.out.println(beforeLogging);</span><br><span class="line">    <span class="type">Long</span> <span class="variable">t1</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2.</span></span><br><span class="line">    filterChain.doFilter(servletRequest,servletResponse);</span><br><span class="line">    <span class="comment">// 3.</span></span><br><span class="line">    <span class="type">long</span> <span class="variable">t2</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">    System.out.println(<span class="string">&quot;filter before response&quot;</span>);</span><br><span class="line">    <span class="type">String</span> <span class="variable">afterLogging</span> <span class="operator">=</span> requestURI+<span class="string">&quot;资源在&quot;</span>+dateTime+<span class="string">&quot;的请求耗时：&quot;</span>+(t2-t1)+<span class="string">&quot;毫秒&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>配置方式一：XML</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置过滤器--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>filter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.fu.filters.FilterTest<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--配置过滤器的过滤资源规则--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>filter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--&lt;url-pattern&gt;，根据请求资源的路径对指定请求进行过滤--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--&lt;url-pattern&gt;，根据请求的servlet资源别名对指定的servlet资源进行过滤--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>servlet1<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>配置方式二：配置类</strong></p>
+<h3 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h3><p>四个生命周期：</p>
+<table>
+<thead>
+<tr>
+<th>周期</th>
+<th>方法</th>
+<th>执行次数和时机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>构造</td>
+<td>构造器</td>
+<td>服务启动时执行一次</td>
+</tr>
+<tr>
+<td>初始化</td>
+<td>init</td>
+<td>构造完毕执行一次</td>
+</tr>
+<tr>
+<td>过滤</td>
+<td>doFilter</td>
+<td>每次请求执行一次（整个服务期间可能多次）</td>
+</tr>
+<tr>
+<td>销毁</td>
+<td>destroy()</td>
+<td>服务关闭执行一次</td>
+</tr>
+</tbody></table>
+<p>代码示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FilterTest</span> <span class="keyword">implements</span> <span class="title class_">Filter</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>  <span class="title function_">FilterTest</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;生命周期1-构造&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException &#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        XML文件中可以通过如下配置初始化参数</span></span><br><span class="line"><span class="comment">        &lt;init-param&gt;</span></span><br><span class="line"><span class="comment">            &lt;param-name&gt;dataTimePatten&lt;/param-name&gt;</span></span><br><span class="line"><span class="comment">            &lt;param-value&gt;yyyy-MM-dd HH:mm:ss&lt;/param-value&gt;</span></span><br><span class="line"><span class="comment">        &lt;/init-param&gt;</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        System.out.println(<span class="string">&quot;生命周期2-初始化&quot;</span>);</span><br><span class="line">        System.out.println(filterConfig.getInitParameter(<span class="string">&quot;dataTimePattern&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;过滤方法&quot;</span>);</span><br><span class="line">        filterChain.doFilter(servletRequest,servletResponse);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;销毁方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​                     </p>
+<h3 id="过滤器链"><a href="#过滤器链" class="headerlink" title="过滤器链"></a>过滤器链</h3><p>配置文件中：哪一个Filter的<code>&lt;filter-mapping&gt;</code>标签在前，哪一个Filter就先执行后结束。</p>
+<p>注解配置时：Filter的执行顺序由过滤器的类名决定。因此建议过滤器类名格式应该按：<code>F1_过滤器功能</code></p>
+<p>（注意，每一个过滤器都需要单独编写一个类）</p>
+<p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20250118225043.png"></p>
+<h3 id="注解配置"><a href="#注解配置" class="headerlink" title="注解配置"></a>注解配置</h3><p>使用注解<code>@WebFilter(urlPatterns = &quot;/*&quot;)</code>，其中有多个属性，属性名是配置文件方式下标签名的改写，与标签作用一致。</p>
+<h1 id="监听器"><a href="#监听器" class="headerlink" title="监听器"></a>监听器</h1><p>类似JavaScript的监听器。当域对象发生特定操作（如对象创建、销毁；数据增删改）时，可以自动执行一些代码。</p>
+<p>在Web开发中，<strong>监听器（Listener）</strong> 是用于监听特定事件并在这些事件发生时执行相应操作的组件。监听器可以帮助开发者捕捉和响应各种生命周期事件或状态变化，从而实现更复杂的应用逻辑。</p>
+<p>web中定义八个监听器接口作为监听器的规范，这八个接口按照不同的标准可以形成不同的分类;<br><strong>按监听的对象划分:</strong></p>
+<ul>
+<li>application域监听器 ：<code>ServletContextListener</code> 、<code>ServletContextAttributeListener</code>;</li>
+<li>session域监听器：<code>HttpSessionListener</code>、<code>HttpSessionAttributeListener</code>、<code>HttpSessionBindingListener</code>、<code>HttpSessionActivationListener </code>:</li>
+<li>request域监听器：<code>ServletRequestListener</code> 、<code>ServletRequestAttributeListener</code> ;</li>
+</ul>
+<p><strong>按监听的事件分</strong>:</p>
+<ul>
+<li>域对象的创建和销毁监听器：ServletContextListener HttpsessionListener SeryletRequestListener :</li>
+<li>域对象数据增删改事件监听器 Servletcontext<code>Attribute</code>Listener HttpSessionAttributeListener ServletRequestAttributeListener ;</li>
+<li>其他监听器 HttpSession<code>Binding</code>Listener HttpSession<code>Activation</code>Listener ;</li>
+</ul>
+<h3 id="基本使用-1"><a href="#基本使用-1" class="headerlink" title="基本使用"></a>基本使用</h3><p><strong>配置方式一：XML</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>com.fu.listener.ListenerTest<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>配置方式二：注解</strong></p>
+<p><code>@WebListener</code></p>
+<p>使用示例：<code>ServletContextListener</code>应用域对象创建销毁监听器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebListener</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ListenerTest</span> <span class="keyword">implements</span> <span class="title class_">ServletContextListener</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">contextInitialized</span><span class="params">(ServletContextEvent sce)</span> &#123;</span><br><span class="line">        <span class="type">ServletContext</span> <span class="variable">application</span> <span class="operator">=</span> sce.getServletContext();</span><br><span class="line">        System.out.println(application.hashCode()+<span class="string">&quot;应用域初始化&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">contextDestroyed</span><span class="params">(ServletContextEvent sce)</span> &#123;</span><br><span class="line">        <span class="type">ServletContext</span> <span class="variable">application</span> <span class="operator">=</span> sce.getServletContext();</span><br><span class="line">        System.out.println(application.hashCode()+<span class="string">&quot;应用域销毁&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="功能总结"><a href="#功能总结" class="headerlink" title="功能总结"></a>功能总结</h3><p><strong>注意：</strong>任何一个会话的相应变化都会触发会话监听器的相应操作；任何一个请求的相应变化都会触发请求监听器的相应操作</p>
+<table>
+<thead>
+<tr>
+<th><strong>监听器类型</strong></th>
+<th><strong>监听对象</strong></th>
+<th><strong>监听事件</strong></th>
+<th><strong>功能描述</strong></th>
+<th><strong>应用场景</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ServletContextListener</strong></td>
+<td>ServletContext</td>
+<td>应用启动 (<code>contextInitialized</code>)</td>
+<td>在Web应用程序启动时执行初始化操作</td>
+<td>初始化全局资源（如数据库连接池、缓存）</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>应用关闭 (<code>contextDestroyed</code>)</td>
+<td>在Web应用程序关闭时执行清理操作</td>
+<td>释放资源</td>
+</tr>
+<tr>
+<td><strong>HttpSessionListener</strong></td>
+<td>HttpSession</td>
+<td>会话创建 (<code>sessionCreated</code>)</td>
+<td>当一个新的会话被创建时触发</td>
+<td>跟踪在线用户数量</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>会话销毁 (<code>sessionDestroyed</code>)</td>
+<td>当一个会话被销毁时触发</td>
+<td>清理过期的会话数据</td>
+</tr>
+<tr>
+<td><strong>ServletRequestListener</strong></td>
+<td>ServletRequest</td>
+<td>请求创建 (<code>requestInitialized</code>)</td>
+<td>当一个新的请求到达服务器时触发</td>
+<td>记录请求日志、统计请求次数</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>请求销毁 (<code>requestDestroyed</code>)</td>
+<td>当请求处理完成并返回响应时触发</td>
+<td>记录请求结束时间</td>
+</tr>
+<tr>
+<td><strong>ServletContextAttributeListener</strong></td>
+<td>ServletContext</td>
+<td>属性添加 (<code>attributeAdded</code>)</td>
+<td>当向<code>ServletContext</code>中添加属性时触发</td>
+<td>监控全局配置的变化</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>属性移除 (<code>attributeRemoved</code>)</td>
+<td>当从<code>ServletContext</code>中移除属性时触发</td>
+<td>清理不再需要的全局配置</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>属性替换 (<code>attributeReplaced</code>)</td>
+<td>当替换<code>ServletContext</code>中的属性值时触发</td>
+<td>更新全局配置</td>
+</tr>
+<tr>
+<td><strong>HttpSessionAttributeListener</strong></td>
+<td>HttpSession</td>
+<td>属性添加 (<code>attributeAdded</code>)</td>
+<td>当向<code>HttpSession</code>中添加属性时触发</td>
+<td>监控会话状态变化</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>属性移除 (<code>attributeRemoved</code>)</td>
+<td>当从<code>HttpSession</code>中移除属性时触发</td>
+<td>清理会话数据</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>属性替换 (<code>attributeReplaced</code>)</td>
+<td>当替换<code>HttpSession</code>中的属性值时触发</td>
+<td>更新会话数据</td>
+</tr>
+<tr>
+<td><strong>ServletRequestAttributeListener</strong></td>
+<td>ServletRequest</td>
+<td>属性添加 (<code>attributeAdded</code>)</td>
+<td>当向<code>ServletRequest</code>中添加属性时触发</td>
+<td>监控请求范围内的数据变化</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>属性移除 (<code>attributeRemoved</code>)</td>
+<td>当从<code>ServletRequest</code>中移除属性时触发</td>
+<td>清理请求范围内的数据</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>属性替换 (<code>attributeReplaced</code>)</td>
+<td>当替换<code>ServletRequest</code>中的属性值时触发</td>
+<td>更新请求范围内的数据</td>
+</tr>
+<tr>
+<td><strong>HttpSessionBindingListener</strong></td>
+<td>HttpSession</td>
+<td>对象绑定 (<code>valueBound</code>)</td>
+<td>当对象被绑定到<code>HttpSession</code>时触发</td>
+<td>自定义对象在会话中的行为</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>对象解绑 (<code>valueUnbound</code>)</td>
+<td>当对象从<code>HttpSession</code>中解绑时触发</td>
+<td>清理对象资源</td>
+</tr>
+<tr>
+<td><strong>HttpSessionActivationListener</strong></td>
+<td>HttpSession</td>
+<td>会话钝化 (<code>sessionWillPassivate</code>)</td>
+<td>当会话即将被钝化（序列化保存）时触发</td>
+<td>准备会话数据以便存储</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>会话激活 (<code>sessionDidActivate</code>)</td>
+<td>当会话从钝化状态恢复（反序列化加载）时触发</td>
+<td>恢复会话数据</td>
+</tr>
+</tbody></table>
+<p><strong>说明</strong></p>
+<ul>
+<li><strong>ServletContextListener</strong>：用于监听整个Web应用的生命周期事件。</li>
+<li><strong>HttpSessionListener</strong>：用于监听用户的会话创建和销毁事件。</li>
+<li><strong>ServletRequestListener</strong>：用于监听每个HTTP请求的创建和销毁事件。</li>
+<li><strong>ServletContextAttributeListener</strong>：用于监听<code>ServletContext</code>中属性的变化。</li>
+<li><strong>HttpSessionAttributeListener</strong>：用于监听<code>HttpSession</code>中属性的变化。</li>
+<li><strong>ServletRequestAttributeListener</strong>：用于监听<code>ServletRequest</code>中属性的变化。</li>
+<li><strong>HttpSessionBindingListener</strong>：允许对象在其被绑定或解绑到<code>HttpSession</code>时执行自定义逻辑。</li>
+<li><strong>HttpSessionActivationListener</strong>：用于处理会话的钝化（passivation）和激活（activation）过程。</li>
+</ul>
+<h3 id="应用示例"><a href="#应用示例" class="headerlink" title="应用示例"></a>应用示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebListener</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ListenerTest</span> <span class="keyword">implements</span> <span class="title class_">ServletContextAttributeListener</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">attributeAdded</span><span class="params">(ServletContextAttributeEvent scae)</span> &#123;</span><br><span class="line">        <span class="type">ServletContext</span> <span class="variable">app</span> <span class="operator">=</span> scae.getServletContext();</span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> scae.getName();</span><br><span class="line">        <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> (String) scae.getValue();</span><br><span class="line"></span><br><span class="line">        System.out.println(app.hashCode()+<span class="string">&quot;应用域增加了: &quot;</span>+key+<span class="string">&quot;=&quot;</span>+value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">attributeRemoved</span><span class="params">(ServletContextAttributeEvent scae)</span> &#123;</span><br><span class="line">        <span class="type">ServletContext</span> <span class="variable">app</span> <span class="operator">=</span> scae.getServletContext();</span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> scae.getName();</span><br><span class="line">        <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> (String) scae.getValue();</span><br><span class="line"></span><br><span class="line">        System.out.println(app.hashCode()+<span class="string">&quot;应用域删除了: &quot;</span>+key+<span class="string">&quot;=&quot;</span>+value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">attributeReplaced</span><span class="params">(ServletContextAttributeEvent scae)</span> &#123;</span><br><span class="line">        <span class="type">ServletContext</span> <span class="variable">app</span> <span class="operator">=</span> scae.getServletContext();</span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> scae.getName();</span><br><span class="line">        <span class="comment">// getValue()方法获取的是修改前的值</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> (String) scae.getValue();</span><br><span class="line">        <span class="comment">// 新值需要从应用域直接获取</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">newValue</span> <span class="operator">=</span> (String) app.getAttribute(key);</span><br><span class="line">        System.out.println(app.hashCode()+<span class="string">&quot;应用域修改了: &quot;</span>+key+<span class="string">&quot;=&quot;</span>+value+<span class="string">&quot; ==&gt; &quot;</span>+key+<span class="string">&quot;=&quot;</span>+newValue);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="Ajax"><a href="#Ajax" class="headerlink" title="Ajax"></a>Ajax</h1><p><strong>AJAX（Asynchronous JavaScript and XML）</strong> 是一种用于创建快速动态网页的技术。它允许在不重新加载整个页面的情况下，通过异步方式与服务器交换数据并更新部分网页内容。AJAX的核心理念是使网页更加交互和响应迅速，从而提升用户体验。</p>
+<p><strong>AJAX 的工作原理：</strong></p>
+<ol>
+<li><strong>发起请求</strong>：<ul>
+<li>使用JavaScript的<code>XMLHttpRequest</code>对象或现代的<code>fetch</code> API向服务器发送异步请求。</li>
+</ul>
+</li>
+<li><strong>处理响应</strong>：<ul>
+<li>服务器处理请求并返回数据（通常是JSON、XML或纯文本格式）。</li>
+<li>客户端接收到响应后，使用JavaScript解析并更新网页的部分内容，而不需要刷新整个页面。</li>
+</ul>
+</li>
+<li><strong>更新页面</strong>：<ul>
+<li>根据服务器返回的数据，动态更新DOM（文档对象模型），以反映最新的信息。</li>
+</ul>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaWeb/" rel="tag"><i class="fa fa-tag"></i> JavaWeb</a>
+              <a href="/tags/%E4%BC%9A%E8%AF%9D/" rel="tag"><i class="fa fa-tag"></i> 会话</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/01/09/Java-SSM-SSM/" rel="prev" title="Java-SSM-SSM">
+                  <i class="fa fa-angle-left"></i> Java-SSM-SSM
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/01/19/JavaWeb-Vue-Note/" rel="next" title="JavaWeb-Vue-Note">
+                  JavaWeb-Vue-Note <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Shearington</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">442k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">24:34</span>
+  </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"Fushiye/Fushiye.github.io","repo_id":"R_kgDOLyiTvA","category":"Announcements","category_id":"DIC_kwDOLyiTvM4CteAo","mapping":"title","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"zh-CN","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+
+</body>
+</html>

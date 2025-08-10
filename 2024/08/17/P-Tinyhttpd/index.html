@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_apple-touch-icon-human.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_human_32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_human_16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fushiye.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism-darcula","dark":"prism-darcula"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"giscus","storage":true,"lazyload":false,"nav":null,"activeClass":"giscus"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":3,"unescape":false,"preload":true}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="经典C语言实现的轻量级HTTP服务器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="P-Tinyhttpd">
+<meta property="og:url" content="https://fushiye.github.io/2024/08/17/P-Tinyhttpd/index.html">
+<meta property="og:site_name" content="星海拾贝">
+<meta property="og:description" content="经典C语言实现的轻量级HTTP服务器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240817104421.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240817111117.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240817104910.png">
+<meta property="article:published_time" content="2024-08-16T16:00:44.000Z">
+<meta property="article:modified_time" content="2025-02-15T14:45:10.499Z">
+<meta property="article:author" content="Shearington">
+<meta property="article:tag" content="C&#x2F;C++">
+<meta property="article:tag" content="http协议">
+<meta property="article:tag" content="Socket编程">
+<meta property="article:tag" content="服务器">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240817104421.png">
+
+
+<link rel="canonical" href="https://fushiye.github.io/2024/08/17/P-Tinyhttpd/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fushiye.github.io/2024/08/17/P-Tinyhttpd/","path":"2024/08/17/P-Tinyhttpd/","title":"P-Tinyhttpd"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>P-Tinyhttpd | 星海拾贝</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">星海拾贝</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">探索永无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">预备知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.1.</span> <span class="nav-text">HTTP协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">HTTP协议的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP%E5%8D%8F%E8%AE%AE%E7%9A%84%E6%B6%88%E6%81%AF%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.2.</span> <span class="nav-text">HTTP协议的消息结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%B7%E6%B1%82%E6%B6%88%E6%81%AF%E7%9A%84%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">客户端请求消息的格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%93%8D%E5%BA%94%E6%B6%88%E6%81%AF%E7%9A%84%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">服务器响应消息的格式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP%E7%8A%B6%E6%80%81%E7%A0%81"><span class="nav-number">1.1.3.</span> <span class="nav-text">HTTP状态码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.4.</span> <span class="nav-text">HTTP 请求方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#socket%E7%BC%96%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">socket编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Socket%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.2.1.</span> <span class="nav-text">Socket介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Socket%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.2.</span> <span class="nav-text">Socket函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">创建套接字</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%91%E5%AE%9A%E5%9C%B0%E5%9D%80%E5%92%8C%E7%AB%AF%E5%8F%A3%E5%8F%B7"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">绑定地址和端口号</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93sockaddr%E3%80%81sockaddr-in"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">结构体sockaddr、sockaddr_in</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%91%E5%90%AC%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">监听套接字</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8E%A5%E5%8F%97%E8%AF%B7%E6%B1%82"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">接受请求</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.2.6.</span> <span class="nav-text">发送数据</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E5%BA%8F%E5%8F%8A%E5%85%B6%E8%BD%AC%E5%8C%96"><span class="nav-number">1.2.3.</span> <span class="nav-text">字节序及其转化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%AD%97%E8%8A%82%E5%BA%8F%E5%92%8C%E4%B8%BB%E6%9C%BA%E5%AD%97%E8%8A%82%E5%BA%8F"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">网络字节序和主机字节序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E5%BA%8F%E8%BD%AC%E5%8C%96%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">字节序转化函数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.4.</span> <span class="nav-text">网络编程的流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E4%B8%AD%E4%BD%BF%E7%94%A8C%E8%AF%AD%E8%A8%80%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.3.</span> <span class="nav-text">Linux中使用C语言连接MySQL数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85MySQL%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E5%BA%93"><span class="nav-number">1.3.1.</span> <span class="nav-text">安装MySQL客户端开发库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E5%86%99C%E4%BB%A3%E7%A0%81%E8%BF%9E%E6%8E%A5MySQL"><span class="nav-number">1.3.2.</span> <span class="nav-text">编写C代码连接MySQL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8C"><span class="nav-number">1.3.3.</span> <span class="nav-text">编译和运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="nav-number">1.3.4.</span> <span class="nav-text">常见错误处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%EF%BC%9A"><span class="nav-number">1.3.5.</span> <span class="nav-text">进程和线程：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%BB%E9%87%8F%E7%BA%A7HTTP%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84C%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">轻量级HTTP服务器的C语言实现</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shearington"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Shearington</p>
+  <div class="site-description" itemprop="description">诗酒趁年华</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fushiye/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fushiye&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:shearington@foxmail.com" title="E-Mail → mailto:shearington@foxmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fushiye.github.io/2024/08/17/P-Tinyhttpd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Shearington">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="星海拾贝">
+      <meta itemprop="description" content="诗酒趁年华">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="P-Tinyhttpd | 星海拾贝">
+      <meta itemprop="description" content="经典C语言实现的轻量级HTTP服务器">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          P-Tinyhttpd
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-17 00:00:44" itemprop="dateCreated datePublished" datetime="2024-08-17T00:00:44+08:00">2024-08-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-02-15 22:45:10" itemprop="dateModified" datetime="2025-02-15T22:45:10+08:00">2025-02-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">其他语言技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E6%8A%80%E6%9C%AF/C%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">C语言</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">经典C语言实现的轻量级HTTP服务器</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>这是自学Linux网络编程过程中实现的小项目，存储在</p>
+<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><h3 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h3><p>参考资料：<br><a target="_blank" rel="noopener" href="https://www.runoob.com/http/http-intro.html">菜鸟教程-HTTP协议</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Overview">mozilla-HTTP协议</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/hansionz/article/details/86137260">HTTP协议讲解和简单HTTP服务器实现</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1DJ4m1M77z/?spm_id_from=333.337.search-card.all.click&vd_source=20530c92c1be8bd70e37346e3a5c037a">尚硅谷Linux嵌入式编程</a></p>
+<p>HTTP（超文本传输协议，Hypertext Transfer Protocol）是一种用于从网络传输超文本到本地浏览器的传输协议。它定义了客户端与服务器之间请求和响应的格式。HTTP工作在TCP&#x2F;IP模型之上的C&#x2F;S（客户端—服务器client-server）协议，通常使用端口 80。</p>
+<h4 id="HTTP协议的工作原理"><a href="#HTTP协议的工作原理" class="headerlink" title="HTTP协议的工作原理"></a>HTTP协议的工作原理</h4><p>HTTP 工作过程通常如下：</p>
+<ol>
+<li>客户端发起请求：用户通过客户端（如浏览器）输入URL，客户端与服务器HTTP端口建立一个TCP套接字连接，通过TCP套接字向服务器发起一个 HTTP 请求。</li>
+<li>服务器处理请求：服务器接收到请求后，读取套接字，解析请求文本，根据请求的类型（如GET、POST等）和请求的资源，进行相应的处理。</li>
+<li>服务器返回响应：服务器将处理结果包装成HTTP响应消息，写入套接字，发送回客户端。</li>
+<li>客户端渲染页面：客户端接收到响应后，读取套接字，解析响应文本，查看状态码，根据响应内容（如HTML、图片等）渲染页面，展示给用户</li>
+<li>断开TCP连接(请求头connection &#x3D; close)</li>
+</ol>
+<p>因此，实现一个基本的HTTP服务器就必须实现其处理请求和返回响应的功能</p>
+<h4 id="HTTP协议的消息结构"><a href="#HTTP协议的消息结构" class="headerlink" title="HTTP协议的消息结构"></a>HTTP协议的消息结构</h4><p>HTTP消息分为两种类型：请求消息和响应消息。<br>一个HTTP客户端是一个应用程序（Web 浏览器或其他任何客户端），通过连接到服务器达到向服务器发送一个或多个HTTP的请求的目的。<br>一个HTTP服务器同样也是一个应用程序（通常是一个 Web 服务，通过接收客户端的请求并向客户端发送HTTP响应数据。</p>
+<h5 id="客户端请求消息的格式"><a href="#客户端请求消息的格式" class="headerlink" title="客户端请求消息的格式"></a>客户端请求消息的格式</h5><p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240817104421.png" alt="客户端请求消息的格式"></p>
+<p>客户端发送的请求消息包括以下格式：请求行（request line）、请求头部（header）、空行和请求数据四个部分组成，</p>
+<ol>
+<li>请求行（Request Line）：<ul>
+<li>方法：如 GET、POST、PUT、DELETE等，指定要执行的操作。</li>
+<li>请求URI（统一资源标识符）：请求的资源路径，通常包括主机名、端口号（如果非默认）、路径和查询字符串。</li>
+<li>HTTP版本：如 HTTP&#x2F;1.1 或 HTTP&#x2F;2。</li>
+<li>请求行的格式示例：GET &#x2F;index.html HTTP&#x2F;1.1</li>
+</ul>
+</li>
+<li>请求头（Request Headers）：<ul>
+<li>包含了客户端环境信息、请求体的大小（如果有）、客户端支持的压缩类型等。</li>
+<li>常见的请求头包括Host、User-Agent、Accept、Accept-Encoding、Content-Length等。</li>
+</ul>
+</li>
+<li>空行：<ul>
+<li>请求头和请求体之间的分隔符，表示请求头的结束。</li>
+</ul>
+</li>
+<li>请求体（可选）：<ul>
+<li>在某些类型的HTTP请求（如 POST 和 PUT）中，请求体包含要发送给服务器的数据。</li>
+</ul>
+</li>
+</ol>
+<p>如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">POST  /htdocs/index.html  HTTP/1.1  \r\n</span><br><span class="line">Host: www.somenet.com               \r\n</span><br><span class="line">Content-Length:9                    \r\n</span><br><span class="line">\r\n</span><br><span class="line">color=red</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h5 id="服务器响应消息的格式"><a href="#服务器响应消息的格式" class="headerlink" title="服务器响应消息的格式"></a>服务器响应消息的格式</h5><p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240817111117.png" alt="服务器响应消息的格式"></p>
+<p>HTTP 响应也由四个部分组成，分别是：状态行、消息报头、空行和响应正文</p>
+<ol>
+<li>状态行（Status Line）：<ul>
+<li>HTTP 版本：与请求消息中的版本相匹配。</li>
+<li>状态码：三位数，表示请求的处理结果，如 200 表示成功，404 表示未找到资源。</li>
+<li>状态信息：状态码的简短描述。</li>
+<li>状态行的格式示例：HTTP&#x2F;1.1 200 OK</li>
+</ul>
+</li>
+<li>响应头（Response Headers）：<ul>
+<li>包含了服务器环境信息、响应体的大小、服务器支持的压缩类型等。</li>
+<li>常见的响应头包括Content-Type、Content-Length、Server、Set-Cookie等。</li>
+</ul>
+</li>
+<li>空行：<ul>
+<li>响应头和响应体之间的分隔符，表示响应头的结束。</li>
+</ul>
+</li>
+<li>响应体（可选）：<ul>
+<li>包含服务器返回的数据，如请求的网页内容、图片、JSON数据等</li>
+</ul>
+</li>
+</ol>
+<p>如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK         \r\n</span><br><span class="line">Content-Type:text/html  \r\n</span><br><span class="line">Content-Length:362      \r\n</span><br><span class="line">\r\n</span><br><span class="line">&lt;html&gt;</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a>HTTP状态码</h4><p>当浏览者访问一个网页时，浏览者的浏览器会向网页所在服务器发出请求。当浏览器接收并显示网页前，此网页所在的服务器会返回一个包含HTTP状态码(HTTP Status Code)的信息头（server header）用以响应浏览器的请求。</p>
+<p>下面是常见的 HTTP 状态码：</p>
+<blockquote>
+<p>1xx（信息性状态码）：表示接收的请求正在处理。<br>2xx（成功状态码）：表示请求正常处理完毕。<br>3xx（重定向状态码）：需要后续操作才能完成这一请求。<br>4xx（客户端错误状态码）：表示请求包含语法错误或无法完成。<br>5xx（服务器错误状态码）：服务器在处理请求的过程中发生了错误</p>
+</blockquote>
+<p>其中最常见的就是以下几个：</p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>状态信息</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>200</td>
+<td>OK</td>
+<td>请求成功。一般用于GET与POST请求</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td>客户端请求的语法错误，服务器无法理解</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td>服务器无法根据客户端的请求找到资源（网页）。通过此代码，网站设计人员可设置”您所请求的资源无法找到”的个性页面</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td>服务器内部错误，无法完成请求</td>
+</tr>
+</tbody></table>
+<h4 id="HTTP-请求方法"><a href="#HTTP-请求方法" class="headerlink" title="HTTP 请求方法"></a>HTTP 请求方法</h4><p><img src="https://raw.githubusercontent.com/Fushiye/Alldocuments/main/img_blog/20240817104910.png" alt="HTTP 请求方法"></p>
+<h3 id="socket编程"><a href="#socket编程" class="headerlink" title="socket编程"></a>socket编程</h3><h4 id="Socket介绍"><a href="#Socket介绍" class="headerlink" title="Socket介绍"></a>Socket介绍</h4><p>套接字（Socket）是计算机网络通信中的一个基本概念，它是一种抽象的数据结构，用于在网络应用程序之间提供通信接口。套接字上联应用进程，下联网络协议栈，是应用程序通过网络协议进行通信的接口。使用套接字可以简化网络编程，无需理解底层协议内部工作原理</p>
+<p>主要分为以下几种类型</p>
+<ul>
+<li>流式套接字（SOCK_STREAM）：基于TCP协议，是一个面向连接的套接字类型。它保证了数据的顺序和可靠传输，适用于需要可靠传输的应用场景，如HTTP、FTP等。</li>
+<li>数据报套接字（SOCK_DGRAM）：基于UDP协议，是一个无连接的套接字类型。它不保证数据的顺序，但可以快速发送和接收数据，适用于对实时性要求较高但对数据可靠性要求不高的应用场景，如视频流、实时游戏等。</li>
+<li>原始套接字：与标准套接字（流套接字和数据报套接字）不同，原始套接字可以读写内核没有处理的IP数据包，因此可以进行更底层的网络操作，如开发新的网络协议等。</li>
+</ul>
+<p><strong>工作原理</strong></p>
+<p>套接字通过封装 TCP&#x2F;IP协议细节，提供了一组API，允许应用程序创建套接字、绑定地址和端口、监听连接、接受连接、发送和接收数据等。在网络通信中，通常一个套接字负责监听和接受外部连接(服务器套接字)，另一个套接字负责发起连接(客户端套接<br>字)。</p>
+<h4 id="Socket函数"><a href="#Socket函数" class="headerlink" title="Socket函数"></a>Socket函数</h4><p>在头文件sys&#x2F;socket.h、sys&#x2F;types.h中定义了socket编程函数</p>
+<h5 id="创建套接字"><a href="#创建套接字" class="headerlink" title="创建套接字"></a>创建套接字</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">socket</span><span class="params">(<span class="type">int</span> domain, <span class="type">int</span> type, <span class="type">int</span> protocol)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>domain：指定协议族。常见的协议族有<code>AF_INET（IPv4）</code>和<code>AF_INET6（IPv6）</code>。</li>
+<li>type：指定套接字类型。常见的类型有<code>SOCK_STREAM</code>（流式套接字，基于<code>TCP</code>）和<code>SOCK_DGRAM</code>（数据报套接字，基于<code>UDP</code>）。</li>
+<li>protocol：指定使用的特定协议。通常，当domain和type足以确定协议时，这个参数可以<code>设置为0</code>，让系统自动选择合适的协议。</li>
+<li>返回值：成功时返回一个非负整数，这个整数是套接字的描述符（或称为文件描述符），它将在后续的套接字操作中用作引用。如果调用失败，则返回 -1，并设置 errno 以指示错误原因。</li>
+</ul>
+<h5 id="绑定地址和端口号"><a href="#绑定地址和端口号" class="headerlink" title="绑定地址和端口号"></a>绑定地址和端口号</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">bind</span><span class="params">(<span class="type">int</span> sockfd, <span class="type">const</span> <span class="keyword">struct</span> sockaddr *addr, <span class="type">socklen_t</span> addrlen)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>sockfd：这是由socket()函数返回的套接字描述符。</li>
+<li>addr：这是一个指向sockaddr（地址族）结构的指针，但实际上更常用的是它的特定类型，如sockaddr_in（用于IPv4）或sockaddr_in6（用于IPv6）。这个结构包含了要绑定的IP地址和端口号。</li>
+<li>addrlen：这是addr指向的结构体的大小，通常以sizeof(struct sockaddr_in)或sizeof(struct sockaddr_in6)的形式给出。</li>
+<li>返回值：函数成功时返回0，失败时返回-1并设置errno以指示错误原因。</li>
+</ul>
+<h5 id="结构体sockaddr、sockaddr-in"><a href="#结构体sockaddr、sockaddr-in" class="headerlink" title="结构体sockaddr、sockaddr_in"></a>结构体sockaddr、sockaddr_in</h5><p>sockaddr结构体是一个通用的套接字地址结构，它用于表示套接字地址（包括IP地址和端口号）。sockaddr_in结构体用于表示IPv4套接字地址，是sockaddr的特定类型，可以直接与sockaddr结构体进行类型转换（因为sockaddr_in和sockaddr_in6的第一个成员都是sa_family，这允许它们被当作sockaddr类型来传递）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> &#123;</span>  </span><br><span class="line">    <span class="type">sa_family_t</span> sin_family; <span class="comment">// 地址族，对于IPv4来说是AF_INET  </span></span><br><span class="line">    <span class="type">uint16_t</span> sin_port;      <span class="comment">// 端口号，网络字节序  </span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> <span class="title">sin_addr</span>;</span> <span class="comment">// IPv4地址  </span></span><br><span class="line">    <span class="comment">// 某些系统可能还包含一些填充字节，以保持与sockaddr结构体大小对齐  </span></span><br><span class="line">&#125;;  </span><br><span class="line"><span class="comment">// 其中，in_addr结构体通常定义如下：  </span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> &#123;</span>  </span><br><span class="line">    <span class="type">uint32_t</span> s_addr; <span class="comment">// IPv4地址，网络字节序  </span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="监听套接字"><a href="#监听套接字" class="headerlink" title="监听套接字"></a>监听套接字</h5><p>listen() 函数用于将套接字设置为监听状态，以便它可以接受进入的连接请求。这个函数通常与流式套接字（如 TCP 套接字）一起使用，在服务器程序中非常常见。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">listen</span><span class="params">(<span class="type">int</span> sockfd, <span class="type">int</span> backlog)</span>;  </span><br></pre></td></tr></table></figure>
+<ul>
+<li>backlog：这个参数指定了系统应该为相应套接字排队的最大连接数。这个数值告诉系统在拒绝新连接之前，可以有多少个未处理的连接请求等待accept()函数来处理。</li>
+<li>返回值：成功时返回 0，失败时返回 -1 并设置 errno 以指示错误原因。</li>
+</ul>
+<h5 id="接受请求"><a href="#接受请求" class="headerlink" title="接受请求"></a>接受请求</h5><p>accept() 函数用于从已完成连接队列的头部返回下一个已完成连接。它通常与listen()函数一起使用，在服务器程序中非常常见，特别是处理TCP连接时。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">accept</span><span class="params">(<span class="type">int</span> sockfd, <span class="keyword">struct</span> sockaddr *addr, <span class="type">socklen_t</span> *addrlen)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>addr：这是一个指向 sockaddr 结构体的指针，该结构体用于存储接受连接的客户端的地址信息。如果调用者对此信息不感兴趣，可以将其设置为 NULL。</li>
+<li>addrlen：这是一个指向 socklen_t 变量的指针，该变量在调用前应该包含 addr 指向的缓冲区的大小，在调用后，它将包含实际返回的地址的长度。如果 addr 是 NULL，则 addrlen 也应该是一个 NULL 指针。</li>
+</ul>
+<h5 id="发送数据"><a href="#发送数据" class="headerlink" title="发送数据"></a>发送数据</h5><p>end 函数将数据发送到连接的另一端（即服务器）。它需要至少两个参数：一个套接字文件描述符（标识了连接）和一个包含要发送数据的缓冲区。send 函数会尝试发送指定数量的字节，但实际发送的字节数可能较少，因此通常需要检查返回值来确定实际发送了多少数据。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ssize_t</span> <span class="title function_">send</span><span class="params">(<span class="type">int</span> sockfd, <span class="type">const</span> <span class="type">void</span> *buf, <span class="type">size_t</span> len, <span class="type">int</span> flags)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>buf 是指向包含要发送数据的缓冲区的指针。</li>
+<li>len 是要发送的字节数。</li>
+<li>flags 通常是0，用于指定发送行为的不同选项（但在大多数情况下不使用）。</li>
+</ul>
+<h4 id="字节序及其转化"><a href="#字节序及其转化" class="headerlink" title="字节序及其转化"></a>字节序及其转化</h4><h5 id="网络字节序和主机字节序"><a href="#网络字节序和主机字节序" class="headerlink" title="网络字节序和主机字节序"></a>网络字节序和主机字节序</h5><p>网络字节序和主机字节序是计算机网络通信中两个重要的概念，关系到数据在不同主机之间传输时的字节顺序问题。</p>
+<p><strong>网络字节序</strong></p>
+<blockquote>
+<p>又称为大端字节序（Big-Endian），是一种标准化的字节序，用于在网络通信中统一表示数据的存储顺序。在网络传输中，数据的高位字节（MSB，Most Significant Byte）被存储在低地址，而低位字节（LSB，Least Significant Byte）被存储在高地址。这种表示方式确保了数据在不同主机之间传输时能够被正确解释，无论这些主机的内部字节序如何。</p>
+</blockquote>
+<p><strong>主机字节序</strong></p>
+<blockquote>
+<p>主指特定主机或处理器所采用的字节序。在不同的计算机体系结构中，主机字节序可以有两种表示方式：大端序（Big-Endian）和小端序（Little-Endian）。现代处理器架构普遍采用小端序。小端序将数据的低位字节存储在内存的低地址端，而高位字节存储在内存的高地址端。这意呀着，从内存的低地址开始，首先读取到的是数据的低位字节。</p>
+</blockquote>
+<p>由于网络字节序采用大端序表示，而主机字节序可能是大端序也可能是小端序，因此在网络通信中，发送端和接收端通常需要进行字节序的转换。具体来说，发送端在发送数据之前，需要将主机字节序转换为网络字节序；接收端在接收到数据之后，需要将网络字节序转换回主机字节序。这样，双方才能正确地解析出传输的数据。</p>
+<h5 id="字节序转化函数"><a href="#字节序转化函数" class="headerlink" title="字节序转化函数"></a>字节序转化函数</h5><p>包括htonl、htons、ntohl和ntohs，它们分别用于处理长整型（32位）和短整型（16位）数据的字节序转换，是标准C库的一部分，但在某些平台上可能需要包含特定的头文件（如&lt;arpa&#x2F;inet.h&gt;）才能使用。</p>
+<ol>
+<li>htonl 和 htons：用于在发送数据之前，将主机上的数据转换为网络字节序，以便在网络中传输<ul>
+<li>htonl：Host TO Network Long。该函数将无符号长整型（uint32_t）从主机字节序转换为网络字节序（大端序）。</li>
+<li>htons：Host TO Network Short。该函数将无符号短整型（uint16_t）从主机字节序转换为网络字节序（大端序）。</li>
+</ul>
+</li>
+<li>ntohl 和 ntohs：用于在接收到网络数据之后，将数据的字节序转换回主机字节序，以便在主机上正确解析和处理。<ul>
+<li>ntohl：Network TO Host Long。该函数将无符号长整型（uint32_t）从网络字节序（大端序）转换回主机字节序。</li>
+<li>ntohs：Network TO Host Short。该函数将无符号短整型（uint16_t）从网络字节序（大端序）转换回主机字节序。</li>
+</ul>
+</li>
+</ol>
+<h4 id="网络编程的流程"><a href="#网络编程的流程" class="headerlink" title="网络编程的流程"></a>网络编程的流程</h4><p><strong>服务器端</strong></p>
+<ol>
+<li>构造socket: socket()</li>
+<li>绑定地址: bind()</li>
+<li>进入监听状态: listen()</li>
+<li>获取客户端连接: accept(),返回与客户端交互的socket</li>
+<li>创建两个子线程分别用于收发消息</li>
+</ol>
+<h3 id="Linux中使用C语言连接MySQL数据库"><a href="#Linux中使用C语言连接MySQL数据库" class="headerlink" title="Linux中使用C语言连接MySQL数据库"></a>Linux中使用C语言连接MySQL数据库</h3><p>以Ubuntu为例，安装了MySQL 8.0后，可以使用C语言连接MySQL数据库并进行操作</p>
+<h4 id="安装MySQL客户端开发库"><a href="#安装MySQL客户端开发库" class="headerlink" title="安装MySQL客户端开发库"></a>安装MySQL客户端开发库</h4><p>安装MySQL的开发库，以便在C程序中使用MySQL API：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install libmysqlclient-dev</span><br></pre></td></tr></table></figure>
+
+<h4 id="编写C代码连接MySQL"><a href="#编写C代码连接MySQL" class="headerlink" title="编写C代码连接MySQL"></a>编写C代码连接MySQL</h4><p>下面是一个简单的C代码示例，用于连接MySQL数据库并执行一个查询：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mysql/mysql.h&gt;</span> <span class="comment">// 包含此头文件</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    MYSQL *conn;</span><br><span class="line">    MYSQL_RES *res;</span><br><span class="line">    MYSQL_ROW row;</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *server = <span class="string">&quot;localhost&quot;</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *user = <span class="string">&quot;root&quot;</span>; <span class="comment">// MySQL用户名</span></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *password = <span class="string">&quot;your_password&quot;</span>; <span class="comment">// MySQL密码</span></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *database = <span class="string">&quot;testdb&quot;</span>; <span class="comment">// 数据库名</span></span><br><span class="line"></span><br><span class="line">    conn = mysql_init(<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接数据库</span></span><br><span class="line">    <span class="keyword">if</span> (conn == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;mysql_init() failed\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> EXIT_FAILURE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (mysql_real_connect(conn, server, user, password, database, <span class="number">0</span>, <span class="literal">NULL</span>, <span class="number">0</span>) == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;mysql_real_connect() failed\n&quot;</span>);</span><br><span class="line">        mysql_close(conn);</span><br><span class="line">        <span class="keyword">return</span> EXIT_FAILURE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 执行查询</span></span><br><span class="line">    <span class="keyword">if</span> (mysql_query(conn, <span class="string">&quot;SELECT * FROM test_table&quot;</span>)) &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;SELECT * FROM test_table failed. Error: %s\n&quot;</span>, mysql_error(conn));</span><br><span class="line">        mysql_close(conn);</span><br><span class="line">        <span class="keyword">return</span> EXIT_FAILURE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    res = mysql_store_result(conn);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (res == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;mysql_store_result() failed. Error: %s\n&quot;</span>, mysql_error(conn));</span><br><span class="line">        mysql_close(conn);</span><br><span class="line">        <span class="keyword">return</span> EXIT_FAILURE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出查询结果</span></span><br><span class="line">    <span class="type">int</span> num_fields = mysql_num_fields(res);</span><br><span class="line">    <span class="keyword">while</span> ((row = mysql_fetch_row(res))) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; num_fields; i++) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%s &quot;</span>, row[i] ? row[i] : <span class="string">&quot;NULL&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 释放资源</span></span><br><span class="line">    mysql_free_result(res);</span><br><span class="line">    mysql_close(conn);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> EXIT_SUCCESS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="编译和运行"><a href="#编译和运行" class="headerlink" title="编译和运行"></a>编译和运行</h4><p>编译时需要链接MySQL客户端库，编译成功后，运行生成的可执行文件：：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -o mysql_test mysql_test.c -lmysqlclient</span><br><span class="line">./mysql_test</span><br></pre></td></tr></table></figure>
+
+<h4 id="常见错误处理"><a href="#常见错误处理" class="headerlink" title="常见错误处理"></a>常见错误处理</h4><ul>
+<li><strong>无法连接数据库</strong>：检查用户名、密码、数据库名称，以及MySQL服务器是否正在运行。</li>
+<li><strong>库文件未找到</strong>：确保<code>libmysqlclient-dev</code>已经安装，并且在编译时使用了<code>-lmysqlclient</code>进行链接。</li>
+</ul>
+<h4 id="进程和线程："><a href="#进程和线程：" class="headerlink" title="进程和线程："></a>进程和线程：</h4><blockquote>
+<p>进程id、fork()、exec函数、waitpid()<br>线程id、pthread_create()、pthread_self()、线程退出和分离</p>
+</blockquote>
+<h2 id="轻量级HTTP服务器的C语言实现"><a href="#轻量级HTTP服务器的C语言实现" class="headerlink" title="轻量级HTTP服务器的C语言实现"></a>轻量级HTTP服务器的C语言实现</h2><p>参考资料：<br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Ta411A7Bs/?spm_id_from=333.788.recommend_more_video.0&vd_source=20530c92c1be8bd70e37346e3a5c037a">TinyHttpd项目视频详解</a><br><a target="_blank" rel="noopener" href="https://github.com/cbsheng/tinyhttpd">TinyHttpd项目详细注释版</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-C/" rel="tag"><i class="fa fa-tag"></i> C/C++</a>
+              <a href="/tags/http%E5%8D%8F%E8%AE%AE/" rel="tag"><i class="fa fa-tag"></i> http协议</a>
+              <a href="/tags/Socket%E7%BC%96%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> Socket编程</a>
+              <a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="tag"><i class="fa fa-tag"></i> 服务器</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/16/Java-SSM-Spring/" rel="prev" title="Java-SSM-Spring">
+                  <i class="fa fa-angle-left"></i> Java-SSM-Spring
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/08/26/%E7%AE%97%E6%B3%95-%E9%93%BE%E8%A1%A8/" rel="next" title="算法-链表">
+                  算法-链表 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Shearington</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">442k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">24:34</span>
+  </span>
+</div>
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+-->
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"Fushiye/Fushiye.github.io","repo_id":"R_kgDOLyiTvA","category":"Announcements","category_id":"DIC_kwDOLyiTvM4CteAo","mapping":"title","strict":0,"reactions_enabled":1,"emit_metadata":0,"theme":"light","lang":"zh-CN","crossorigin":"anonymous","input_position":"top","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
+
+</body>
+</html>
